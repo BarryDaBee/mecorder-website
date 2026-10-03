@@ -17,18 +17,25 @@ export function playIntro(): Promise<void> {
   const t0 = performance.now();
   const COUNT = 950;
   return new Promise((resolve) => {
+    let done = false;
+    const finish = () => {
+      if (done) return;
+      done = true;
+      el.classList.add('is-out');
+      root.classList.remove('intro-playing');
+      window.dispatchEvent(new Event(INTRO_DONE));
+      resolve();
+      setTimeout(() => el.remove(), 1000);
+    };
+    // Never hold the page behind the curtain, even if frames are throttled.
+    setTimeout(finish, COUNT + 400);
     const step = (now: number) => {
+      if (done) return;
       const ms = Math.min(COUNT, now - t0);
       const frames = Math.floor((ms / 1000) * 60);
       if (time) time.textContent = `00:00:${String(Math.floor(ms / 1000)).padStart(2, '0')}:${String(frames % 60).padStart(2, '0')}`.slice(3);
       if (ms < COUNT) requestAnimationFrame(step);
-      else {
-        el.classList.add('is-out');
-        root.classList.remove('intro-playing');
-        window.dispatchEvent(new Event(INTRO_DONE));
-        resolve();
-        setTimeout(() => el.remove(), 1000);
-      }
+      else finish();
     };
     requestAnimationFrame(step);
   });
