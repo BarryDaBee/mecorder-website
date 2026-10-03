@@ -1,0 +1,232 @@
+---
+/**
+ * THE OLD WAY: keyframes piling up by hand, one click at a time, then
+ * collapsing into a single rule. Scroll-driven; the numbers are counted from
+ * the drawn clicks, not invented.
+ */
+import { block, slot } from '../../lib/program/blocks';
+
+const clicks = [0.05, 0.11, 0.19, 0.24, 0.33, 0.38, 0.46, 0.52, 0.6, 0.67, 0.73, 0.8, 0.87, 0.94];
+const perClick = 3; // zoom in, hold, zoom out
+const rule = [
+  block('events', `<b>When</b> ${slot('Click')} ${slot('Any button')}`, { hat: true }),
+  block('camera', `<b>Focus</b> ${slot('Clicked element')}`),
+  block('control', `<b>Wait</b> ${slot('0.5')} <i>seconds</i>`),
+  block('camera', `<b>Reset</b> <i>camera</i>`),
+].join('');
+---
+
+<section class="oldway" data-oldway aria-labelledby="oldway-title">
+  <div class="ow-sticky">
+    <div class="container ow-inner">
+      <div class="section-head center">
+        <p class="eyebrow"><span class="dot"></span>The old way</p>
+        <h2 id="oldway-title">Don't edit every frame.</h2>
+        <p class="lead">A three-minute demo can have dozens of clicks. Giving each one its own zoom means placing, timing and easing every keyframe by hand, and doing it again when the recording changes.</p>
+      </div>
+
+      <div class="ow-board" aria-hidden="true">
+        <div class="ow-timeline">
+          <div class="ow-row"><span>Clicks</span><div class="ow-lane">{clicks.map((c) => <i class="ow-click" style={`left:${c * 100}%`} />)}</div></div>
+          <div class="ow-row ow-cam">
+            <span>Camera</span>
+            <div class="ow-lane">
+              {
+                clicks.map((c, i) =>
+                  [-0.012, 0, 0.018].map((o, j) => (
+                    <i class="ow-key" data-key={i * perClick + j} style={`left:${(c + o) * 100}%`} />
+                  )),
+                )
+              }
+              {clicks.map((c) => <b class="ow-curve" style={`left:${(c - 0.012) * 100}%;width:3%`} />)}
+            </div>
+          </div>
+          <div class="ow-playhead" data-ow-playhead></div>
+        </div>
+        <div class="ow-counter">
+          <div class="ow-num"><b data-ow-count>0</b> keyframes placed by hand</div>
+          <div class="ow-num ow-num-after"><b>1</b> Program, applied to all {clicks.length} clicks</div>
+        </div>
+        <div class="ow-rule" data-ow-rule>
+          <div class="pstack"><Fragment set:html={rule} /></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .oldway {
+    position: relative;
+    height: 220vh;
+  }
+  .ow-sticky {
+    position: sticky;
+    top: 0;
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    padding: calc(var(--nav-h) + 24px) 0 40px;
+  }
+  .ow-inner {
+    width: 100%;
+  }
+  .ow-board {
+    position: relative;
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 28px 28px 30px;
+    border-radius: var(--r-prominent);
+    background: var(--bg-raised);
+    box-shadow: 0 0 0 1px var(--border-subtle) inset;
+    min-height: 340px;
+  }
+  .ow-timeline {
+    position: relative;
+    display: grid;
+    gap: 10px;
+    opacity: calc(1 - var(--collapse, 0) * 0.75);
+    filter: blur(calc(var(--collapse, 0) * 3px));
+  }
+  .ow-row {
+    display: grid;
+    grid-template-columns: 70px 1fr;
+    align-items: center;
+    font-size: 12px;
+    color: var(--text-3);
+  }
+  .ow-lane {
+    position: relative;
+    height: 34px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.035);
+  }
+  .ow-click {
+    position: absolute;
+    top: 50%;
+    width: 9px;
+    height: 9px;
+    margin: -4.5px 0 0 -4.5px;
+    border-radius: 50%;
+    background: var(--trk-clicks);
+  }
+  .ow-key {
+    position: absolute;
+    top: 50%;
+    width: 10px;
+    height: 10px;
+    margin: -5px 0 0 -5px;
+    background: #f0b14a;
+    transform: rotate(45deg) scale(var(--ks, 0));
+    transition: transform 260ms var(--ease-spring);
+    z-index: 1;
+  }
+  .ow-key.is-on {
+    --ks: 1;
+  }
+  .ow-curve {
+    position: absolute;
+    top: 6px;
+    bottom: 6px;
+    border-radius: 4px;
+    background: color-mix(in srgb, var(--trk-camera) 30%, transparent);
+    opacity: var(--curve-o, 0);
+  }
+  .ow-playhead {
+    position: absolute;
+    top: -6px;
+    bottom: -6px;
+    left: calc(70px + (100% - 70px) * var(--ph, 0));
+    width: 2px;
+    background: var(--accent);
+    border-radius: 2px;
+  }
+  .ow-counter {
+    position: relative;
+    margin-top: 26px;
+    height: 34px;
+    font-size: 1.05rem;
+    color: var(--text-2);
+  }
+  .ow-num {
+    position: absolute;
+    inset: 0;
+    text-align: center;
+    transition: opacity 400ms ease, transform 500ms var(--ease-out);
+  }
+  .ow-num b {
+    font-variant-numeric: tabular-nums;
+    color: var(--text);
+    font-size: 1.4rem;
+    margin-right: 4px;
+  }
+  .ow-num-after {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  .oldway.is-collapsed .ow-num:not(.ow-num-after) {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  .oldway.is-collapsed .ow-num-after {
+    opacity: 1;
+    transform: none;
+  }
+  .ow-rule {
+    position: absolute;
+    left: 50%;
+    top: 38%;
+    transform: translate(-50%, -50%) scale(calc(0.85 + var(--collapse, 0) * 0.15));
+    opacity: var(--collapse, 0);
+    pointer-events: none;
+    filter: drop-shadow(0 24px 40px rgba(0, 0, 0, 0.6));
+  }
+  @media (max-width: 640px) {
+    .ow-board {
+      padding: 18px 14px 20px;
+    }
+    .ow-row {
+      grid-template-columns: 54px 1fr;
+    }
+    .ow-key {
+      width: 7px;
+      height: 7px;
+      margin: -3.5px 0 0 -3.5px;
+    }
+    .ow-rule :global(.pstack) {
+      --pb-h: 32px;
+      font-size: 12px;
+    }
+  }
+</style>
+
+<script>
+  import { createScrollScene } from '../../lib/animation/scroll-scene';
+  import { progress } from '../../lib/animation/motion';
+
+  const root = document.querySelector<HTMLElement>('[data-oldway]');
+  if (root) {
+    const keys = [...root.querySelectorAll<HTMLElement>('[data-key]')];
+    const count = root.querySelector<HTMLElement>('[data-ow-count]')!;
+    const board = root.querySelector<HTMLElement>('.ow-board')!;
+    let shown = -1;
+    createScrollScene(root, {
+      onProgress: (p) => {
+        // 0.05–0.6: the playhead sweeps, and keyframes appear one by one behind it.
+        const k = progress(p, 0.05, 0.6);
+        const n = Math.round(k * keys.length);
+        if (n !== shown) {
+          shown = n;
+          keys.forEach((el, i) => el.classList.toggle('is-on', i < n));
+          count.textContent = String(n);
+        }
+        board.style.setProperty('--ph', k.toFixed(4));
+        board.style.setProperty('--curve-o', (k * 0.9).toFixed(3));
+        // 0.66–0.85: it all collapses into one rule.
+        const c = progress(p, 0.66, 0.84);
+        board.style.setProperty('--collapse', c.toFixed(3));
+        root.classList.toggle('is-collapsed', c > 0.5);
+      },
+    });
+  }
+</script>

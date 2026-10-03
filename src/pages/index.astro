@@ -1,0 +1,42 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/hero/Hero.astro';
+import OldWay from '../components/product/OldWay.astro';
+import ScrollStory from '../components/product/ScrollStory.astro';
+import Semantic from '../components/product/Semantic.astro';
+import ProgramSection from '../components/program/ProgramSection.astro';
+import TimelineVsProgram from '../components/timeline/TimelineVsProgram.astro';
+import BeforeAfter from '../components/demos/BeforeAfter.astro';
+import Features from '../components/product/Features.astro';
+import DocsTeaser from '../components/documentation/DocsTeaser.astro';
+import FinalCTA from '../components/product/FinalCTA.astro';
+import { SITE } from '../lib/site';
+
+const app = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: SITE.name,
+  applicationCategory: 'MultimediaApplication',
+  operatingSystem: 'macOS 14 or later',
+  description: SITE.description,
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+};
+---
+
+<Base description="MeCorder is a screen recorder and screen video editor for Mac with programmable video: record once, then program how the camera, highlights and effects respond to what happens in the recording." structuredData={[app]}>
+  <Hero />
+  <OldWay />
+  <ScrollStory />
+  <Semantic />
+  <ProgramSection />
+  <TimelineVsProgram />
+  <BeforeAfter />
+  <Features />
+  <DocsTeaser />
+  <FinalCTA />
+</Base>
+
+<script>
+  import { trackOnce } from '../lib/analytics';
+  trackOnce('landing_view');
+</script>

@@ -1,0 +1,29 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><style>
+*{box-sizing:border-box;margin:0}
+body{width:1200px;height:630px;background:#0b0b0c;color:#f2f2f2;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif;overflow:hidden;position:relative}
+.glow{position:absolute;inset:0;background:radial-gradient(60% 70% at 78% 60%,rgba(139,124,255,.28),transparent 70%),radial-gradient(40% 50% at 10% 0%,rgba(55,108,200,.18),transparent 70%)}
+.grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:48px 48px;mask-image:radial-gradient(ellipse 70% 70% at 70% 60%,#000,transparent 75%)}
+.left{position:absolute;left:80px;top:96px;width:560px}
+.brand{display:flex;align-items:center;gap:14px;font-size:28px;font-weight:650}
+.brand img{width:52px;height:52px;border-radius:12px}
+h1{margin-top:64px;font-size:84px;line-height:.98;letter-spacing:-.045em;font-weight:650;background:linear-gradient(180deg,#fff 30%,rgba(255,255,255,.66));-webkit-background-clip:text;color:transparent}
+p{margin-top:28px;font-size:26px;color:#a8a8ad;letter-spacing:-.01em}
+.stack{position:absolute;right:90px;top:170px;display:flex;flex-direction:column;align-items:flex-start;transform:perspective(1000px) rotateY(-14deg) rotateX(6deg);filter:drop-shadow(0 30px 40px rgba(0,0,0,.6))}
+.b{position:relative;display:inline-flex;align-items:center;gap:12px;height:62px;padding:0 22px;border-radius:9px;font-size:24px;font-weight:650;color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.2)}
+.b::after{content:'';position:absolute;left:22px;bottom:-7px;width:30px;height:8px;border-radius:0 0 7px 7px;background:inherit;z-index:1}
+.b:last-child::after{display:none}
+.s{display:inline-flex;align-items:center;height:36px;padding:0 13px;border-radius:7px;background:rgba(255,255,255,.95);color:#1d1d1f;font-weight:550;font-size:21px}
+.ev{background:#daaf2e;color:#2a1f05;border-radius:26px 14px 9px 9px;height:70px}
+.cam{background:#376cc8}.ctl{background:#d8842f;color:#2a1f05}.fx{background:#7851c1;box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 0 0 3px #fff,0 0 0 7px #8b7cff,0 0 40px 6px rgba(139,124,255,.5)}
+</style></head><body>
+<div class="glow"></div><div class="grid"></div>
+<div class="left"><div class="brand"><img src="../../public/app-icon.png">MeCorder</div><h1>Program your screen videos.</h1><p>Screen recording and editing for Mac.</p></div>
+<div class="stack">
+<div class="b ev">When <span class="s">Click</span><span class="s">Primary Button</span></div>
+<div class="b cam">Focus <span class="s">Primary Button</span></div>
+<div class="b ctl">Wait <span class="s">0.3</span> seconds</div>
+<div class="b fx">Highlight <span class="s">Primary Button</span></div>
+<div class="b cam">Reset camera</div>
+</div>
+</body></html>

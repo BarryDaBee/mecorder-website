@@ -1,0 +1,190 @@
+---
+/**
+ * CINEMATIC BEFORE / AFTER: the same recording at the same moment, raw on
+ * one side and polished on the other (camera, cursor, ripples, framing),
+ * with a draggable divider. Both sides render from one clock.
+ */
+import MockApp from './MockApp.astro';
+---
+
+<section class="section ba-section" aria-labelledby="ba-title">
+  <div class="container-wide">
+    <div class="section-head center">
+      <p class="eyebrow" data-reveal><span class="dot"></span>Before and after</p>
+      <h2 id="ba-title" data-reveal data-reveal-delay="60">Same recording. A different film.</h2>
+      <p class="lead" data-reveal data-reveal-delay="120">Drag across. On the left, what the screen saw. On the right, one Program for every click: the camera finds each element, the cursor gets weight, every press lands.</p>
+    </div>
+
+    <div class="ba" data-ba data-reveal="scale">
+      <div class="ba-after">
+        <div class="ba-wall" aria-hidden="true"></div>
+        <div class="ba-window">
+          <MockApp class="ba-after-view" label="After: the polished video, with camera moves, a larger cursor and click ripples." />
+        </div>
+        <span class="ba-tag ba-tag-after">After</span>
+      </div>
+      <div class="ba-before" data-ba-before>
+        <MockApp class="ba-before-view" label="Before: the raw screen recording." />
+        <span class="ba-tag">Before</span>
+      </div>
+      <div class="ba-handle" data-ba-handle aria-hidden="true"><span><svg viewBox="0 0 20 20" fill="none"><path d="M7 5 2 10l5 5M13 5l5 5-5 5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg></span></div>
+      <input class="ba-range" type="range" min="0" max="100" value="50" step="0.5" aria-label="Compare before and after" data-ba-range />
+    </div>
+  </div>
+</section>
+
+<style>
+  .ba {
+    --x: 50%;
+    position: relative;
+    max-width: 1120px;
+    margin: 0 auto;
+    aspect-ratio: 960 / 600;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 0 0 1px var(--border-subtle), 0 50px 100px -40px rgba(0, 0, 0, 0.9);
+    touch-action: pan-y;
+    user-select: none;
+    cursor: ew-resize;
+  }
+  .ba-after,
+  .ba-before {
+    position: absolute;
+    inset: 0;
+  }
+  .ba-wall {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(90% 70% at 10% 0%, #6d5ce8, transparent 60%),
+      radial-gradient(80% 70% at 100% 100%, #c2559b, transparent 60%),
+      linear-gradient(135deg, #3b2f9e, #2a1f63 60%, #4a2366);
+  }
+  .ba-window {
+    position: absolute;
+    inset: 7% 7.5%;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.15);
+  }
+  .ba-before {
+    clip-path: inset(0 calc(100% - var(--x)) 0 0);
+    background: #f6f6f8;
+  }
+  .ba-tag {
+    position: absolute;
+    left: 16px;
+    bottom: 14px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.65);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    backdrop-filter: blur(10px);
+  }
+  .ba-tag-after {
+    left: auto;
+    right: 16px;
+  }
+  .ba-handle {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: var(--x);
+    width: 2px;
+    margin-left: -1px;
+    background: #fff;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+    pointer-events: none;
+  }
+  .ba-handle span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    margin: -22px 0 0 -22px;
+    border-radius: 50%;
+    background: #fff;
+    color: #111;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    transition: transform var(--t-select) var(--ease-spring);
+  }
+  .ba.is-dragging .ba-handle span {
+    transform: scale(0.9);
+  }
+  .ba-handle svg {
+    width: 20px;
+  }
+  .ba-range {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: ew-resize;
+    margin: 0;
+  }
+  .ba-range:focus-visible + * ,
+  .ba:has(.ba-range:focus-visible) .ba-handle span {
+    outline: 3px solid var(--accent);
+    outline-offset: 3px;
+  }
+</style>
+
+<script>
+  import { RecordingView } from '../../lib/program/player';
+  import { execute } from '../../lib/program/executor';
+  import { EVERY_CLICK_PROGRAM } from '../../lib/program/model';
+  import { DURATION } from '../../lib/program/recording';
+  import { onFrame, whenVisible, prefersReducedMotion, Smoothed } from '../../lib/animation/motion';
+  import { trackOnce } from '../../lib/analytics';
+
+  const root = document.querySelector<HTMLElement>('[data-ba]');
+  if (root) {
+    const after = new RecordingView(root.querySelector<HTMLElement>('.ba-after-view')!);
+    const before = new RecordingView(root.querySelector<HTMLElement>('.ba-before-view')!);
+    const range = root.querySelector<HTMLInputElement>('[data-ba-range]')!;
+    const edit = execute([EVERY_CLICK_PROGRAM]);
+    const reduced = prefersReducedMotion();
+    const pos = new Smoothed(50, 0.06);
+    let t = 3.6;
+
+    const draw = () => {
+      after.render({ t, edit, polished: true });
+      before.render({ t, rawClicks: true });
+    };
+    range.addEventListener('input', () => {
+      pos.target = parseFloat(range.value);
+      trackOnce('comparison_dragged');
+      if (reduced) pos.value = pos.target;
+    });
+    range.addEventListener('pointerdown', () => root.classList.add('is-dragging'));
+    window.addEventListener('pointerup', () => root.classList.remove('is-dragging'));
+
+    let stop: (() => void) | null = null;
+    const tick = (dt: number) => {
+      if (!reduced) t = (t + dt) % DURATION;
+      pos.step(dt);
+      root.style.setProperty('--x', `${pos.value.toFixed(2)}%`);
+      draw();
+      return true;
+    };
+    draw();
+    if (reduced) {
+      t = 4.6;
+      draw();
+    }
+    whenVisible(
+      root,
+      () => (stop ??= onFrame(tick)),
+      () => {
+        stop?.();
+        stop = null;
+      },
+    );
+  }
+</script>

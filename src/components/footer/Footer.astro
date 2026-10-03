@@ -1,0 +1,70 @@
+---
+import { FOOTER, SITE } from '../../lib/site';
+import Logo from '../navigation/Logo.astro';
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="container-wide footer-inner">
+    <div class="footer-brand">
+      <a href="/" class="brand" aria-label="MeCorder home"><Logo size={22} /> MeCorder</a>
+      <p class="muted">{SITE.tagline} Made for Mac.</p>
+    </div>
+    <nav aria-label="Footer">
+      <ul>
+        {FOOTER.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+      </ul>
+    </nav>
+  </div>
+  <div class="container-wide footer-base">
+    <span>© {year} MeCorder</span>
+    <span>{SITE.requirements}</span>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    border-top: 1px solid var(--border-subtle);
+    padding: 56px 0 32px;
+    font-size: var(--fs-small);
+  }
+  .footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 650;
+    font-size: 1rem;
+    margin-bottom: 8px;
+  }
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 28px;
+  }
+  ul a {
+    color: var(--text-2);
+    transition: color var(--t-hover) ease;
+  }
+  ul a:hover {
+    color: var(--text);
+  }
+  .footer-base {
+    margin-top: 40px;
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    color: var(--text-4);
+    font-size: var(--fs-micro);
+  }
+</style>

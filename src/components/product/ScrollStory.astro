@@ -1,0 +1,298 @@
+---
+/**
+ * SCROLL-DRIVEN PRODUCT STORY: Record → Understand → Program → Polish → Export.
+ * One sticky stage; scroll progress is the film's playhead (story.ts). The
+ * recording is scrubbed, frozen, labelled, programmed and run by the same
+ * RecordingView and executor as everywhere else.
+ */
+import MockApp from '../demos/MockApp.astro';
+import { programHTML } from '../../lib/program/blocks';
+import { PRIMARY_BUTTON_PROGRAM } from '../../lib/program/model';
+
+const chapters = [
+  {
+    k: 'Record',
+    h: 'Record the way you already work.',
+    p: 'MeCorder captures the screen, and beside the pixels it keeps the cursor, every click, scroll and shortcut, so nothing is burned in.',
+  },
+  {
+    k: 'Understand',
+    h: 'Every click knows what it hit.',
+    p: 'Through macOS accessibility, a click is recorded as the element it landed on: a button called Create Project, a search field, the sidebar.',
+  },
+  {
+    k: 'Program',
+    h: 'Say what should happen.',
+    p: 'When Create Project is clicked: focus on it, wait a beat, highlight it, then reset. One Program, applied to every matching moment.',
+  },
+  {
+    k: 'Polish',
+    h: 'It becomes an ordinary edit.',
+    p: 'The Program compiles to camera moves and effects on the Timeline. Preview it, adjust any keyframe by hand, undo it in one step.',
+  },
+  {
+    k: 'Export',
+    h: 'A video that feels designed.',
+    p: 'What you previewed is exactly what exports, frame for frame. MP4, MOV or GIF, for YouTube, a social feed or a quick message.',
+  },
+];
+---
+
+<section class="story" id="product" data-story aria-label="How MeCorder works, in five steps">
+  <div class="story-sticky">
+    <div class="story-grid container-wide">
+      <div class="story-copy">
+        <ol class="story-rail" aria-hidden="true">
+          {chapters.map((c, i) => <li data-rail={i}><span>{String(i + 1).padStart(2, '0')}</span>{c.k}</li>)}
+        </ol>
+        <div class="story-texts">
+          {
+            chapters.map((c, i) => (
+              <article class="story-text" data-chapter={i}>
+                <p class="eyebrow">
+                  <span class="dot" />
+                  {String(i + 1).padStart(2, '0')} · {c.k}
+                </p>
+                <h2>{c.h}</h2>
+                <p class="lead">{c.p}</p>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+
+      <div class="story-visual" data-story-visual>
+        <div class="sv-wallpaper" data-sv-wall aria-hidden="true"></div>
+        <div class="sv-window" data-sv-window>
+          <div class="sv-chrome"><span class="tl"><i></i><i></i><i></i></span><span class="sv-mode" data-sv-mode>Recording</span></div>
+          <MockApp labels label="The demo recording, scrubbed by scrolling: elements get semantic names, a Program is built and runs, and the final video fills the screen." />
+        </div>
+        <div class="sv-program" data-sv-program aria-hidden="true">
+          <div class="svp-head">Program <span data-svp-state>Editing</span></div>
+          <Fragment set:html={programHTML(PRIMARY_BUTTON_PROGRAM)} />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .story {
+    position: relative;
+    height: 560vh;
+  }
+  .story-sticky {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+  }
+  .story-grid {
+    display: grid;
+    grid-template-columns: minmax(280px, 0.8fr) 1.6fr;
+    align-items: center;
+    gap: clamp(32px, 5vw, 80px);
+    padding-top: var(--nav-h);
+  }
+  .story-copy {
+    position: relative;
+    z-index: 2;
+    opacity: var(--copy-o, 1);
+  }
+  .story-rail {
+    list-style: none;
+    margin: 0 0 32px;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 14px;
+    font-size: 12px;
+    color: var(--text-4);
+  }
+  .story-rail li {
+    display: flex;
+    gap: 6px;
+    transition: color 300ms ease;
+  }
+  .story-rail li span {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    opacity: 0.7;
+  }
+  .story-rail li.is-done {
+    color: var(--text-3);
+  }
+  .story-rail li.is-current {
+    color: var(--text);
+  }
+  .story-texts {
+    display: grid;
+  }
+  .story-text {
+    grid-area: 1 / 1;
+    opacity: 0;
+    transform: translateY(16px);
+    transition:
+      opacity 500ms var(--ease-out),
+      transform 600ms var(--ease-out);
+    pointer-events: none;
+  }
+  .story-text.is-current {
+    opacity: 1;
+    transform: none;
+  }
+  .story-text h2 {
+    font-size: var(--fs-h2);
+    margin: 16px 0 18px;
+  }
+  .story-text .eyebrow {
+    color: var(--accent-hover);
+  }
+  .story-visual {
+    position: relative;
+    perspective: 1600px;
+    transform-origin: 50% 50%;
+    will-change: transform;
+  }
+  .sv-wallpaper {
+    position: absolute;
+    inset: -6%;
+    border-radius: 24px;
+    background:
+      radial-gradient(110% 80% at 0% 100%, #2f6fde 0%, transparent 55%),
+      radial-gradient(110% 80% at 100% 0%, #7e4fd6 0%, transparent 55%),
+      linear-gradient(160deg, #1d2a6b, #2b1d5c);
+    opacity: 0;
+  }
+  .sv-window {
+    position: relative;
+    border-radius: var(--r-window);
+    overflow: hidden;
+    background: #1a1a1c;
+    box-shadow: var(--shadow-window);
+    transform-style: preserve-3d;
+    will-change: transform;
+  }
+  .sv-chrome {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 34px;
+    padding: 0 12px;
+    background: #232325;
+    font-size: 12px;
+    color: var(--text-3);
+    overflow: hidden;
+    transition: height 500ms var(--ease-out);
+  }
+  .sv-window.is-final .sv-chrome {
+    height: 0;
+  }
+  .sv-mode {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-weight: 600;
+    color: var(--text-2);
+  }
+  .tl {
+    display: flex;
+    gap: 7px;
+  }
+  .tl i {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: #ff5f57;
+  }
+  .tl i:nth-child(2) {
+    background: #febc2e;
+  }
+  .tl i:nth-child(3) {
+    background: #28c840;
+  }
+  .sv-program {
+    position: absolute;
+    right: -6%;
+    top: 68%;
+    padding: 14px 18px 22px;
+    border-radius: var(--r-prominent);
+    background: rgba(28, 28, 30, 0.86);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    box-shadow: var(--shadow-float);
+    opacity: 0;
+    pointer-events: none;
+    will-change: transform, opacity;
+  }
+  .svp-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 28px;
+    margin-bottom: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-2);
+  }
+  .svp-head span {
+    font-weight: 400;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-3);
+  }
+  .svp-head span.is-running {
+    color: var(--accent-hover);
+  }
+
+  @media (max-width: 900px) {
+    .story {
+      height: 520vh;
+    }
+    .story-grid {
+      grid-template-columns: 1fr;
+      gap: 20px;
+      align-content: center;
+    }
+    .story-copy {
+      order: 2;
+    }
+    .story-rail {
+      display: none;
+    }
+    .story-text h2 {
+      font-size: 1.6rem;
+      margin: 10px 0 10px;
+    }
+    .story-text .lead {
+      font-size: 1rem;
+    }
+    .sv-program {
+      position: relative;
+      right: auto;
+      top: auto;
+      width: max-content;
+      max-width: 100%;
+      margin: -28px 8px 0 auto;
+      padding: 10px 12px 16px;
+    }
+    .svp-head {
+      margin-bottom: 8px;
+    }
+    .sv-program :global(.pstack) {
+      --pb-h: 30px;
+      font-size: 11.5px;
+    }
+    .sv-program :global(.pslot) {
+      height: 20px;
+      font-size: 11px;
+    }
+  }
+</style>
+
+<script>
+  import { initStory } from './story';
+  const el = document.querySelector<HTMLElement>('[data-story]');
+  if (el) initStory(el);
+</script>

@@ -1,0 +1,19 @@
+---
+import Page from '../layouts/Page.astro';
+---
+
+<Page title="Privacy" eyebrow="Privacy" description="How MeCorder handles your recordings and data: everything stays on your Mac.">
+  <aside class="callout note">This page describes how the app is built today. A formal privacy policy will be published with the first public release.</aside>
+  <h2 id="recordings">Your recordings stay on your Mac</h2>
+  <p>Recordings are saved as project packages in <code>~/Movies/MeCorder</code>. Recording, editing, captions and export run on your Mac. MeCorder never uploads your video or audio.</p>
+  <h2 id="accessibility">What Accessibility reads</h2>
+  <p>With Accessibility allowed, MeCorder reads the name and role of the element you click or point at (a button’s title, a field’s placeholder) so that Programs can target it. It never reads a field’s contents, and nothing from password fields. Text typed into fields is only kept if you turn on <em>Record text typed into fields</em>, which is off by default.</p>
+  <h2 id="keys">Keyboard</h2>
+  <p>With Input Monitoring allowed, only shortcuts such as ⌘K are recorded, to show them on screen. Plain typing is never stored for shortcut display.</p>
+  <h2 id="ai">Optional AI features</h2>
+  <p>The AI Director and the Ask box work offline with a built-in interpreter. If you add your own Anthropic API key, your instruction and a compact text summary of the project (event timings, element names, the current edit) are sent to Anthropic. Your video and audio are never sent.</p>
+  <h2 id="diagnostics">Diagnostics</h2>
+  <p>Crash reports and a log of recording events are kept on your Mac. You choose whether to attach them to a bug report.</p>
+  <h2 id="website">This website</h2>
+  <p>This site doesn’t use advertising trackers. Any analytics added later will be privacy-respecting and described here.</p>
+</Page>

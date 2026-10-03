@@ -1,0 +1,28 @@
+---
+import DocsLayout from '../../layouts/DocsLayout.astro';
+import { DOCS, GUIDE } from '../../lib/docs';
+const page = DOCS.find((d) => d.slug === '')!;
+const { Content } = page;
+---
+
+<DocsLayout page={page}>
+  <Content />
+  <ul class="docs-index-cards">
+    {
+      GUIDE.map((d) => (
+        <li>
+          <a href={d.url}>
+            <b>{d.title}</b>
+            <span>{d.description}</span>
+            <small>
+              {d.headings
+                .filter((h) => h.depth === 2)
+                .map((h) => h.text)
+                .join(' · ')}
+            </small>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</DocsLayout>

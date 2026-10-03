@@ -1,0 +1,554 @@
+---
+/**
+ * THE SIGNATURE DEMO: pick something in the recording, watch it become a
+ * target and a Program, then edit the Program and see the video change.
+ * State is one Program object (lib/program/model.ts); playground.ts renders
+ * the editor from it and the video from execute(program).
+ */
+import MockApp from '../demos/MockApp.astro';
+import { TARGETS, describeTarget } from '../../lib/program/recording';
+---
+
+<div class="pg" data-playground>
+  <div class="pg-video">
+    <div class="pg-frame">
+      <MockApp label="Demo recording. Its camera, highlights and ripples are generated live from the Program on the right.">
+        <div class="pg-pickers" data-pickers>
+          {
+            Object.values(TARGETS)
+              .filter((t) => t.id !== 'navigation')
+              .map((t) => (
+                <button
+                  type="button"
+                  class="pg-pick"
+                  data-pick={t.id}
+                  style={`--x:${t.x};--y:${t.y};--w:${t.w};--h:${t.h}`}
+                  aria-label={`Make ${describeTarget(t.id)} the target`}
+                >
+                  <span>{t.primary ? 'Primary Button' : t.name}</span>
+                </button>
+              ))
+          }
+        </div>
+        <div class="pg-hint" data-hint>
+          <span class="pg-hint-dot"></span>
+          Click something in the recording
+        </div>
+        <div class="pg-reveal" data-reveal-title aria-hidden="true">Program your screen videos.</div>
+      </MockApp>
+    </div>
+    <div class="pg-transport">
+      <button type="button" class="pg-play" data-play aria-label="Pause">
+        <svg class="i-pause" viewBox="0 0 16 16" aria-hidden="true"><rect x="3.5" y="3" width="3" height="10" rx="1" fill="currentColor"></rect><rect x="9.5" y="3" width="3" height="10" rx="1" fill="currentColor"></rect></svg>
+        <svg class="i-play" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 3.2v9.6a.6.6 0 0 0 .9.5l7.6-4.8a.6.6 0 0 0 0-1L5.4 2.7a.6.6 0 0 0-.9.5z" fill="currentColor"></path></svg>
+      </button>
+      <input type="range" class="pg-scrub" data-scrub min="0" max="11" step="0.01" value="0" aria-label="Playhead" />
+      <span class="pg-time mono" data-time>00:00.00</span>
+    </div>
+    <div class="pg-timeline" data-pg-timeline></div>
+  </div>
+
+  <div class="pg-editor">
+    <div class="pg-editor-head">
+      <div>
+        <h3>Program</h3>
+        <p class="muted" data-report>Pick a target to start.</p>
+      </div>
+      <div class="pg-head-actions">
+        <button type="button" class="btn btn-sm btn-ghost" data-reset-program>Start over</button>
+      </div>
+    </div>
+
+    <div class="pg-canvas" data-canvas>
+      <div class="pg-empty" data-empty>
+        <div class="pg-empty-block"><span></span>When <i>Click</i> <i class="slot-empty">?</i></div>
+        <p>Choose an element in the recording, or pick one here:</p>
+        <select data-empty-select aria-label="Choose a target">
+          <option value="">Choose a target…</option>
+          {
+            Object.values(TARGETS)
+              .filter((t) => ['create-project', 'search', 'nav-team', 'settings'].includes(t.id))
+              .map((t) => <option value={t.id}>{t.primary ? 'Primary Button (Create Project)' : t.name}</option>)
+          }
+        </select>
+      </div>
+      <div class="pg-stack" data-stack role="list" aria-label="Program blocks"></div>
+      <div class="pg-add" data-add hidden>
+        <span class="muted">Add</span>
+        <button type="button" data-add-type="focus" class="pg-add-btn pb-camera">Focus</button>
+        <button type="button" data-add-type="wait" class="pg-add-btn pb-control">Wait</button>
+        <button type="button" data-add-type="highlight" class="pg-add-btn pb-effects">Highlight</button>
+        <button type="button" data-add-type="ripple" class="pg-add-btn pb-effects">Play Ripple</button>
+        <button type="button" data-add-type="zoomOut" class="pg-add-btn pb-camera">Zoom Out</button>
+        <button type="button" data-add-type="reset" class="pg-add-btn pb-camera">Reset</button>
+      </div>
+    </div>
+
+    <details class="pg-json">
+      <summary>See the Program as data</summary>
+      <pre data-json></pre>
+      <p class="muted">The video on the left is drawn from this object alone: matched against the recording's events, laid out in time, and compiled to camera keyframes and effects, the same way MeCorder does it.</p>
+    </details>
+    <p class="sr-only" aria-live="polite" data-live></p>
+  </div>
+</div>
+
+<style>
+  .pg {
+    display: grid;
+    grid-template-columns: minmax(0, 1.45fr) minmax(320px, 1fr);
+    gap: 20px;
+    padding: 20px;
+    border-radius: 20px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.015));
+    box-shadow: 0 0 0 1px var(--border-subtle) inset, 0 40px 80px -40px rgba(0, 0, 0, 0.8);
+  }
+  .pg-frame {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08);
+  }
+  .pg-pickers {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+  }
+  .pg-pick {
+    position: absolute;
+    left: calc(var(--x) * var(--fit) * 1px);
+    top: calc(var(--y) * var(--fit) * 1px);
+    width: calc(var(--w) * var(--fit) * 1px);
+    height: calc(var(--h) * var(--fit) * 1px);
+    border: 0;
+    padding: 0;
+    border-radius: 10px;
+    background: transparent;
+    cursor: pointer;
+    pointer-events: auto;
+    outline: 2px dashed transparent;
+    outline-offset: 3px;
+    transition: outline-color 160ms ease, background-color 160ms ease;
+  }
+  .pg-pick span {
+    position: absolute;
+    left: 0;
+    bottom: calc(100% + 8px);
+    padding: 3px 8px;
+    border-radius: 6px;
+    background: #17171a;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 160ms ease, transform 200ms var(--ease-out);
+    pointer-events: none;
+  }
+  .pg-pick[data-pick='settings'] span,
+  .pg-pick[data-pick='nav-team'] span {
+    bottom: auto;
+    top: 0;
+    left: calc(100% + 10px);
+  }
+  .pg-pick[data-pick='card-q3'] span {
+    bottom: auto;
+    top: calc(100% + 8px);
+  }
+  .pg:not(.is-picking) .pg-pickers {
+    display: none;
+  }
+  .pg.is-picking .pg-pick {
+    outline-color: rgba(139, 124, 255, 0.35);
+  }
+  .pg.is-picking .pg-pick:hover,
+  .pg.is-picking .pg-pick:focus-visible {
+    outline-color: var(--accent);
+    background: rgba(139, 124, 255, 0.1);
+  }
+  .pg-pick:hover span,
+  .pg-pick:focus-visible span {
+    opacity: 1;
+    transform: none;
+  }
+  .pg-hint {
+    position: absolute;
+    left: 50%;
+    bottom: 16px;
+    z-index: 4;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: rgba(23, 23, 26, 0.9);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 550;
+    white-space: nowrap;
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.6);
+    transition: opacity 300ms ease, transform 400ms var(--ease-out);
+  }
+  .pg:not(.is-picking) .pg-hint {
+    opacity: 0;
+    transform: translate(-50%, 10px);
+    pointer-events: none;
+  }
+  .pg-hint-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 0 var(--accent-glow);
+    animation: hint-ping 1.6s ease-out infinite;
+  }
+  @keyframes hint-ping {
+    to {
+      box-shadow: 0 0 0 10px transparent;
+    }
+  }
+  .pg-reveal {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    display: grid;
+    place-items: center;
+    padding: 0 8%;
+    text-align: center;
+    font-family: var(--font-display);
+    font-weight: 650;
+    letter-spacing: -0.035em;
+    font-size: clamp(1.5rem, 4.2cqw, 3rem);
+    color: #fff;
+    background: radial-gradient(closest-side, rgba(11, 11, 12, 0.72), rgba(11, 11, 12, 0.35));
+    opacity: 0;
+    transform: scale(1.04);
+    pointer-events: none;
+    transition: opacity 700ms var(--ease-out), transform 900ms var(--ease-out);
+  }
+  .pg-reveal.is-on {
+    opacity: 1;
+    transform: none;
+  }
+  .pg-transport {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 4px 4px;
+  }
+  .pg-play {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 0;
+    background: rgba(255, 255, 255, 0.08);
+    cursor: pointer;
+    transition: background-color var(--t-hover) ease, transform var(--t-select) var(--ease-spring);
+  }
+  .pg-play:hover {
+    background: rgba(255, 255, 255, 0.14);
+  }
+  .pg-play:active {
+    transform: scale(0.92);
+  }
+  .pg-play svg {
+    width: 14px;
+  }
+  .pg-play .i-play,
+  .pg.is-paused .pg-play .i-pause {
+    display: none;
+  }
+  .pg.is-paused .pg-play .i-play {
+    display: block;
+  }
+  .pg-scrub {
+    flex: 1;
+    accent-color: var(--accent);
+    height: 4px;
+  }
+  .pg-time {
+    font-size: 12px;
+    color: var(--text-3);
+    font-variant-numeric: tabular-nums;
+    min-width: 72px;
+    text-align: right;
+  }
+  .pg-timeline {
+    margin-top: 6px;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.25);
+  }
+
+  .pg-editor {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding: 8px 4px 4px;
+  }
+  .pg-editor-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .pg-editor-head h3 {
+    font-size: 1.05rem;
+    letter-spacing: -0.01em;
+  }
+  .pg-editor-head p {
+    font-size: 13px;
+    margin-top: 4px;
+  }
+  .pg-canvas {
+    position: relative;
+    flex: 1;
+    min-height: 330px;
+    padding: 22px 18px 18px 26px;
+    border-radius: 14px;
+    background:
+      radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.07) 1px, transparent 0) 0 0 / 18px 18px,
+      #111113;
+    box-shadow: 0 0 0 1px var(--border-subtle) inset;
+    overflow: hidden;
+  }
+  .pg-empty {
+    display: grid;
+    gap: 14px;
+    justify-items: start;
+    font-size: 13px;
+    color: var(--text-3);
+  }
+  .pg-empty-block {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 44px;
+    padding: 0 14px;
+    border-radius: 18px 10px 6px 6px;
+    background: color-mix(in srgb, var(--blk-events) 30%, transparent);
+    box-shadow: 0 0 0 1.5px dashed var(--blk-events);
+    outline: 1.5px dashed color-mix(in srgb, var(--blk-events) 80%, transparent);
+    outline-offset: -1.5px;
+    color: var(--text);
+    font-weight: 650;
+  }
+  .pg-empty-block i {
+    font-style: normal;
+    padding: 4px 9px;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.9);
+    color: #111;
+    font-weight: 550;
+  }
+  .pg-empty-block .slot-empty {
+    background: rgba(255, 255, 255, 0.15);
+    color: var(--text);
+    animation: slot-blink 1.4s ease-in-out infinite;
+  }
+  @keyframes slot-blink {
+    50% {
+      background: rgba(255, 255, 255, 0.3);
+    }
+  }
+  .pg-empty select,
+  .pg-stack :global(select),
+  .pg-stack :global(input) {
+    font: inherit;
+  }
+  .pg-empty select {
+    height: 34px;
+    padding: 0 10px;
+    border-radius: 8px;
+    border: 0;
+    background: var(--surface-2);
+    color: var(--text);
+    box-shadow: 0 0 0 1px var(--border) inset;
+  }
+  .pg.has-program .pg-empty {
+    display: none;
+  }
+  .pg-stack {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .pg-add {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    margin-top: 22px;
+    font-size: 12px;
+  }
+  .pg-add-btn {
+    height: 28px;
+    padding: 0 10px;
+    border: 0;
+    border-radius: 6px;
+    background: var(--fill);
+    color: var(--ink);
+    font-size: 12px;
+    font-weight: 650;
+    cursor: pointer;
+    box-shadow: var(--shadow-block);
+    transition: transform var(--t-select) var(--ease-spring), filter var(--t-hover) ease;
+  }
+  .pg-add-btn:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+  }
+  .pg-add-btn:active {
+    transform: scale(0.95);
+  }
+  .pg-json {
+    margin-top: 14px;
+    font-size: 13px;
+  }
+  .pg-json summary {
+    cursor: pointer;
+    color: var(--text-3);
+    padding: 6px 0;
+    list-style: none;
+  }
+  .pg-json summary::before {
+    content: '›';
+    display: inline-block;
+    margin-right: 8px;
+    transition: transform var(--t-select) var(--ease-out);
+  }
+  .pg-json[open] summary::before {
+    transform: rotate(90deg);
+  }
+  .pg-json pre {
+    margin: 8px 0;
+    padding: 14px;
+    max-height: 260px;
+    overflow: auto;
+    border-radius: 10px;
+    background: #0e0e10;
+    box-shadow: 0 0 0 1px var(--border-subtle) inset;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    line-height: 1.55;
+    color: #c9c9ce;
+  }
+  .pg-json p {
+    font-size: 12px;
+  }
+
+  /* Editable blocks (rendered by playground.ts) */
+  .pg-stack :global(.pblock) {
+    animation: blk-in 420ms var(--ease-out) both;
+    animation-delay: calc(var(--n, 0) * 1ms);
+  }
+  .pg-stack :global(.pblock.is-static) {
+    animation: none;
+  }
+  @keyframes blk-in {
+    from {
+      opacity: 0;
+      transform: translate3d(-10px, 10px, -30px) rotateX(-20deg);
+    }
+  }
+  .pg-stack :global(.pblock:hover:not(.is-playing)) {
+    transform: translateY(-1px) translateZ(6px);
+  }
+  .pg-stack :global(.pslot-select) {
+    appearance: none;
+    -webkit-appearance: none;
+    height: 26px;
+    padding: 0 22px 0 9px;
+    border: 0;
+    border-radius: 5px;
+    background:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23555' stroke-width='1.5' fill='none'/%3E%3C/svg%3E") right 7px center / 8px no-repeat,
+      rgba(255, 255, 255, 0.95);
+    color: #1d1d1f;
+    font-size: 13px;
+    font-weight: 550;
+    cursor: pointer;
+  }
+  .pg-stack :global(.pslot-num) {
+    width: 54px;
+    height: 26px;
+    padding: 0 6px;
+    border: 0;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.95);
+    color: #1d1d1f;
+    font-size: 13px;
+    font-weight: 550;
+    text-align: center;
+  }
+  .pg-stack :global(.pb-tools) {
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    display: inline-flex;
+    gap: 2px;
+    padding-left: 6px;
+    opacity: 0;
+    transition: opacity var(--t-hover) ease;
+  }
+  .pg-stack :global(.pblock:hover .pb-tools),
+  .pg-stack :global(.pblock:focus-within .pb-tools) {
+    opacity: 1;
+  }
+  .pg-stack :global(.pb-tool) {
+    display: grid;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    border: 0;
+    border-radius: 5px;
+    background: var(--surface-3);
+    color: var(--text);
+    font-size: 12px;
+    cursor: pointer;
+  }
+  .pg-stack :global(.pb-tool:hover) {
+    background: rgba(0, 0, 0, 0.35);
+  }
+  .pg-stack :global(.pb-tool:disabled) {
+    opacity: 0.35;
+    cursor: default;
+  }
+
+  @media (max-width: 980px) {
+    .pg {
+      grid-template-columns: 1fr;
+      padding: 12px;
+    }
+    .pg-canvas {
+      min-height: 0;
+    }
+    .pg-stack :global(.pb-tools) {
+      opacity: 1;
+    }
+  }
+  @media (max-width: 520px) {
+    .pg-stack :global(.pblock) {
+      white-space: normal;
+      flex-wrap: wrap;
+    }
+    .pg-stack :global(.pb-body) {
+      flex-wrap: wrap;
+      row-gap: 6px;
+    }
+    .pg-canvas {
+      padding: 18px 12px 14px 20px;
+    }
+  }
+</style>
+
+<script>
+  import { initPlayground } from './playground';
+  document.querySelectorAll<HTMLElement>('[data-playground]').forEach((el) => initPlayground(el));
+</script>

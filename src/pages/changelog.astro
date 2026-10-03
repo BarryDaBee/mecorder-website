@@ -1,0 +1,143 @@
+---
+import Base from '../layouts/Base.astro';
+import { RELEASES } from '../content/changelog';
+import { notationHTML } from '../lib/program/blocks';
+
+const fmt = (d: string) => new Date(d + 'T12:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+
+<Base title="Changelog" description="What's new in MeCorder: a journal of development milestones for the Mac screen recorder with programmable video.">
+  <div class="cl container">
+    <header class="cl-head">
+      <p class="eyebrow" data-reveal><span class="dot"></span>Changelog</p>
+      <h1 data-reveal data-reveal-delay="60">The making of MeCorder.</h1>
+      <p class="lead" data-reveal data-reveal-delay="120">MeCorder hasn't had a public release yet. This is the journal of development builds so far, newest first.</p>
+    </header>
+
+    <ol class="cl-list">
+      {
+        RELEASES.map((r, i) => (
+          <li class="cl-item" data-reveal>
+            <div class="cl-meta">
+              <time datetime={r.date}>{fmt(r.date)}</time>
+              <span class="chip">{r.version ?? 'Development build'}</span>
+            </div>
+            <div class="cl-body">
+              <h2>{r.headline}</h2>
+              <p class="cl-desc">{r.description}</p>
+              {r.blocks && <div class="cl-media" set:html={notationHTML(r.blocks)} />}
+              {r.image && <img class="cl-image" src={r.image} alt="" loading="lazy" />}
+              <h3>Improvements</h3>
+              <ul>
+                {r.improvements.map((x) => (
+                  <li>{x}</li>
+                ))}
+              </ul>
+              {r.fixes?.length ? (
+                <>
+                  <h3>Fixes</h3>
+                  <ul class="fixes">
+                    {r.fixes.map((x) => (
+                      <li>{x}</li>
+                    ))}
+                  </ul>
+                </>
+              ) : null}
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</Base>
+
+<style>
+  .cl {
+    padding-top: calc(var(--nav-h) + clamp(48px, 9vw, 120px));
+    padding-bottom: 120px;
+    max-width: 1040px;
+  }
+  .cl-head {
+    max-width: 680px;
+    margin-bottom: clamp(56px, 8vw, 96px);
+  }
+  .cl-head h1 {
+    font-size: var(--fs-h1);
+    margin: 16px 0 18px;
+    letter-spacing: -0.03em;
+  }
+  .cl-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .cl-item {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 40px;
+    padding: 48px 0;
+    border-top: 1px solid var(--border-subtle);
+  }
+  .cl-meta {
+    position: sticky;
+    top: calc(var(--nav-h) + 24px);
+    align-self: start;
+    display: grid;
+    gap: 10px;
+    justify-items: start;
+  }
+  .cl-meta time {
+    font-weight: 600;
+    color: var(--text-2);
+  }
+  .cl-body h2 {
+    font-size: var(--fs-h3);
+  }
+  .cl-desc {
+    margin-top: 12px;
+    color: var(--text-2);
+    max-width: 640px;
+  }
+  .cl-media :global(.pstack-notation) {
+    margin: 28px 0 8px;
+    padding: 26px 28px 30px;
+    background:
+      radial-gradient(60% 80% at 0% 0%, rgba(139, 124, 255, 0.1), transparent 70%),
+      var(--bg-raised);
+  }
+  .cl-image {
+    margin-top: 24px;
+    border-radius: 14px;
+  }
+  .cl-body h3 {
+    margin-top: 28px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-3);
+    letter-spacing: 0.02em;
+  }
+  .cl-body ul {
+    margin: 10px 0 0;
+    padding-left: 1.2em;
+    color: var(--text-2);
+    display: grid;
+    gap: 6px;
+  }
+  .cl-body li::marker {
+    color: var(--accent);
+  }
+  .cl-body .fixes li::marker {
+    color: var(--text-4);
+  }
+  @media (max-width: 760px) {
+    .cl-item {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .cl-meta {
+      position: static;
+      display: flex;
+      align-items: center;
+    }
+  }
+</style>

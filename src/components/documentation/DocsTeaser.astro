@@ -1,0 +1,91 @@
+---
+/** DOCUMENTATION teaser: the docs as part of the product, not an afterthought. */
+const cards = [
+  { href: '/docs/getting-started', t: 'Getting Started', d: 'Install, allow permissions, make your first recording.' },
+  { href: '/docs/program', t: 'Program', d: 'Triggers, actions, targets, conditions and Behaviours.' },
+  { href: '/docs/timeline', t: 'Timeline', d: 'Scenes, camera, cursor, text, effects and audio.' },
+  { href: '/docs/export', t: 'Export', d: 'Destinations, formats, quality and GIFs.' },
+];
+---
+
+<section class="section docs-teaser" aria-labelledby="dt-title">
+  <div class="container-wide dt-grid">
+    <div class="section-head">
+      <p class="eyebrow" data-reveal><span class="dot"></span>Documentation</p>
+      <h2 id="dt-title" data-reveal data-reveal-delay="60">Written like the app: clear, exact, short.</h2>
+      <p class="lead" data-reveal data-reveal-delay="120">Every setting, shortcut and block, with animated examples. Press <kbd>⌘K</kbd> anywhere to search.</p>
+      <a class="link-arrow dt-link" href="/docs" data-reveal data-reveal-delay="160">Open the documentation</a>
+    </div>
+    <ul class="dt-cards">
+      {
+        cards.map((c, i) => (
+          <li data-reveal data-reveal-delay={String(i * 70)}>
+            <a href={c.href}>
+              <span class="dt-t">{c.t}</span>
+              <span class="dt-d">{c.d}</span>
+              <span class="dt-arrow" aria-hidden="true">→</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .dt-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(32px, 6vw, 88px);
+    align-items: center;
+  }
+  .dt-grid .section-head {
+    margin: 0;
+  }
+  .dt-link {
+    margin-top: 24px;
+  }
+  .dt-cards {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--border-subtle);
+  }
+  .dt-cards a {
+    position: relative;
+    display: grid;
+    gap: 4px;
+    padding: 22px 48px 22px 0;
+    border-bottom: 1px solid var(--border-subtle);
+    transition: padding-left var(--t-panel) var(--ease-out);
+  }
+  .dt-cards a:hover {
+    padding-left: 10px;
+  }
+  .dt-t {
+    font-weight: 600;
+    font-size: 1.1rem;
+    letter-spacing: -0.01em;
+  }
+  .dt-d {
+    color: var(--text-3);
+    font-size: var(--fs-small);
+  }
+  .dt-arrow {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-4);
+    transition: transform var(--t-panel) var(--ease-out), color var(--t-hover) ease;
+  }
+  .dt-cards a:hover .dt-arrow {
+    transform: translate(4px, -50%);
+    color: var(--text);
+  }
+  @media (max-width: 860px) {
+    .dt-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

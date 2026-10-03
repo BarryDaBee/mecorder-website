@@ -1,0 +1,45 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Not found" description="This page doesn't exist.">
+  <section class="nf container">
+    <p class="mono nf-code">WHEN Page [not found]</p>
+    <h1>Nothing here.</h1>
+    <p class="lead">The page you’re after has moved or never existed.</p>
+    <div class="nf-actions">
+      <a class="btn btn-primary" href="/">Go home</a>
+      <button class="btn btn-ghost" type="button" data-open-search>Search the docs</button>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .nf {
+    min-height: 80vh;
+    display: grid;
+    place-content: center;
+    text-align: center;
+    padding-top: var(--nav-h);
+  }
+  .nf-code {
+    display: inline-block;
+    justify-self: center;
+    padding: 8px 14px;
+    border-radius: 18px 10px 6px 6px;
+    background: var(--blk-events);
+    color: var(--blk-events-text);
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .nf h1 {
+    font-size: var(--fs-h1);
+    margin: 24px 0 12px;
+  }
+  .nf-actions {
+    margin-top: 28px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+  }
+</style>

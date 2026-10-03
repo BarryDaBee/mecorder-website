@@ -1,0 +1,367 @@
+---
+/**
+ * TIMELINE VS PROGRAM: the same edit drawn two ways. Each piece (the click,
+ * the camera move, the wait, the highlight, the reset) morphs between its
+ * Timeline shape and its block, so the two views read as one thing.
+ */
+const atoms = [
+  { k: 'click', cat: 'events', tl: 'Click', pr: '<b>When</b> <span class="pslot">Click</span> <span class="pslot">Primary Button</span>' },
+  { k: 'focus', cat: 'camera', tl: 'Focus Primary Button', pr: '<b>Focus</b> <span class="pslot">Primary Button</span>' },
+  { k: 'wait', cat: 'control', tl: '0.3 s', pr: '<b>Wait</b> <span class="pslot">0.3</span> seconds' },
+  { k: 'highlight', cat: 'effects', tl: 'Highlight', pr: '<b>Highlight</b> <span class="pslot">Primary Button</span>' },
+  { k: 'reset', cat: 'camera', tl: 'Reset', pr: '<b>Reset</b> camera' },
+];
+---
+
+<section class="section tvp" aria-labelledby="tvp-title" data-tvp>
+  <div class="container">
+    <div class="tvp-grid">
+      <div class="tvp-copy">
+        <p class="eyebrow" data-reveal><span class="dot"></span>Two views, one edit</p>
+        <h2 id="tvp-title" data-reveal data-reveal-delay="60">Use intent when you can. Use the Timeline when you need it.</h2>
+        <div class="tvp-switch" role="tablist" aria-label="View" data-reveal data-reveal-delay="120">
+          <span class="tvp-thumb" aria-hidden="true"></span>
+          <button role="tab" type="button" aria-selected="true" data-view="timeline" id="tvp-tab-tl" aria-controls="tvp-stage">Timeline</button>
+          <button role="tab" type="button" aria-selected="false" data-view="program" id="tvp-tab-pr" aria-controls="tvp-stage">Program</button>
+        </div>
+        <div class="tvp-desc" data-reveal data-reveal-delay="160">
+          <p data-desc="timeline"><strong>Timeline: edit what happened.</strong> Clips, scenes, camera keyframes, text, effects and audio, laid out in time and adjustable to the frame.</p>
+          <p data-desc="program"><strong>Program: define what should happen.</strong> The rule behind those keyframes, written once and applied to every moment that matches.</p>
+        </div>
+        <p class="muted tvp-foot" data-reveal data-reveal-delay="200">Program doesn't replace the Timeline. It writes to it: every block becomes ordinary keyframes and effects that you can open, move or delete.</p>
+      </div>
+
+      <div class="tvp-stage" id="tvp-stage" role="tabpanel" aria-labelledby="tvp-tab-tl" data-tvp-stage data-reveal="scale">
+        <div class="tvp-tracks" aria-hidden="true">
+          <div class="tvp-track" style="--row:0"><span>Clicks</span></div>
+          <div class="tvp-track" style="--row:1"><span>Camera</span></div>
+          <div class="tvp-track" style="--row:2"><span>Effects</span></div>
+          <div class="tvp-ph"></div>
+        </div>
+        {
+          atoms.map((a, i) => (
+            <div class={`tvp-atom pb-${a.cat}`} data-atom={a.k} style={`--i:${i}`}>
+              <span class="tvp-tl">{a.tl}</span>
+              <span class="tvp-pr" set:html={a.pr} />
+            </div>
+          ))
+        }
+        <p class="sr-only">Timeline: a click at 4.3 seconds; a camera move to the Primary Button; a 0.3 second hold; a highlight on the Effects track; the camera resets. Program: When Click Primary Button, Focus Primary Button, Wait 0.3 seconds, Highlight Primary Button, Reset camera.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .tvp-grid {
+    display: grid;
+    grid-template-columns: 0.9fr 1.3fr;
+    gap: clamp(32px, 6vw, 88px);
+    align-items: center;
+  }
+  .tvp-copy h2 {
+    font-size: var(--fs-h2);
+    margin: 16px 0 28px;
+  }
+  .tvp-switch {
+    position: relative;
+    display: inline-flex;
+    padding: 3px;
+    border-radius: 999px;
+    background: var(--surface);
+    box-shadow: 0 0 0 1px var(--border) inset;
+  }
+  .tvp-switch button {
+    position: relative;
+    z-index: 1;
+    height: 34px;
+    padding: 0 18px;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--text-3);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: color var(--t-select) ease;
+  }
+  .tvp-switch button[aria-selected='true'] {
+    color: var(--text);
+  }
+  .tvp-thumb {
+    position: absolute;
+    top: 3px;
+    bottom: 3px;
+    left: 3px;
+    width: calc(50% - 3px);
+    border-radius: 999px;
+    background: var(--surface-3);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.08) inset, 0 4px 12px -4px rgba(0, 0, 0, 0.5);
+    transition: transform 420ms var(--ease-spring);
+  }
+  .tvp.is-program .tvp-thumb {
+    transform: translateX(100%);
+  }
+  .tvp-desc {
+    display: grid;
+    margin-top: 22px;
+  }
+  .tvp-desc p {
+    grid-area: 1 / 1;
+    color: var(--text-2);
+    transition: opacity 360ms ease, transform 420ms var(--ease-out);
+  }
+  .tvp-desc strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+  .tvp-desc [data-desc='program'],
+  .tvp.is-program .tvp-desc [data-desc='timeline'] {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  .tvp.is-program .tvp-desc [data-desc='program'] {
+    opacity: 1;
+    transform: none;
+  }
+  .tvp-foot {
+    margin-top: 22px;
+    font-size: var(--fs-small);
+  }
+
+  .tvp-stage {
+    position: relative;
+    height: 340px;
+    border-radius: 18px;
+    background: var(--bg-raised);
+    box-shadow: 0 0 0 1px var(--border-subtle) inset;
+    overflow: hidden;
+  }
+  .tvp-tracks {
+    position: absolute;
+    inset: 0;
+    transition: opacity 400ms ease;
+  }
+  .tvp.is-program .tvp-tracks {
+    opacity: 0;
+  }
+  .tvp-track {
+    position: absolute;
+    left: 16px;
+    right: 16px;
+    top: calc(64px + var(--row) * 82px);
+    height: 44px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.03);
+  }
+  .tvp-track span {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 12px;
+    color: var(--text-3);
+  }
+  .tvp-ph {
+    position: absolute;
+    top: 48px;
+    bottom: 40px;
+    left: 41%;
+    width: 2px;
+    background: var(--accent);
+    border-radius: 2px;
+    box-shadow: 0 0 10px var(--accent-glow);
+  }
+
+  /* Each atom has a Timeline shape and a block shape. */
+  .tvp-atom {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    white-space: nowrap;
+    color: var(--ink);
+    font-size: 13px;
+    transition:
+      left 700ms var(--ease-cinematic),
+      top 700ms var(--ease-cinematic),
+      width 700ms var(--ease-cinematic),
+      height 700ms var(--ease-cinematic),
+      border-radius 700ms var(--ease-cinematic),
+      background-color 500ms ease,
+      box-shadow 500ms ease;
+    transition-delay: calc(var(--i) * 45ms);
+  }
+  .tvp-tl,
+  .tvp-pr {
+    position: absolute;
+    left: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    transition: opacity 300ms ease;
+  }
+  .tvp-tl {
+    font-size: 11px;
+    color: var(--text);
+    font-weight: 500;
+  }
+  .tvp-pr {
+    opacity: 0;
+  }
+  .tvp-pr :global(.pslot) {
+    height: 22px;
+    font-size: 12px;
+  }
+  .tvp.is-program .tvp-tl {
+    opacity: 0;
+  }
+  .tvp.is-program .tvp-pr {
+    opacity: 1;
+    transition-delay: 300ms;
+  }
+
+  /* Timeline geometry */
+  .tvp-atom {
+    background: color-mix(in srgb, var(--fill) 40%, transparent);
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--fill) 90%, transparent) inset;
+  }
+  [data-atom='click'] {
+    left: calc(41% - 7px);
+    top: calc(64px + 15px);
+    width: 14px;
+    height: 14px;
+    border-radius: 7px;
+    background: var(--fill);
+  }
+  [data-atom='click'] .tvp-tl {
+    display: none;
+  }
+  [data-atom='focus'] {
+    left: 41%;
+    top: calc(146px + 6px);
+    width: 18%;
+    height: 32px;
+    border-radius: 6px;
+  }
+  [data-atom='wait'] {
+    left: 59%;
+    top: calc(146px + 6px);
+    width: 7%;
+    height: 32px;
+    border-radius: 6px;
+  }
+  [data-atom='highlight'] {
+    left: 66%;
+    top: calc(228px + 6px);
+    width: 18%;
+    height: 32px;
+    border-radius: 6px;
+  }
+  [data-atom='reset'] {
+    left: 84%;
+    top: calc(146px + 6px);
+    width: 11%;
+    height: 32px;
+    border-radius: 6px;
+  }
+
+  /* Program geometry: a stack of blocks */
+  .tvp.is-program .tvp-atom {
+    left: 12%;
+    height: 42px;
+    border-radius: 6px;
+    background: var(--fill);
+    box-shadow: var(--shadow-block);
+  }
+  .tvp.is-program [data-atom='click'] {
+    top: 60px;
+    width: 58%;
+    height: 48px;
+    border-radius: 18px 10px 6px 6px;
+  }
+  .tvp.is-program [data-atom='focus'] {
+    top: 108px;
+    width: 46%;
+  }
+  .tvp.is-program [data-atom='wait'] {
+    top: 150px;
+    width: 36%;
+  }
+  .tvp.is-program [data-atom='highlight'] {
+    top: 192px;
+    width: 50%;
+  }
+  .tvp.is-program [data-atom='reset'] {
+    top: 234px;
+    width: 30%;
+  }
+  @media (max-width: 900px) {
+    .tvp-grid {
+      grid-template-columns: 1fr;
+    }
+    .tvp-stage {
+      height: 320px;
+    }
+    .tvp.is-program .tvp-atom {
+      left: 6%;
+    }
+    .tvp.is-program [data-atom='click'] {
+      width: 86%;
+    }
+    .tvp.is-program [data-atom='focus'],
+    .tvp.is-program [data-atom='highlight'] {
+      width: 72%;
+    }
+    .tvp.is-program [data-atom='wait'] {
+      width: 58%;
+    }
+    .tvp.is-program [data-atom='reset'] {
+      width: 46%;
+    }
+  }
+</style>
+
+<script>
+  import { whenVisible, prefersReducedMotion } from '../../lib/animation/motion';
+
+  const root = document.querySelector<HTMLElement>('[data-tvp]');
+  if (root) {
+    const tabs = [...root.querySelectorAll<HTMLButtonElement>('[data-view]')];
+    const stage = root.querySelector<HTMLElement>('[data-tvp-stage]')!;
+    let auto = !prefersReducedMotion();
+    let timer = 0;
+    const set = (view: string) => {
+      root.classList.toggle('is-program', view === 'program');
+      tabs.forEach((t) => t.setAttribute('aria-selected', String(t.dataset.view === view)));
+      stage.setAttribute('aria-labelledby', view === 'program' ? 'tvp-tab-pr' : 'tvp-tab-tl');
+    };
+    tabs.forEach((t) =>
+      t.addEventListener('click', () => {
+        auto = false;
+        clearInterval(timer);
+        set(t.dataset.view!);
+      }),
+    );
+    root.querySelector('[role=tablist]')!.addEventListener('keydown', (e) => {
+      const k = (e as KeyboardEvent).key;
+      if (k !== 'ArrowLeft' && k !== 'ArrowRight') return;
+      const next = root.classList.contains('is-program') ? 'timeline' : 'program';
+      auto = false;
+      clearInterval(timer);
+      set(next);
+      tabs.find((t) => t.dataset.view === next)?.focus();
+    });
+    // While on screen, it flips by itself until someone takes over.
+    whenVisible(
+      root,
+      () => {
+        if (!auto) return;
+        clearInterval(timer);
+        timer = window.setInterval(() => set(root.classList.contains('is-program') ? 'timeline' : 'program'), 3800);
+      },
+      () => clearInterval(timer),
+      '-20% 0px',
+    );
+  }
+</script>

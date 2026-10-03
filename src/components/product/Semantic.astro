@@ -1,0 +1,352 @@
+---
+/**
+ * SEMANTIC TARGETS: a coordinate versus a name. The click is first a point;
+ * it becomes "Primary Button"; that name becomes blocks; then the layout
+ * changes, the point misses and the name still finds the button.
+ */
+import { block, slot } from '../../lib/program/blocks';
+
+const blocks = [
+  block('events', `<b>When</b> ${slot('Click')} ${slot('Primary Button')}`, { hat: true }),
+  block('camera', `<b>Focus</b> ${slot('Primary Button')}`),
+  block('effects', `<b>Highlight</b> ${slot('Primary Button')}`),
+];
+---
+
+<section class="sem" data-sem aria-labelledby="sem-title">
+  <div class="sem-sticky">
+    <div class="container sem-grid">
+      <div class="sem-copy">
+        <p class="eyebrow"><span class="dot"></span>Semantic targets</p>
+        <h2 id="sem-title">It understands what you clicked, not just where.</h2>
+        <p class="lead">A screen recorder sees a click at a pixel. MeCorder also records what was there, so a Program can say <em>Primary Button</em> and keep meaning it when the window moves or the resolution changes.</p>
+        <ol class="sem-steps" aria-label="What the animation shows">
+          <li data-sem-step="0">A click is recorded at a point.</li>
+          <li data-sem-step="1">The point is resolved to the element under it.</li>
+          <li data-sem-step="2">The name becomes something you can program.</li>
+          <li data-sem-step="3">The layout changes. The name still matches.</li>
+        </ol>
+        <p class="sem-note muted">Names come from macOS accessibility while recording. If an app exposes nothing, the click has no name and a Program skips it rather than guessing.</p>
+      </div>
+
+      <div class="sem-visual" aria-hidden="true">
+        <div class="sem-screen" data-sem-screen>
+          <div class="sem-bar" data-sem-bar>
+            <span class="sem-search">Search projects</span>
+            <span class="sem-avatar"></span>
+            <span class="sem-btn" data-sem-btn>+ Create Project</span>
+          </div>
+          <div class="sem-rows"><i></i><i></i><i></i></div>
+          <div class="sem-outline" data-sem-outline>
+            <span class="sem-chip"><b>Primary Button</b><em>Button · Create Project</em></span>
+          </div>
+          <div class="sem-cross" data-sem-cross>
+            <i class="h"></i><i class="v"></i>
+            <span class="sem-xy" data-sem-xy>x 1726 · y 84</span>
+            <span class="sem-miss">Nothing here now</span>
+          </div>
+        </div>
+        <div class="sem-blocks pstack" data-sem-blocks>
+          {blocks.map((b) => <Fragment set:html={b} />)}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .sem {
+    position: relative;
+    height: 300vh;
+  }
+  .sem-sticky {
+    position: sticky;
+    top: 0;
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    padding: calc(var(--nav-h) + 20px) 0 40px;
+  }
+  .sem-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: clamp(32px, 6vw, 96px);
+    align-items: center;
+  }
+  .sem-copy h2 {
+    font-size: var(--fs-h2);
+    margin: 16px 0 18px;
+  }
+  .sem-copy em {
+    font-style: normal;
+    color: var(--text);
+  }
+  .sem-steps {
+    margin: 28px 0 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 2px;
+    counter-reset: s;
+  }
+  .sem-steps li {
+    counter-increment: s;
+    display: flex;
+    gap: 12px;
+    padding: 8px 0;
+    color: var(--text-4);
+    transition: color 300ms ease;
+  }
+  .sem-steps li::before {
+    content: counter(s, decimal-leading-zero);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    padding-top: 3px;
+  }
+  .sem-steps li.is-on {
+    color: var(--text);
+  }
+  .sem-steps li.is-past {
+    color: var(--text-3);
+  }
+  .sem-note {
+    margin-top: 20px;
+    font-size: var(--fs-small);
+  }
+  .sem-visual {
+    position: relative;
+  }
+  .sem-screen {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    border-radius: var(--r-window);
+    background: #fbfbfc;
+    box-shadow: var(--shadow-window);
+    overflow: hidden;
+    container-type: inline-size;
+  }
+  .sem-bar {
+    position: absolute;
+    left: 6%;
+    right: 6%;
+    top: 9%;
+    display: flex;
+    align-items: center;
+    gap: 3cqw;
+    transition: none;
+  }
+  .sem-search {
+    flex: 1;
+    height: 7.5cqw;
+    border-radius: 1.6cqw;
+    background: #f0f0f3;
+    box-shadow: 0 0 0 1px #e3e3e8 inset;
+    color: #9a9aa0;
+    font-size: 2.4cqw;
+    display: flex;
+    align-items: center;
+    padding-left: 2.4cqw;
+  }
+  .sem-avatar {
+    width: 6cqw;
+    height: 6cqw;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #f2be22, #f08b24);
+    flex: none;
+  }
+  .sem-btn {
+    flex: none;
+    height: 7.5cqw;
+    padding: 0 3cqw;
+    border-radius: 1.6cqw;
+    background: #6658d9;
+    color: #fff;
+    font-weight: 600;
+    font-size: 2.5cqw;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+  }
+  .sem-rows {
+    position: absolute;
+    left: 6%;
+    right: 6%;
+    top: 30%;
+    display: grid;
+    gap: 3cqw;
+  }
+  .sem-rows i {
+    height: 11cqw;
+    border-radius: 2cqw;
+    background: #fff;
+    box-shadow: 0 0 0 1px #ececf0;
+  }
+  .sem-outline {
+    position: absolute;
+    border-radius: 2cqw;
+    outline: 2px dashed var(--accent);
+    outline-offset: 1cqw;
+    opacity: 0;
+    transition: opacity 300ms ease;
+  }
+  .sem-chip {
+    position: absolute;
+    right: -1cqw;
+    top: calc(100% + 3cqw);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 1.2cqw 2cqw;
+    border-radius: 1.6cqw;
+    background: #17171a;
+    color: #fff;
+    font-size: 2.4cqw;
+    line-height: 1.2;
+    white-space: nowrap;
+    box-shadow: 0 10px 24px -8px rgba(0, 0, 0, 0.5);
+  }
+  .sem-chip em {
+    font-style: normal;
+    font-size: 1.9cqw;
+    color: #b6b0ff;
+  }
+  .sem-cross {
+    position: absolute;
+    width: 0;
+    height: 0;
+    opacity: 0;
+  }
+  .sem-cross .h,
+  .sem-cross .v {
+    position: absolute;
+    background: #ff453a;
+  }
+  .sem-cross .h {
+    width: 9cqw;
+    height: 2px;
+    left: -4.5cqw;
+    top: -1px;
+  }
+  .sem-cross .v {
+    height: 9cqw;
+    width: 2px;
+    top: -4.5cqw;
+    left: -1px;
+  }
+  .sem-xy,
+  .sem-miss {
+    position: absolute;
+    right: 3cqw;
+    top: 3cqw;
+    padding: 0.6cqw 1.4cqw;
+    border-radius: 1cqw;
+    background: #ff453a;
+    color: #fff;
+    font-family: var(--font-mono);
+    font-size: 2.2cqw;
+    white-space: nowrap;
+    transition: opacity 300ms ease, transform 400ms var(--ease-out);
+  }
+  .sem-miss {
+    opacity: 0;
+    right: auto;
+    left: 3cqw;
+    top: auto;
+    bottom: 3cqw;
+    font-family: var(--font-sans);
+  }
+  .sem.is-moved .sem-miss {
+    opacity: 1;
+  }
+  .sem.is-moved .sem-xy {
+    opacity: 0;
+  }
+  .sem-blocks {
+    position: absolute;
+    left: -8%;
+    bottom: -12%;
+    filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.55));
+  }
+  @media (max-width: 860px) {
+    .sem {
+      height: 260vh;
+    }
+    .sem-grid {
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+    .sem-copy .lead,
+    .sem-note {
+      display: none;
+    }
+    .sem-steps {
+      margin-top: 12px;
+    }
+    .sem-steps li:not(.is-on) {
+      display: none;
+    }
+    .sem-blocks {
+      position: relative;
+      left: auto;
+      bottom: auto;
+      margin-top: -24px;
+      margin-left: 12px;
+    }
+    .sem-blocks :global(.pblock) {
+      --pb-h: 32px;
+      font-size: 12px;
+    }
+  }
+</style>
+
+<script>
+  import { createScrollScene } from '../../lib/animation/scroll-scene';
+  import { progress, lerp, ease } from '../../lib/animation/motion';
+
+  const root = document.querySelector<HTMLElement>('[data-sem]');
+  if (root) {
+    const screen = root.querySelector<HTMLElement>('[data-sem-screen]')!;
+    const bar = root.querySelector<HTMLElement>('[data-sem-bar]')!;
+    const btn = root.querySelector<HTMLElement>('[data-sem-btn]')!;
+    const outline = root.querySelector<HTMLElement>('[data-sem-outline]')!;
+    const cross = root.querySelector<HTMLElement>('[data-sem-cross]')!;
+    const blocks = [...root.querySelectorAll<HTMLElement>('[data-sem-blocks] .pblock')];
+    const steps = [...root.querySelectorAll<HTMLElement>('[data-sem-step]')];
+    let crossAt: { x: number; y: number } | null = null;
+
+    const place = () => {
+      const s = screen.getBoundingClientRect();
+      const b = btn.getBoundingClientRect();
+      return { x: b.left - s.left, y: b.top - s.top, w: b.width, h: b.height };
+    };
+
+    const render = (p: number) => {
+      const step = p < 0.22 ? 0 : p < 0.42 ? 1 : p < 0.64 ? 2 : 3;
+      steps.forEach((el, i) => {
+        el.classList.toggle('is-on', i === step);
+        el.classList.toggle('is-past', i < step);
+      });
+
+      // The layout reflows in the last act: the toolbar narrows and drops.
+      const m = ease.inOutCubic(progress(p, 0.68, 0.86));
+      bar.style.left = `${lerp(6, 20, m)}%`;
+      bar.style.right = `${lerp(6, 24, m)}%`;
+      bar.style.top = `${lerp(9, 18, m)}%`;
+      root.classList.toggle('is-moved', m > 0.6);
+
+      const r = place();
+      if (!crossAt || p < 0.68) crossAt = { x: r.x + r.w / 2, y: r.y + r.h / 2 };
+      cross.style.left = `${crossAt.x}px`;
+      cross.style.top = `${crossAt.y}px`;
+      cross.style.opacity = String(progress(p, 0.04, 0.12) * (1 - progress(p, 0.26, 0.34) * 0.65 + progress(p, 0.68, 0.74) * 0.65));
+
+      Object.assign(outline.style, { left: `${r.x}px`, top: `${r.y}px`, width: `${r.w}px`, height: `${r.h}px` });
+      outline.style.opacity = String(progress(p, 0.24, 0.32));
+
+      blocks.forEach((b, i) => b.classList.toggle('is-hidden', p < 0.44 + i * 0.06));
+    };
+    render(0);
+    window.addEventListener('resize', () => render(Number(root.style.getPropertyValue('--p')) || 0));
+    createScrollScene(root, { onProgress: render });
+  }
+</script>

@@ -1,0 +1,125 @@
+---
+import Base from './Base.astro';
+import MockApp from '../components/demos/MockApp.astro';
+import { GUIDE, type DocPage } from '../lib/docs';
+import '../styles/docs.css';
+
+interface Props {
+  page: DocPage;
+}
+const { page } = Astro.props;
+const i = GUIDE.findIndex((d) => d.slug === page.slug);
+const prev = i > 0 ? GUIDE[i - 1] : i === -1 ? null : { url: '/docs', title: 'Documentation' };
+const next = i === -1 ? GUIDE[0] : GUIDE[i + 1];
+const toc = page.headings.filter((h) => h.depth === 2 || h.depth === 3);
+const crumbs = [{ url: '/docs', title: 'Docs' }, ...(page.slug ? [{ url: page.url, title: page.title }] : [])];
+
+const ld = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: crumbs.map((c, n) => ({ '@type': 'ListItem', position: n + 1, name: c.title, item: new URL(c.url, Astro.site).href })),
+};
+---
+
+<Base title={page.slug ? `${page.title} · Docs` : 'Documentation'} description={page.description} navMode="solid" structuredData={[ld]} bodyClass="docs-body">
+  <div class="docs container-wide">
+    <aside class="docs-side" aria-label="Documentation">
+      <button class="docs-search-btn" type="button" data-open-search>
+        <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="9" cy="9" r="5.5" stroke="currentColor" stroke-width="1.6"></circle><path d="m13.2 13.2 3.3 3.3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
+        <span>Search</span>
+        <kbd>⌘K</kbd>
+      </button>
+      <details class="docs-nav-wrap" open data-docs-nav>
+        <summary class="docs-nav-toggle">{page.slug ? page.title : 'Documentation'}<span aria-hidden="true">▾</span></summary>
+        <nav class="docs-nav">
+          <a href="/docs" class:list={['dn-home', { active: !page.slug }]} aria-current={!page.slug ? 'page' : undefined}>Overview</a>
+          {
+            GUIDE.map((d) => {
+              const current = d.slug === page.slug;
+              return (
+                <div class:list={['dn-group', { current }]}>
+                  <a href={d.url} class:list={['dn-title', { active: current }]} aria-current={current ? 'page' : undefined}>
+                    {d.title}
+                  </a>
+                  <ul>
+                    {d.headings
+                      .filter((h) => h.depth === 2)
+                      .map((h) => (
+                        <li>
+                          <a href={`${d.url}#${h.slug}`} data-sub={current ? h.slug : undefined}>
+                            {h.text}
+                          </a>
+                        </li>
+                      ))}
+                  </ul>
+                </div>
+              );
+            })
+          }
+        </nav>
+      </details>
+    </aside>
+
+    <article class="docs-main" data-docs-main>
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <ol>
+          {crumbs.map((c, n) => <li>{n === crumbs.length - 1 ? <span aria-current="page">{c.title}</span> : <a href={c.url}>{c.title}</a>}</li>)}
+        </ol>
+      </nav>
+      <header class="docs-head">
+        <h1>{page.slug ? page.title : 'Documentation'}</h1>
+        {page.description && <p class="lead">{page.description}</p>}
+      </header>
+      <div class="prose" data-prose>
+        <slot />
+      </div>
+
+      <nav class="pager" aria-label="Previous and next">
+        {
+          prev ? (
+            <a href={prev.url} class="pager-prev">
+              <span>Previous</span>
+              {prev.title}
+            </a>
+          ) : (
+            <span />
+          )
+        }
+        {
+          next && (
+            <a href={next.url} class="pager-next">
+              <span>Next</span>
+              {next.title}
+            </a>
+          )
+        }
+      </nav>
+    </article>
+
+    {
+      toc.length > 2 && (
+        <aside class="docs-toc" aria-label="On this page">
+          <p>On this page</p>
+          <ul>
+            {toc.map((h) => (
+              <li class={`d${h.depth}`}>
+                <a href={`#${h.slug}`} data-toc={h.slug}>
+                  {h.text}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </aside>
+      )
+    }
+  </div>
+
+  <template id="mock-app-template"><MockApp label="Animated example" /></template>
+</Base>
+
+<script>
+  import { initDocsPage } from '../lib/docs/client';
+  import { track } from '../lib/analytics';
+  initDocsPage();
+  track('docs_view', { path: location.pathname });
+</script>

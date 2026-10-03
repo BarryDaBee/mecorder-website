@@ -1,0 +1,441 @@
+---
+/**
+ * FEATURES, demonstrated rather than listed: Camera, Cursor, Timeline, Export.
+ * Each vignette is a small CSS film that only runs while it's on screen.
+ */
+const features = [
+  {
+    k: 'camera',
+    title: 'Camera',
+    flow: ['Recording', 'Automatic camera', 'Focus', 'Smooth movement'],
+    body: 'Zooms are generated from what you did the moment you stop recording, with styles from Calm to Lively. Every move is a keyframe you can retime, re-aim or ease differently.',
+  },
+  {
+    k: 'cursor',
+    title: 'Cursor',
+    flow: ['Normal cursor', 'Click emphasis', 'Highlight', 'Smooth glide'],
+    body: 'The cursor is recorded separately from the pixels, so you can resize it, smooth its path, change its look on click and drag, or hide it, after the fact.',
+  },
+  {
+    k: 'timeline',
+    title: 'Timeline',
+    flow: ['Recording', 'Scenes', 'Camera', 'Effects', 'Text', 'Audio'],
+    body: 'Scenes, clips, camera moves, clicks, keys, text, effects, webcam and audio on one Timeline. Cuts never touch the original, so anything can come back.',
+  },
+  {
+    k: 'export',
+    title: 'Export',
+    flow: ['Project', 'Render', 'Check', 'Finished video'],
+    body: 'Tell it where the video is going: YouTube, a vertical feed, a message under 25 MB, or a GIF. The file is read back and checked before it replaces anything.',
+  },
+];
+---
+
+<section class="section feats" aria-labelledby="feats-title">
+  <div class="container-wide">
+    <div class="section-head">
+      <p class="eyebrow" data-reveal><span class="dot"></span>Everything else, done properly</p>
+      <h2 id="feats-title" data-reveal data-reveal-delay="60">A complete screen studio underneath.</h2>
+    </div>
+    <div class="feats-list">
+      {
+        features.map((f, i) => (
+          <article class={`feat feat-${f.k}`} data-reveal data-feat>
+            <div class="feat-visual" aria-hidden="true">
+              {f.k === 'camera' && (
+                <div class="v-cam">
+                  <div class="v-screen">
+                    <i class="v-row" />
+                    <i class="v-row short" />
+                    <i class="v-btn" />
+                    <i class="v-card" />
+                    <i class="v-card" />
+                    <i class="v-card" />
+                  </div>
+                  <div class="v-frame" />
+                </div>
+              )}
+              {f.k === 'cursor' && (
+                <div class="v-cursor">
+                  <div class="v-target">Create Project</div>
+                  <div class="v-ring" />
+                  <svg class="v-arrow" viewBox="0 0 28 28">
+                    <path d="M6 3.5v18.2l4.6-4.4 2.9 6.6 3.1-1.4-2.9-6.5h6.3z" fill="#111" stroke="#fff" stroke-width="1.6" stroke-linejoin="round" />
+                  </svg>
+                  <svg class="v-trail" viewBox="0 0 300 160" fill="none">
+                    <path d="M20 140 C 90 130, 120 40, 200 70 S 260 90, 250 60" stroke="currentColor" stroke-width="2" stroke-dasharray="4 6" />
+                  </svg>
+                </div>
+              )}
+              {f.k === 'timeline' && (
+                <div class="v-tl">
+                  {['Scenes', 'Screen', 'Camera', 'Effects', 'Text', 'Audio'].map((r, j) => (
+                    <div class={`v-tr v-tr-${j}`} style={`--j:${j}`}>
+                      <span>{r}</span>
+                      <div><i /><i /><i /></div>
+                    </div>
+                  ))}
+                  <b class="v-ph" />
+                </div>
+              )}
+              {f.k === 'export' && (
+                <div class="v-ex">
+                  <div class="v-ex-steps">
+                    {['Preparing', 'Rendering', 'Checking the file', 'Finalising'].map((s, j) => (
+                      <div class="v-ex-step" style={`--j:${j}`}>
+                        <i />
+                        {s}
+                      </div>
+                    ))}
+                  </div>
+                  <div class="v-ex-bar">
+                    <i />
+                  </div>
+                  <div class="v-ex-out">
+                    <span>MP4</span>
+                    <span>MOV</span>
+                    <span>GIF</span>
+                    <span>ProRes</span>
+                  </div>
+                </div>
+              )}
+            </div>
+            <div class="feat-copy">
+              <span class="feat-num">{String(i + 1).padStart(2, '0')}</span>
+              <h3>{f.title}</h3>
+              <ol class="feat-flow">
+                {f.flow.map((s) => (
+                  <li>{s}</li>
+                ))}
+              </ol>
+              <p>{f.body}</p>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .feats-list {
+    display: grid;
+    gap: clamp(48px, 8vw, 96px);
+  }
+  .feat {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: clamp(28px, 6vw, 88px);
+    align-items: center;
+  }
+  .feat:nth-child(even) .feat-visual {
+    order: 2;
+  }
+  .feat-visual {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    border-radius: 18px;
+    background:
+      radial-gradient(80% 60% at 50% 0%, rgba(255, 255, 255, 0.05), transparent 70%),
+      var(--bg-raised);
+    box-shadow: 0 0 0 1px var(--border-subtle) inset;
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+  }
+  .feat-visual * {
+    animation-play-state: paused !important;
+  }
+  .feat.is-revealed .feat-visual * {
+    animation-play-state: running !important;
+  }
+  .feat-num {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-4);
+  }
+  .feat-copy h3 {
+    font-size: var(--fs-h3);
+    margin: 8px 0 14px;
+  }
+  .feat-copy p {
+    color: var(--text-2);
+    max-width: 460px;
+  }
+  .feat-flow {
+    list-style: none;
+    margin: 0 0 16px;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--text-3);
+  }
+  .feat-flow li {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .feat-flow li + li::before {
+    content: '→';
+    color: var(--text-4);
+  }
+
+  /* Camera */
+  .v-cam {
+    position: relative;
+    width: 76%;
+    aspect-ratio: 16 / 10;
+  }
+  .v-screen {
+    position: absolute;
+    inset: 0;
+    border-radius: 10px;
+    background: #f6f6f8;
+    padding: 6%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: min-content;
+    gap: 6%;
+    opacity: 0.92;
+  }
+  .v-row {
+    grid-column: 1 / 3;
+    height: 10px;
+    border-radius: 4px;
+    background: #e3e3e8;
+  }
+  .v-row.short {
+    grid-column: 1 / 2;
+  }
+  .v-btn {
+    grid-column: 3;
+    grid-row: 1;
+    height: 18px;
+    border-radius: 5px;
+    background: #6658d9;
+  }
+  .v-card {
+    height: 64px;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 0 0 1px #ececf0;
+  }
+  .v-frame {
+    position: absolute;
+    border-radius: 8px;
+    box-shadow: 0 0 0 2px var(--accent), 0 0 0 9999px rgba(11, 11, 12, 0.55);
+    animation: cam-path 7s var(--ease-in-out) infinite;
+  }
+  @keyframes cam-path {
+    0%, 12% {
+      left: 0; top: 0; width: 100%; height: 100%;
+    }
+    24%, 40% {
+      left: 58%; top: 2%; width: 40%; height: 40%;
+    }
+    52%, 66% {
+      left: 4%; top: 36%; width: 44%; height: 44%;
+    }
+    80%, 100% {
+      left: 0; top: 0; width: 100%; height: 100%;
+    }
+  }
+
+  /* Cursor */
+  .v-cursor {
+    position: relative;
+    width: 300px;
+    height: 170px;
+    color: var(--text-4);
+  }
+  .v-trail {
+    position: absolute;
+    inset: 0;
+  }
+  .v-target {
+    position: absolute;
+    left: 168px;
+    top: 44px;
+    padding: 9px 14px;
+    border-radius: 9px;
+    background: #6658d9;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    animation: cur-press 4s ease-in-out infinite;
+  }
+  .v-ring {
+    position: absolute;
+    left: 230px;
+    top: 61px;
+    width: 90px;
+    height: 90px;
+    margin: -45px 0 0 -45px;
+    border-radius: 50%;
+    border: 3px solid var(--accent);
+    opacity: 0;
+    animation: cur-ring 4s ease-out infinite;
+  }
+  .v-arrow {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 28px;
+    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.4));
+    offset-path: path('M20 140 C 90 130, 120 40, 200 70 S 260 90, 250 60');
+    offset-rotate: 0deg;
+    offset-anchor: 6px 4px;
+    animation: cur-move 4s var(--ease-in-out) infinite;
+  }
+  @keyframes cur-move {
+    0% { offset-distance: 0%; scale: 1; }
+    45% { offset-distance: 92%; scale: 1.5; }
+    50% { offset-distance: 92%; scale: 1.25; }
+    55%, 80% { offset-distance: 92%; scale: 1.5; }
+    100% { offset-distance: 0%; scale: 1; }
+  }
+  @keyframes cur-press {
+    0%, 46%, 56%, 100% { transform: none; box-shadow: none; }
+    50% { transform: scale(0.95); }
+    52%, 78% { box-shadow: 0 0 0 3px var(--accent), 0 0 0 9px rgba(139, 124, 255, 0.3); }
+  }
+  @keyframes cur-ring {
+    0%, 48% { opacity: 0; transform: scale(0.2); }
+    50% { opacity: 1; transform: scale(0.3); }
+    70%, 100% { opacity: 0; transform: scale(1.1); }
+  }
+
+  /* Timeline */
+  .v-tl {
+    position: relative;
+    width: 86%;
+    display: grid;
+    gap: 7px;
+  }
+  .v-tr {
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    align-items: center;
+    font-size: 11px;
+    color: var(--text-3);
+    opacity: 0;
+    transform: translateX(-12px);
+    animation: tr-in 8s var(--ease-out) infinite;
+    animation-delay: calc(var(--j) * 0.25s);
+  }
+  .v-tr div {
+    position: relative;
+    height: 20px;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.03);
+  }
+  .v-tr i {
+    position: absolute;
+    top: 3px;
+    bottom: 3px;
+    border-radius: 4px;
+    background: color-mix(in srgb, var(--c) 45%, transparent);
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--c) 85%, transparent) inset;
+  }
+  .v-tr i:nth-child(1) { left: 2%; width: 30%; }
+  .v-tr i:nth-child(2) { left: 36%; width: 22%; }
+  .v-tr i:nth-child(3) { left: 63%; width: 33%; }
+  .v-tr-0 { --c: #3fa866; }
+  .v-tr-1 { --c: var(--trk-screen); }
+  .v-tr-2 { --c: var(--trk-camera); }
+  .v-tr-2 i:nth-child(2) { width: 12%; left: 40%; }
+  .v-tr-3 { --c: var(--trk-effects); }
+  .v-tr-3 i:nth-child(1) { width: 8%; left: 18%; }
+  .v-tr-4 { --c: var(--trk-text); }
+  .v-tr-4 i:nth-child(3) { width: 14%; }
+  .v-tr-5 { --c: var(--trk-audio); }
+  .v-tr-5 div {
+    background: repeating-linear-gradient(90deg, color-mix(in srgb, var(--trk-audio) 60%, transparent) 0 2px, transparent 2px 4px);
+    mask: linear-gradient(transparent 30%, #000 30% 70%, transparent 70%);
+  }
+  .v-tr-5 i { display: none; }
+  @keyframes tr-in {
+    0% { opacity: 0; transform: translateX(-12px); }
+    8%, 90% { opacity: 1; transform: none; }
+    100% { opacity: 0; }
+  }
+  .v-ph {
+    position: absolute;
+    top: -6px;
+    bottom: -6px;
+    left: 64px;
+    width: 2px;
+    background: var(--accent);
+    animation: ph-move 8s linear infinite;
+  }
+  @keyframes ph-move {
+    0%, 10% { transform: translateX(0); }
+    90%, 100% { transform: translateX(calc((min(86vw, 600px) - 64px) * 0.8)); }
+  }
+
+  /* Export */
+  .v-ex {
+    width: 72%;
+  }
+  .v-ex-step {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 0;
+    font-size: 13px;
+    color: var(--text-4);
+    animation: ex-step 6s steps(1) infinite;
+    animation-delay: calc(var(--j) * 1.2s);
+  }
+  .v-ex-step i {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 1.5px solid currentColor;
+  }
+  @keyframes ex-step {
+    0% { color: var(--text); }
+    20%, 100% { color: var(--success); }
+  }
+  .v-ex-bar {
+    margin: 16px 0;
+    height: 6px;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.06);
+    overflow: hidden;
+  }
+  .v-ex-bar i {
+    display: block;
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), #b3a9ff);
+    animation: ex-bar 6s var(--ease-in-out) infinite;
+    transform-origin: left;
+  }
+  @keyframes ex-bar {
+    0% { transform: scaleX(0); }
+    80%, 100% { transform: scaleX(1); }
+  }
+  .v-ex-out {
+    display: flex;
+    gap: 6px;
+  }
+  .v-ex-out span {
+    padding: 3px 9px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-2);
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  @media (max-width: 860px) {
+    .feat {
+      grid-template-columns: 1fr;
+    }
+    .feat:nth-child(even) .feat-visual {
+      order: 0;
+    }
+  }
+</style>

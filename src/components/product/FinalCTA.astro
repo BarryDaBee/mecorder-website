@@ -1,0 +1,123 @@
+---
+/** FINAL CTA: the finished video plays behind the last words. */
+import MockApp from '../demos/MockApp.astro';
+---
+
+<section class="cta" aria-labelledby="cta-title" data-cta>
+  <div class="cta-film" aria-hidden="true" data-depth="0.3">
+    <div class="cta-wall"></div>
+    <div class="cta-window"><MockApp class="cta-view" label="" /></div>
+  </div>
+  <div class="cta-shade" aria-hidden="true"></div>
+  <div class="container cta-copy">
+    <h2 id="cta-title" data-reveal>Make your next screen recording behave.</h2>
+    <p class="lead" data-reveal data-reveal-delay="80">Record once. Program the behaviour. Export a video that feels designed.</p>
+    <div class="cta-actions" data-reveal data-reveal-delay="160">
+      <a href="/download" class="btn btn-primary btn-lg" data-track="download_click" data-track-from="final-cta" data-magnetic>Download for macOS</a>
+      <a href="/docs" class="btn btn-ghost btn-lg">Explore the documentation</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta {
+    position: relative;
+    min-height: 92svh;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    isolation: isolate;
+    padding: 120px 0;
+  }
+  .cta-film {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: min(1300px, 120vw);
+    aspect-ratio: 16 / 10;
+    transform: translate(-50%, -46%) perspective(1600px) rotateX(18deg) scale(1.05);
+    translate: var(--px, 0) var(--py, 0);
+    z-index: -2;
+    opacity: 0.55;
+  }
+  .cta-wall {
+    position: absolute;
+    inset: 0;
+    border-radius: 28px;
+    background:
+      radial-gradient(90% 70% at 10% 0%, #6d5ce8, transparent 60%),
+      radial-gradient(80% 70% at 100% 100%, #c2559b, transparent 60%),
+      linear-gradient(135deg, #3b2f9e, #2a1f63 60%, #4a2366);
+  }
+  .cta-window {
+    position: absolute;
+    inset: 6% 7%;
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .cta-shade {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(60% 50% at 50% 50%, rgba(11, 11, 12, 0.55), rgba(11, 11, 12, 0.92) 70%),
+      linear-gradient(var(--bg), transparent 25%, transparent 75%, var(--bg));
+  }
+  .cta-copy {
+    text-align: center;
+  }
+  .cta-copy h2 {
+    font-size: var(--fs-h1);
+    letter-spacing: -0.035em;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .cta-copy .lead {
+    margin: 20px auto 0;
+    max-width: 560px;
+    color: var(--text);
+    opacity: 0.8;
+  }
+  .cta-actions {
+    margin-top: 32px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+</style>
+
+<script>
+  import { RecordingView } from '../../lib/program/player';
+  import { execute } from '../../lib/program/executor';
+  import { EVERY_CLICK_PROGRAM, PRIMARY_BUTTON_PROGRAM } from '../../lib/program/model';
+  import { DURATION } from '../../lib/program/recording';
+  import { onFrame, whenVisible, prefersReducedMotion } from '../../lib/animation/motion';
+  import { initPointerParallax, initMagnetic } from '../../lib/animation/parallax';
+
+  const root = document.querySelector<HTMLElement>('[data-cta]');
+  if (root) {
+    const view = new RecordingView(root.querySelector<HTMLElement>('.cta-view')!);
+    const edit = execute([{ ...EVERY_CLICK_PROGRAM, trigger: { type: 'click', target: 'any-button' } }, { ...PRIMARY_BUTTON_PROGRAM, trigger: { type: 'hover', target: 'card-q3' }, actions: [{ type: 'highlight', target: 'card-q3', hold: 1 }] }]);
+    let t = 3.4;
+    view.render({ t, edit, polished: true });
+    initPointerParallax(root, { strength: 10 });
+    root.querySelectorAll<HTMLElement>('[data-magnetic]').forEach((el) => initMagnetic(el, 0.18));
+    if (!prefersReducedMotion()) {
+      let stop: (() => void) | null = null;
+      whenVisible(
+        root,
+        () =>
+          (stop ??= onFrame((dt) => {
+            t = (t + dt) % DURATION;
+            view.render({ t, edit, polished: true });
+            return true;
+          })),
+        () => {
+          stop?.();
+          stop = null;
+        },
+      );
+    }
+  }
+</script>

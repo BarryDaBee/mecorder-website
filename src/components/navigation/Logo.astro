@@ -1,0 +1,15 @@
+---
+interface Props {
+  size?: number;
+}
+const { size = 26 } = Astro.props;
+---
+
+<img class="logo" src="/favicon.png" width={size} height={size} alt="" aria-hidden="true" />
+
+<style>
+  .logo {
+    border-radius: 22%;
+    flex: none;
+  }
+</style>

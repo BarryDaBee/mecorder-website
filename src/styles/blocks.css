@@ -1,0 +1,257 @@
+/* MeCorder program blocks: Scratch's shapes in a calm, Apple-like palette. */
+.pstack {
+  --pb-h: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1;
+  perspective: 900px;
+}
+.pblock {
+  --fill: var(--blk-control);
+  --ink: #fff;
+  --depth: 0;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-height: var(--pb-h);
+  padding: 7px 14px 7px 12px;
+  margin-left: calc(var(--depth) * 22px);
+  border-radius: 6px;
+  background: var(--fill);
+  color: var(--ink);
+  box-shadow: var(--shadow-block);
+  white-space: nowrap;
+  transform-style: preserve-3d;
+  transition:
+    transform var(--t-select) var(--ease-spring),
+    box-shadow var(--t-select) ease,
+    opacity var(--t-panel) ease,
+    filter var(--t-panel) ease;
+}
+/* The tab under each stack block fills the next block's notch. */
+.pblock::after {
+  content: '';
+  position: absolute;
+  left: 16px;
+  bottom: -5px;
+  width: 22px;
+  height: 6px;
+  border-radius: 0 0 5px 5px;
+  background: var(--fill);
+  z-index: 1;
+}
+.pstack > .pblock:last-child::after {
+  display: none;
+}
+.pblock + .pblock {
+  margin-top: 0;
+}
+.pb-hat {
+  border-top-left-radius: 18px;
+  border-top-right-radius: 10px;
+  padding-top: 11px;
+}
+.pb-arm {
+  min-height: 26px;
+  padding-block: 4px;
+  font-size: 12px;
+  opacity: 0.92;
+}
+.pb-body {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+.pblock b {
+  font-weight: 650;
+}
+.pblock i {
+  font-style: normal;
+  opacity: 0.82;
+}
+.pb-ico {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  background: currentColor;
+  opacity: 0.9;
+  -webkit-mask: var(--ico) center / contain no-repeat;
+  mask: var(--ico) center / contain no-repeat;
+}
+.pslot {
+  display: inline-flex;
+  align-items: center;
+  height: 24px;
+  padding: 0 9px;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.94);
+  color: #1d1d1f;
+  font-weight: 550;
+  font-size: 13px;
+}
+
+.pb-events {
+  --fill: var(--blk-events);
+  --ink: var(--blk-events-text);
+  --ico: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 2v10l2.6-2.4 1.7 3.8 1.8-.8-1.7-3.7H12z' fill='black'/%3E%3C/svg%3E");
+}
+.pb-camera {
+  --fill: var(--blk-camera);
+  --ico: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.6'%3E%3Cpath d='M2 5V2h3M11 2h3v3M14 11v3h-3M5 14H2v-3'/%3E%3Ccircle cx='8' cy='8' r='2.2'/%3E%3C/svg%3E");
+}
+.pb-effects {
+  --fill: var(--blk-effects);
+  --ico: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M8 1l1.6 5.4L15 8l-5.4 1.6L8 15l-1.6-5.4L1 8l5.4-1.6z' fill='black'/%3E%3C/svg%3E");
+}
+.pb-control {
+  --fill: var(--blk-control);
+  --ink: var(--blk-control-text);
+  --ico: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.6'%3E%3Ccircle cx='8' cy='8.5' r='5.5'/%3E%3Cpath d='M8 5.5v3l2 1.5'/%3E%3C/svg%3E");
+}
+.pb-variables {
+  --fill: var(--blk-variables);
+  --ico: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.6'%3E%3Cpath d='M3 4h10M3 8h7M3 12h4'/%3E%3C/svg%3E");
+}
+.pb-sensing {
+  --fill: var(--blk-sensing);
+  --ink: var(--blk-events-text);
+}
+.pb-sound {
+  --fill: var(--blk-sound);
+  --ico: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M2 6h3l4-3v10l-4-3H2z' fill='black'/%3E%3Cpath d='M11 5.5a3.5 3.5 0 010 5' stroke='black' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+}
+.pb-behaviours {
+  --fill: var(--blk-behaviours);
+  --ico: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.5'%3E%3Cpath d='M8 1.5l6 3-6 3-6-3zM2 8l6 3 6-3M2 11.5l6 3 6-3'/%3E%3C/svg%3E");
+}
+.pb-scene {
+  --fill: var(--blk-scene);
+  --ico: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.5'%3E%3Crect x='2' y='3' width='12' height='10' rx='1.5'/%3E%3Cpath d='M5 3v10M11 3v10'/%3E%3C/svg%3E");
+}
+
+/* States: playing (accent outline + gutter marker, as in the app), dimmed, entering. */
+.pblock.is-playing {
+  box-shadow:
+    var(--shadow-block),
+    0 0 0 2px #fff,
+    0 0 0 5px var(--accent),
+    0 0 26px 4px var(--accent-glow);
+  transform: translateZ(14px) scale(1.03);
+  z-index: 2;
+}
+.pblock.is-playing::before {
+  content: '';
+  position: absolute;
+  left: -16px;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  margin-top: -3.5px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+  animation: pb-pulse 1s ease-in-out infinite;
+}
+@keyframes pb-pulse {
+  50% {
+    box-shadow: 0 0 0 7px transparent;
+  }
+}
+.pblock.is-hidden {
+  opacity: 0;
+  transform: translate3d(0, 14px, -40px) rotateX(-18deg);
+}
+.pstack-notation {
+  margin: 1.4em 0;
+  padding: 22px 24px 26px;
+  border-radius: var(--r-prominent);
+  background: var(--bg-raised);
+  box-shadow: 0 0 0 1px var(--border-subtle) inset;
+  overflow-x: auto;
+}
+
+/* Mini timeline (lib/program/timeline-view.ts) */
+.mini-timeline {
+  --label-w: 64px;
+  position: relative;
+  display: grid;
+  gap: 5px;
+  padding: 10px 12px 10px 0;
+  font-size: 11px;
+  color: var(--text-3);
+  user-select: none;
+}
+.mt-row {
+  display: grid;
+  grid-template-columns: var(--label-w) 1fr;
+  align-items: center;
+}
+.mt-label {
+  padding-left: 12px;
+  font-weight: 500;
+}
+.mt-lane {
+  position: relative;
+  height: 18px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.035);
+}
+.mt-dot {
+  position: absolute;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  margin: -3.5px 0 0 -3.5px;
+  border-radius: 50%;
+  background: var(--trk-clicks);
+}
+.mt-seg,
+.mt-fx {
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--trk-camera) 38%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--trk-camera) 80%, transparent) inset;
+  overflow: hidden;
+  animation: mt-in 420ms var(--ease-out) both;
+}
+.mt-fx {
+  background: color-mix(in srgb, var(--trk-effects) 38%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--trk-effects) 80%, transparent) inset;
+}
+.mt-fx.ripple {
+  min-width: 6px;
+}
+.mt-seg em,
+.mt-fx em {
+  font-style: normal;
+  font-size: 10px;
+  color: var(--text);
+  padding: 0 6px;
+  line-height: 14px;
+  white-space: nowrap;
+}
+@keyframes mt-in {
+  from {
+    opacity: 0;
+    transform: scaleX(0.6);
+    transform-origin: left;
+  }
+}
+.mt-playhead {
+  --x: 0;
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: calc(var(--label-w) + (100% - var(--label-w) - 12px) * var(--x));
+  width: 2px;
+  margin-left: -1px;
+  border-radius: 1px;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent-glow);
+}

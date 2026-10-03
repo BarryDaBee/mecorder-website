@@ -1,0 +1,35 @@
+---
+/** Simple text pages (About, Privacy, Terms). */
+import Base from './Base.astro';
+import '../styles/docs.css';
+interface Props {
+  title: string;
+  description: string;
+  eyebrow?: string;
+  heading?: string;
+}
+const { title, description, eyebrow, heading } = Astro.props;
+---
+
+<Base title={title} description={description}>
+  <article class="page container">
+    <header>
+      {eyebrow && <p class="eyebrow" data-reveal><span class="dot" />{eyebrow}</p>}
+      <h1 data-reveal data-reveal-delay="60">{heading ?? title}</h1>
+    </header>
+    <div class="prose" data-reveal data-reveal-delay="120"><slot /></div>
+  </article>
+</Base>
+
+<style>
+  .page {
+    max-width: 760px;
+    padding-top: calc(var(--nav-h) + clamp(48px, 9vw, 112px));
+    padding-bottom: 120px;
+  }
+  .page h1 {
+    font-size: var(--fs-h1);
+    letter-spacing: -0.03em;
+    margin: 16px 0 32px;
+  }
+</style>

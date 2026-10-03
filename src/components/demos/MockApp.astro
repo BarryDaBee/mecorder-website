@@ -1,0 +1,498 @@
+---
+/**
+ * The demo "recording": a fictional project app on a fixed 960×600 screen.
+ * Element frames come from lib/program/recording.ts (TARGETS), the same data
+ * the program executor uses, so a focus or highlight lands exactly on the
+ * pixels. RecordingView (lib/program/player.ts) animates it.
+ */
+import { TARGETS, describeTarget } from '../../lib/program/recording';
+
+interface Props {
+  /** Show semantic target labels (toggled by `.show-labels` on the viewport). */
+  labels?: boolean;
+  class?: string;
+  /** Accessible description of what the demo shows. */
+  label?: string;
+}
+const { labels = false, class: className = '', label = 'Animated demo of a screen recording of a project app' } = Astro.props;
+const T = TARGETS;
+const box = (id: string) => {
+  const t = T[id];
+  return `left:${t.x}px;top:${t.y}px;width:${t.w}px;height:${t.h}px`;
+};
+const cards = [
+  { name: 'Q3 Launch', meta: '12 tasks · Due Oct 28', tone: '#7c6cf0', progress: 0.62, id: 'card-q3' },
+  { name: 'Website refresh', meta: '8 tasks · Due Nov 4', tone: '#2f9cba', progress: 0.35 },
+  { name: 'Onboarding', meta: '5 tasks · Due Oct 19', tone: '#d8842f', progress: 0.8 },
+  { name: 'Mobile app', meta: '21 tasks · Due Dec 2', tone: '#21874a', progress: 0.2 },
+  { name: 'Pricing page', meta: '3 tasks · Due Oct 12', tone: '#c93a80', progress: 0.9 },
+];
+const slots = [
+  [232, 150],
+  [472, 150],
+  [712, 150],
+  [232, 320],
+  [472, 320],
+  [712, 320],
+];
+---
+
+<div class:list={['viewport', className]} data-viewport role="img" aria-label={label}>
+  <div class="screen-fit" data-fit>
+    <div class="screen-cam" data-cam>
+      <div class="app" aria-hidden="true">
+        <aside class="side">
+          <div class="app-name"><span class="app-dot"></span>Orbit</div>
+          <div class="nav-region" style={box('navigation')}></div>
+          {
+            ['Home', 'Projects', 'Team', 'Reports'].map((n, i) => (
+              <div class="nav-item" data-nav-item={n.toLowerCase()} style={`top:${80 + i * 36}px`}>
+                <span class="ni-icon" />
+                {n}
+              </div>
+            ))
+          }
+          <div class="side-sep" style="top:250px"></div>
+          <div class="side-label" style="top:266px">Favourites</div>
+          <div class="nav-item faint" style="top:290px"><span class="ni-icon dot" style="background:#7c6cf0"></span>Q3 Launch</div>
+          <div class="nav-item faint" style="top:326px"><span class="ni-icon dot" style="background:#2f9cba"></span>Website refresh</div>
+          <div class="settings-btn" data-el="settings" style={box('settings')}>
+            <svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="2.6" stroke="currentColor" stroke-width="1.6"></circle><path d="M10 2.5v2M10 15.5v2M2.5 10h2M15.5 10h2M4.7 4.7l1.4 1.4M13.9 13.9l1.4 1.4M4.7 15.3l1.4-1.4M13.9 6.1l1.4-1.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
+          </div>
+        </aside>
+
+        <div class="search" data-el="search" style={box('search')}>
+          <svg viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="5.5" stroke="currentColor" stroke-width="1.7"></circle><path d="m13.2 13.2 3.3 3.3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"></path></svg>
+          <span class="search-text" data-search-text></span><span class="caret"></span><span class="search-ph" data-search-ph>Search projects</span>
+        </div>
+        <div class="avatar" style="left:736px;top:26px"></div>
+        <div class="create-btn" data-el="create-project" style={box('create-project')}>
+          <span class="plus">+</span> Create Project
+        </div>
+
+        <div class="page-title">Projects</div>
+        <div class="page-sub">5 active · sorted by due date</div>
+
+        {
+          cards.map((card, i) => (
+            <div class="card" data-el={card.id} style={`left:${slots[i][0]}px;top:${slots[i][1]}px`}>
+              <div class="card-top">
+                <span class="card-swatch" style={`background:${card.tone}`} />
+                <span class="card-more">···</span>
+              </div>
+              <div class="card-name">{card.name}</div>
+              <div class="card-meta">{card.meta}</div>
+              <div class="card-bar">
+                <i style={`width:${card.progress * 100}%;background:${card.tone}`} />
+              </div>
+            </div>
+          ))
+        }
+        <div class="card card-new" data-new-card style={`left:${slots[5][0]}px;top:${slots[5][1]}px`}>
+          <div class="card-top"><span class="card-swatch" style="background:#8b7cff"></span></div>
+          <div class="card-name">Untitled project</div>
+          <div class="card-meta">Just now</div>
+          <div class="card-bar"><i style="width:4%;background:#8b7cff"></i></div>
+        </div>
+      </div>
+
+      <div class="fx" aria-hidden="true">
+        <div class="hl" data-highlight></div>
+        <div class="ripple" data-ripple></div>
+        <div class="ripple" data-ripple></div>
+        <div class="ripple" data-ripple></div>
+        <div class="click-dot" data-click-dot></div>
+      </div>
+
+      {
+        labels && (
+          <div class="labels" aria-hidden="true">
+            {Object.values(T)
+              .filter((t) => t.id !== 'nav-team')
+              .map((t) => (
+                <div class="tlabel" data-label={t.id} style={box(t.id)}>
+                  <span class="tchip">
+                    <b>{t.primary ? 'Primary Button' : t.name}</b>
+                    <em>{describeTarget(t.id)}</em>
+                  </span>
+                </div>
+              ))}
+          </div>
+        )
+      }
+
+      <div class="cursor" data-cursor aria-hidden="true">
+        <svg viewBox="0 0 28 28" width="28" height="28"><path d="M6 3.5v18.2l4.6-4.4 2.9 6.6 3.1-1.4-2.9-6.5h6.3z" fill="#111" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"></path></svg>
+      </div>
+    </div>
+  </div>
+  <slot />
+</div>
+
+<style>
+  .viewport {
+    --fit: 1;
+    position: relative;
+    aspect-ratio: 960 / 600;
+    width: 100%;
+    overflow: hidden;
+    background: #f6f6f8;
+    container-type: inline-size;
+    contain: layout paint;
+  }
+  .viewport:not(.is-fitted) .screen-fit {
+    visibility: hidden;
+  }
+  .screen-fit {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 960px;
+    height: 600px;
+    transform-origin: 0 0;
+    transform: scale(var(--fit));
+  }
+  .screen-cam {
+    position: absolute;
+    inset: 0;
+    transform-origin: 0 0;
+    will-change: transform;
+  }
+  .app {
+    position: absolute;
+    inset: 0;
+    background: #fbfbfc;
+    color: #1d1d1f;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    letter-spacing: -0.005em;
+  }
+  .app > *,
+  .side > * {
+    position: absolute;
+  }
+  .side {
+    left: 0;
+    top: 0;
+    width: 200px;
+    height: 600px;
+    background: #f0f0f3;
+    border-right: 1px solid #e3e3e8;
+  }
+  .app-name {
+    left: 22px;
+    top: 26px;
+    font-weight: 700;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+  }
+  .app-dot {
+    width: 18px;
+    height: 18px;
+    border-radius: 6px;
+    background: conic-gradient(from 200deg, #7c6cf0, #2f9cba, #7c6cf0);
+  }
+  .nav-item {
+    left: 20px;
+    width: 160px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 10px;
+    color: #4a4a50;
+    font-weight: 500;
+    transition: background-color 160ms ease, color 160ms ease;
+  }
+  .nav-item.faint {
+    color: #6b6b72;
+    font-weight: 450;
+  }
+  .nav-item.is-active {
+    background: #e2e0f8;
+    color: #3f33b8;
+  }
+  .ni-icon {
+    width: 14px;
+    height: 14px;
+    border-radius: 4px;
+    background: currentColor;
+    opacity: 0.35;
+  }
+  .ni-icon.dot {
+    border-radius: 50%;
+    width: 9px;
+    height: 9px;
+    opacity: 1;
+    margin: 0 2px;
+  }
+  .side-sep {
+    left: 20px;
+    width: 160px;
+    height: 1px;
+    background: #e0e0e6;
+  }
+  .side-label {
+    left: 30px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #8a8a90;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .settings-btn {
+    display: grid;
+    place-items: center;
+    border-radius: 9px;
+    color: #6b6b72;
+    transition: background-color 160ms ease;
+  }
+  .settings-btn svg {
+    width: 20px;
+  }
+  .search {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 14px;
+    border-radius: 10px;
+    background: #f0f0f3;
+    color: #8a8a90;
+    box-shadow: 0 0 0 1px #e3e3e8 inset;
+    transition: box-shadow 160ms ease, background-color 160ms ease;
+  }
+  .search svg {
+    width: 17px;
+    flex: none;
+  }
+  .search.is-focused {
+    background: #fff;
+    box-shadow: 0 0 0 2px #8b7cff inset, 0 0 0 4px rgba(139, 124, 255, 0.18);
+  }
+  .search-text {
+    color: #1d1d1f;
+  }
+  .caret {
+    width: 1.5px;
+    height: 18px;
+    margin-left: -9px;
+    background: #6658d9;
+    opacity: 0;
+  }
+  .search.is-focused .caret {
+    opacity: 1;
+  }
+  .search-ph.is-hidden {
+    display: none;
+  }
+  .avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #f2be22, #f08b24);
+  }
+  .create-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border-radius: 10px;
+    background: #6658d9;
+    color: #fff;
+    font-weight: 600;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.25) inset, 0 4px 10px -2px rgba(102, 88, 217, 0.45);
+    transition: transform 120ms ease, background-color 160ms ease;
+  }
+  .create-btn .plus {
+    font-size: 18px;
+    line-height: 1;
+    font-weight: 500;
+  }
+  .create-btn.is-hover {
+    background: #5547c7;
+  }
+  [data-el].is-pressed {
+    transform: scale(0.95);
+  }
+  .settings-btn.is-hover,
+  .settings-btn.is-pressed {
+    background: #e3e3e8;
+  }
+  .page-title {
+    left: 232px;
+    top: 92px;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .page-sub {
+    left: 360px;
+    top: 102px;
+    font-size: 13px;
+    color: #8a8a90;
+  }
+  .card {
+    width: 220px;
+    height: 150px;
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 0 0 1px #ececf0, 0 4px 14px -6px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+    transition: box-shadow 200ms ease, transform 200ms ease;
+  }
+  .card.is-hover {
+    box-shadow: 0 0 0 1px #dcdce4, 0 10px 24px -8px rgba(0, 0, 0, 0.18);
+    transform: translateY(-2px);
+  }
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .card-swatch {
+    width: 26px;
+    height: 26px;
+    border-radius: 8px;
+  }
+  .card-more {
+    color: #a0a0a8;
+    letter-spacing: 1px;
+  }
+  .card-name {
+    margin-top: 18px;
+    font-weight: 650;
+    font-size: 15px;
+  }
+  .card-meta {
+    margin-top: 2px;
+    font-size: 12.5px;
+    color: #8a8a90;
+  }
+  .card-bar {
+    margin-top: 16px;
+    height: 5px;
+    border-radius: 3px;
+    background: #efeff3;
+    overflow: hidden;
+  }
+  .card-bar i {
+    display: block;
+    height: 100%;
+    border-radius: 3px;
+  }
+  .card-new {
+    opacity: 0;
+    transform: scale(0.9);
+    transition: opacity 260ms ease, transform 360ms var(--ease-spring);
+  }
+  .card-new.is-shown {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Effects drawn by the "edit" (compiled from the Program). */
+  .fx > * {
+    position: absolute;
+    pointer-events: none;
+  }
+  .hl {
+    border-radius: 14px;
+    box-shadow:
+      0 0 0 3px #8b7cff,
+      0 0 0 9px rgba(139, 124, 255, 0.28),
+      0 0 40px 10px rgba(139, 124, 255, 0.35);
+    opacity: 0;
+  }
+  .ripple {
+    width: 120px;
+    height: 120px;
+    margin: -60px 0 0 -60px;
+    border-radius: 50%;
+    border: 3px solid rgba(139, 124, 255, 0.95);
+    background: radial-gradient(circle, rgba(139, 124, 255, 0.25), transparent 70%);
+    opacity: 0;
+  }
+  .click-dot {
+    width: 34px;
+    height: 34px;
+    margin: -17px 0 0 -17px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.16);
+    opacity: 0;
+  }
+
+  /* Semantic targets ("Understanding"). */
+  .labels > * {
+    position: absolute;
+  }
+  .tlabel {
+    border-radius: 10px;
+    outline: 2px dashed rgba(139, 124, 255, 0);
+    outline-offset: 5px;
+    opacity: 0;
+    transform: scale(1.04);
+    transition:
+      opacity 420ms var(--ease-out),
+      transform 520ms var(--ease-out),
+      outline-color 420ms ease;
+    transition-delay: calc(var(--d, 0) * 1ms);
+  }
+  .tlabel.is-on {
+    opacity: 1;
+    transform: none;
+    outline-color: rgba(139, 124, 255, 0.95);
+  }
+  .tchip {
+    position: absolute;
+    left: -6px;
+    bottom: calc(100% + 12px);
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    padding: 6px 10px 7px;
+    border-radius: 9px;
+    background: #17171a;
+    color: #fff;
+    white-space: nowrap;
+    box-shadow: 0 8px 20px -6px rgba(0, 0, 0, 0.5);
+    font-size: 13px;
+    line-height: 1.25;
+  }
+  .tchip b {
+    font-weight: 650;
+  }
+  .tchip em {
+    font-style: normal;
+    font-size: 11px;
+    color: #b6b0ff;
+  }
+  .tlabel[data-label='settings'] .tchip {
+    bottom: auto;
+    top: -6px;
+    left: calc(100% + 14px);
+  }
+  .tlabel[data-label='navigation'] .tchip {
+    left: calc(100% + 14px);
+    bottom: auto;
+    top: 0;
+  }
+  .tlabel[data-label='card-q3'] .tchip {
+    bottom: auto;
+    top: calc(100% + 12px);
+  }
+
+  .cursor {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 28px;
+    height: 28px;
+    margin: -4px 0 0 -6px;
+    will-change: transform;
+    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.3));
+    transform-origin: 6px 4px;
+  }
+</style>

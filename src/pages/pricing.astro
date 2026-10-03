@@ -1,0 +1,350 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE } from '../lib/site';
+
+const levels = [0, 3, 5, 10, 20, 50];
+const included = [
+  'Recording, editing and export, with nothing locked',
+  'Programs, Behaviours, scenes and the Ask box',
+  'Every effect, Effect Studio and looks',
+  'Captions and narration clean-up, on your Mac',
+  'No watermark, no account, no upload',
+];
+const faqs = [
+  {
+    q: 'Is it really free?',
+    a: 'Yes. Every feature works without paying. If MeCorder saves you time, you can contribute whatever you think it’s worth, including nothing.',
+  },
+  {
+    q: 'Why pay at all?',
+    a: 'Contributions fund the work: new blocks, better targets, more effects and the time it takes to keep a Mac app excellent.',
+  },
+  {
+    q: 'Do I need an account?',
+    a: 'No. MeCorder runs on your Mac and your recordings stay there.',
+  },
+  {
+    q: 'What about the AI features?',
+    a: 'The built-in offline interpreter is free and needs no network. Free-form requests can use your own Anthropic API key, which you pay Anthropic for directly.',
+  },
+];
+---
+
+<Base title="Pricing" description="MeCorder is free forever. Pay what you think it's worth.">
+  <div class="pr container">
+    <header class="pr-head">
+      <p class="eyebrow" data-reveal><span class="dot"></span>Pricing</p>
+      <h1 data-reveal data-reveal-delay="60">Free forever.<br /><span class="muted-h">Pay what you think it’s worth.</span></h1>
+      <p class="lead" data-reveal data-reveal-delay="120">Use all of MeCorder first. If it earns a place in your workflow, chip in. If it doesn’t, that’s fine too.</p>
+    </header>
+
+    <div class="pr-grid">
+      <section class="pr-card free" data-reveal aria-labelledby="free-h">
+        <h2 id="free-h">MeCorder</h2>
+        <p class="pr-price"><b>$0</b> <span>forever</span></p>
+        <ul>
+          {included.map((x) => <li>{x}</li>)}
+        </ul>
+        <a href="/download" class="btn btn-primary btn-lg pr-dl" data-track="download_click" data-track-from="pricing">Download for macOS</a>
+        <p class="pr-req">{SITE.requirements}</p>
+      </section>
+
+      <section class="pr-card contrib" data-reveal data-reveal-delay="100" aria-labelledby="contrib-h" data-contrib>
+        <h2 id="contrib-h">Contribute</h2>
+        <p class="muted">A one-off amount, whenever you like.</p>
+        <fieldset class="pr-levels">
+          <legend class="sr-only">Contribution amount</legend>
+          {
+            levels.map((l) => (
+              <label class="pr-level">
+                <input type="radio" name="amount" value={l} checked={l === 10} />
+                <span>${l}</span>
+              </label>
+            ))
+          }
+          <label class="pr-level pr-custom">
+            <input type="radio" name="amount" value="custom" />
+            <span>Custom</span>
+          </label>
+        </fieldset>
+        <div class="pr-custom-field" data-custom hidden>
+          <label for="custom-amount">Amount (USD)</label>
+          <div class="pr-input"><span>$</span><input id="custom-amount" type="number" min="1" step="1" inputmode="numeric" placeholder="15" /></div>
+        </div>
+        <div class="pr-total" aria-live="polite"><span data-total-label>You’ll contribute</span> <b data-total>$10</b></div>
+        <button type="button" class="btn btn-accent btn-lg pr-go" data-contribute>Contribute</button>
+        <p class="pr-note" data-note>Contributions open with the first public release. Nothing is charged from this page.</p>
+      </section>
+    </div>
+
+    <section class="pr-faq" aria-labelledby="faq-h">
+      <h2 id="faq-h" data-reveal>Questions</h2>
+      <div class="faq-list">
+        {
+          faqs.map((f) => (
+            <details class="faq" data-reveal>
+              <summary>{f.q}</summary>
+              <p>{f.a}</p>
+            </details>
+          ))
+        }
+      </div>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .pr {
+    padding-top: calc(var(--nav-h) + clamp(48px, 9vw, 120px));
+    padding-bottom: 120px;
+    max-width: 1040px;
+  }
+  .pr-head {
+    text-align: center;
+    max-width: 720px;
+    margin: 0 auto clamp(48px, 7vw, 80px);
+  }
+  .pr-head h1 {
+    font-size: var(--fs-h1);
+    letter-spacing: -0.03em;
+    margin: 16px 0 20px;
+  }
+  .muted-h {
+    color: var(--text-3);
+  }
+  .pr-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .pr-card {
+    padding: 32px;
+    border-radius: 20px;
+    background: var(--bg-raised);
+    box-shadow: 0 0 0 1px var(--border-subtle) inset;
+  }
+  .pr-card h2 {
+    font-size: 1.2rem;
+  }
+  .pr-card.free {
+    background:
+      radial-gradient(80% 60% at 0% 0%, rgba(139, 124, 255, 0.14), transparent 70%),
+      var(--bg-raised);
+  }
+  .pr-price {
+    margin: 14px 0 22px;
+    color: var(--text-3);
+  }
+  .pr-price b {
+    font-size: 3rem;
+    color: var(--text);
+    letter-spacing: -0.03em;
+    font-weight: 650;
+  }
+  .pr-card ul {
+    list-style: none;
+    margin: 0 0 28px;
+    padding: 0;
+    display: grid;
+    gap: 10px;
+    color: var(--text-2);
+  }
+  .pr-card li {
+    display: flex;
+    gap: 10px;
+  }
+  .pr-card li::before {
+    content: '✓';
+    color: var(--success);
+  }
+  .pr-dl,
+  .pr-go {
+    width: 100%;
+  }
+  .pr-req,
+  .pr-note {
+    margin-top: 12px;
+    font-size: 12px;
+    color: var(--text-4);
+    text-align: center;
+  }
+  .pr-levels {
+    border: 0;
+    margin: 22px 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+  .pr-level {
+    position: relative;
+  }
+  .pr-level input {
+    position: absolute;
+    opacity: 0;
+    inset: 0;
+    cursor: pointer;
+  }
+  .pr-level span {
+    display: grid;
+    place-items: center;
+    height: 48px;
+    border-radius: 12px;
+    background: var(--surface);
+    box-shadow: 0 0 0 1px var(--border-subtle) inset;
+    font-weight: 600;
+    transition:
+      box-shadow var(--t-select) ease,
+      background-color var(--t-select) ease,
+      transform var(--t-select) var(--ease-spring);
+  }
+  .pr-level:hover span {
+    background: var(--surface-2);
+  }
+  .pr-level input:checked + span {
+    background: var(--accent-soft);
+    box-shadow: 0 0 0 2px var(--accent) inset;
+    transform: scale(1.03);
+  }
+  .pr-level input:focus-visible + span {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+  .pr-custom {
+    grid-column: span 2;
+  }
+  .pr-custom-field {
+    margin-top: 14px;
+    font-size: 13px;
+    color: var(--text-3);
+  }
+  .pr-input {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 6px;
+    height: 44px;
+    padding: 0 14px;
+    border-radius: 12px;
+    background: var(--surface);
+    box-shadow: 0 0 0 1px var(--border) inset;
+  }
+  .pr-input input {
+    flex: 1;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: var(--text);
+    font: inherit;
+    font-size: 1rem;
+  }
+  .pr-total {
+    margin: 22px 0 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    color: var(--text-3);
+  }
+  .pr-total b {
+    font-size: 1.6rem;
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+    transition: transform 300ms var(--ease-spring);
+  }
+  .pr-total b.bump {
+    transform: scale(1.12);
+  }
+  .pr-note.is-highlight {
+    color: var(--text-2);
+  }
+  .pr-faq {
+    margin-top: clamp(80px, 10vw, 128px);
+    max-width: 720px;
+    margin-inline: auto;
+  }
+  .pr-faq h2 {
+    font-size: var(--fs-h3);
+    margin-bottom: 20px;
+  }
+  .faq {
+    border-top: 1px solid var(--border-subtle);
+  }
+  .faq:last-child {
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .faq summary {
+    display: flex;
+    justify-content: space-between;
+    padding: 18px 0;
+    font-weight: 600;
+    cursor: pointer;
+    list-style: none;
+  }
+  .faq summary::after {
+    content: '+';
+    color: var(--text-3);
+    transition: transform var(--t-select) var(--ease-out);
+  }
+  .faq[open] summary::after {
+    transform: rotate(45deg);
+  }
+  .faq p {
+    padding-bottom: 18px;
+    color: var(--text-2);
+  }
+  @media (max-width: 760px) {
+    .pr-grid {
+      grid-template-columns: 1fr;
+    }
+    .pr-card {
+      padding: 24px;
+    }
+  }
+</style>
+
+<script>
+  import { track } from '../lib/analytics';
+  const root = document.querySelector<HTMLElement>('[data-contrib]');
+  if (root) {
+    const total = root.querySelector<HTMLElement>('[data-total]')!;
+    const label = root.querySelector<HTMLElement>('[data-total-label]')!;
+    const custom = root.querySelector<HTMLElement>('[data-custom]')!;
+    const customInput = custom.querySelector<HTMLInputElement>('input')!;
+    const note = root.querySelector<HTMLElement>('[data-note]')!;
+    const go = root.querySelector<HTMLButtonElement>('[data-contribute]')!;
+    const value = () => {
+      const v = (root.querySelector<HTMLInputElement>('input[name=amount]:checked')?.value) ?? '0';
+      return v === 'custom' ? Math.max(0, Math.round(Number(customInput.value) || 0)) : Number(v);
+    };
+    const update = () => {
+      const isCustom = root.querySelector<HTMLInputElement>('input[name=amount]:checked')?.value === 'custom';
+      custom.hidden = !isCustom;
+      const v = value();
+      total.textContent = `$${v}`;
+      label.textContent = v === 0 ? 'Free is fine' : 'You’ll contribute';
+      go.textContent = v === 0 ? 'Download instead' : 'Contribute';
+      total.classList.remove('bump');
+      void total.offsetWidth;
+      total.classList.add('bump');
+    };
+    root.addEventListener('change', (e) => {
+      update();
+      const t = e.target as HTMLInputElement;
+      if (t.name === 'amount') {
+        track('contribution_selected', { amount: t.value });
+        if (t.value === 'custom') customInput.focus();
+      }
+    });
+    customInput.addEventListener('input', update);
+    go.addEventListener('click', () => {
+      track('pricing_interaction', { action: 'contribute', amount: value() });
+      if (value() === 0) {
+        location.href = '/download';
+        return;
+      }
+      note.classList.add('is-highlight');
+      note.textContent = 'Thank you. Contributions open with the first public release; nothing was charged.';
+    });
+    update();
+  }
+</script>
