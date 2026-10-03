@@ -30,6 +30,7 @@ export function initStory(root: HTMLElement) {
   const texts = [...root.querySelectorAll<HTMLElement>('[data-chapter]')];
   const rail = [...root.querySelectorAll<HTMLElement>('[data-rail]')];
   const copy = q('.story-copy');
+  const count = q('[data-story-count]');
   const blocks = [...panel.querySelectorAll<HTMLElement>('.pblock')];
   const view = new RecordingView(q('[data-viewport]'));
   const edit = execute([PRIMARY_BUTTON_PROGRAM]);
@@ -65,6 +66,7 @@ export function initStory(root: HTMLElement) {
         r.classList.toggle('is-done', i < chapter);
       });
       mode.textContent = ['Recording', 'Recording · paused', 'Program', 'Preview', 'Export'][chapter];
+      count.textContent = `${String(chapter + 1).padStart(2, '0')} / 05`;
     }
 
     const t = valueAt(recTrack, p);

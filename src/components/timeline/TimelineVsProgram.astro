@@ -18,7 +18,7 @@ const atoms = [
     <div class="tvp-grid">
       <div class="tvp-copy">
         <p class="eyebrow" data-reveal><span class="dot"></span>Two views, one edit</p>
-        <h2 id="tvp-title" data-reveal data-reveal-delay="60">Use intent when you can. Use the Timeline when you need it.</h2>
+        <h2 id="tvp-title" data-split>Use intent when you can. Use the Timeline when you need it.</h2>
         <div class="tvp-switch" role="tablist" aria-label="View" data-reveal data-reveal-delay="120">
           <span class="tvp-thumb" aria-hidden="true"></span>
           <button role="tab" type="button" aria-selected="true" data-view="timeline" id="tvp-tab-tl" aria-controls="tvp-stage">Timeline</button>
@@ -31,7 +31,7 @@ const atoms = [
         <p class="muted tvp-foot" data-reveal data-reveal-delay="200">Program doesn't replace the Timeline. It writes to it: every block becomes ordinary keyframes and effects that you can open, move or delete.</p>
       </div>
 
-      <div class="tvp-stage" id="tvp-stage" role="tabpanel" aria-labelledby="tvp-tab-tl" data-tvp-stage data-reveal="scale">
+      <div class="tvp-stage" id="tvp-stage" data-cursor="Same edit" role="tabpanel" aria-labelledby="tvp-tab-tl" data-tvp-stage data-reveal="scale">
         <div class="tvp-tracks" aria-hidden="true">
           <div class="tvp-track" style="--row:0"><span>Clicks</span></div>
           <div class="tvp-track" style="--row:1"><span>Camera</span></div>

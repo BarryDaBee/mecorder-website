@@ -24,7 +24,7 @@ const ld = {
 
 <Base title={page.slug ? `${page.title} · Docs` : 'Documentation'} description={page.description} navMode="solid" structuredData={[ld]} bodyClass="docs-body">
   <div class="docs container-wide">
-    <aside class="docs-side" aria-label="Documentation">
+    <aside class="docs-side" aria-label="Documentation" data-lenis-prevent>
       <button class="docs-search-btn" type="button" data-open-search>
         <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="9" cy="9" r="5.5" stroke="currentColor" stroke-width="1.6"></circle><path d="m13.2 13.2 3.3 3.3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
         <span>Search</span>
@@ -99,7 +99,7 @@ const ld = {
 
     {
       toc.length > 2 && (
-        <aside class="docs-toc" aria-label="On this page">
+        <aside class="docs-toc" aria-label="On this page" data-lenis-prevent>
           <p>On this page</p>
           <ul>
             {toc.map((h) => (

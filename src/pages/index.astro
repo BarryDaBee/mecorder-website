@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import Hero from '../components/hero/Hero.astro';
+import Statement from '../components/product/Statement.astro';
 import OldWay from '../components/product/OldWay.astro';
 import ScrollStory from '../components/product/ScrollStory.astro';
 import Semantic from '../components/product/Semantic.astro';
@@ -25,6 +26,7 @@ const app = {
 
 <Base description="MeCorder is a screen recorder and screen video editor for Mac with programmable video: record once, then program how the camera, highlights and effects respond to what happens in the recording." structuredData={[app]}>
   <Hero />
+  <Statement />
   <OldWay />
   <ScrollStory />
   <Semantic />

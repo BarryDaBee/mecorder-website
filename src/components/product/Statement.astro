@@ -1,0 +1,67 @@
+---
+/**
+ * A statement between the film and the story: scroll-lit, so the reader's
+ * pace is the scroll's. The idea in one paragraph.
+ */
+---
+
+<section class="statement" id="statement" aria-labelledby="statement-label">
+  <div class="container st-inner">
+    <p class="mono-label st-label" id="statement-label"><span class="st-dot"></span>00 · The idea</p>
+    <p class="st-text" data-scroll-text>
+      A screen recorder sees pixels. MeCorder sees what you did: the button you pressed, the field you typed into, the moment it happened. So instead of editing every frame, you say what the video should do whenever it happens, and the edit writes itself.
+    </p>
+    <div class="st-model" aria-label="Record, Understand, Program, Polish, Export">
+      {['Record', 'Understand', 'Program', 'Polish', 'Export'].map((s, i) => <span class="mono-label" data-reveal data-reveal-delay={String(i * 90)}>{s}</span>)}
+    </div>
+  </div>
+</section>
+
+<style>
+  .statement {
+    padding: clamp(120px, 18vw, 240px) 0 clamp(60px, 10vw, 120px);
+  }
+  .st-inner {
+    max-width: 1040px;
+  }
+  .st-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 32px;
+  }
+  .st-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .st-text {
+    font-family: var(--font-display);
+    font-size: clamp(1.7rem, 1rem + 2.9vw, 3.3rem);
+    line-height: 1.16;
+    letter-spacing: -0.028em;
+    font-weight: 600;
+    color: var(--text);
+    text-wrap: pretty;
+  }
+  .st-model {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 0;
+    margin-top: 48px;
+  }
+  .st-model span {
+    color: var(--text-2);
+  }
+  .st-model span + span::before {
+    content: '';
+    display: inline-block;
+    width: clamp(16px, 4vw, 56px);
+    height: 1px;
+    margin: 0 14px;
+    vertical-align: middle;
+    background: var(--border-strong);
+  }
+</style>

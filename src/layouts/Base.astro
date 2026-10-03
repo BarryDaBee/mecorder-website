@@ -67,13 +67,27 @@ const baseLd = {
     <meta name="twitter:image" content={imageUrl} />
 
     <script is:inline>
-      document.documentElement.classList.remove('no-js');
-      document.documentElement.classList.add('js');
+      (function () {
+        var d = document.documentElement;
+        d.classList.remove('no-js');
+        d.classList.add('js');
+        // The record-in intro plays once per visit, never with Reduce Motion.
+        var seen = false;
+        try {
+          seen = sessionStorage.getItem('mc-intro') === '1';
+          sessionStorage.setItem('mc-intro', '1');
+        } catch (e) {}
+        if (seen || matchMedia('(prefers-reduced-motion: reduce)').matches) d.classList.add('no-intro');
+        else d.classList.add('intro-playing');
+      })();
     </script>
     <script type="application/ld+json" set:html={JSON.stringify([baseLd, ...structuredData])} />
     <slot name="head" />
   </head>
   <body class={bodyClass}>
+    <div class="intro" aria-hidden="true" data-intro>
+      <div class="intro-inner"><span class="intro-dot"></span>REC <span class="intro-time" data-intro-time>00:00:00</span></div>
+    </div>
     <a class="skip-link" href="#main">Skip to content</a>
     <Nav mode={navMode} />
     <main id="main">
@@ -81,10 +95,23 @@ const baseLd = {
     </main>
     {!noFooter && <Footer />}
     <Search />
+    <div class="cursor" data-cursor-root aria-hidden="true"><span class="cur-ring"></span><span class="cur-dot"></span><span class="cur-label"></span></div>
+    <div class="grain" aria-hidden="true"></div>
     <script>
       import { initReveals } from '../lib/animation/reveal';
+      import { initSplitText } from '../lib/animation/split';
+      import { initScrollText } from '../lib/animation/scroll-text';
+      import { initSmoothScroll } from '../lib/animation/smooth-scroll';
+      import { initCursor } from '../lib/animation/cursor';
+      import { playIntro } from '../lib/animation/intro';
       import { bindDeclarativeTracking } from '../lib/analytics';
-      initReveals();
+      initSmoothScroll();
+      initCursor();
+      playIntro().then(() => {
+        initReveals();
+        initSplitText();
+      });
+      initScrollText();
       bindDeclarativeTracking();
     </script>
   </body>

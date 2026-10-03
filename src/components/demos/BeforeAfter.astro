@@ -11,11 +11,11 @@ import MockApp from './MockApp.astro';
   <div class="container-wide">
     <div class="section-head center">
       <p class="eyebrow" data-reveal><span class="dot"></span>Before and after</p>
-      <h2 id="ba-title" data-reveal data-reveal-delay="60">Same recording. A different film.</h2>
+      <h2 id="ba-title" data-split>Same recording. A different film.</h2>
       <p class="lead" data-reveal data-reveal-delay="120">Drag across. On the left, what the screen saw. On the right, one Program for every click: the camera finds each element, the cursor gets weight, every press lands.</p>
     </div>
 
-    <div class="ba" data-ba data-reveal="scale">
+    <div class="ba" data-ba data-reveal="scale" data-cursor="Drag">
       <div class="ba-after">
         <div class="ba-wall" aria-hidden="true"></div>
         <div class="ba-window">

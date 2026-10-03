@@ -22,6 +22,7 @@ import { TARGETS, describeTarget } from '../../lib/program/recording';
                   type="button"
                   class="pg-pick"
                   data-pick={t.id}
+                  data-cursor="Make target"
                   style={`--x:${t.x};--y:${t.y};--w:${t.w};--h:${t.h}`}
                   aria-label={`Make ${describeTarget(t.id)} the target`}
                 >

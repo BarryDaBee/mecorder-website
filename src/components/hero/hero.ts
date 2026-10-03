@@ -6,6 +6,7 @@ import { DURATION } from '../../lib/program/recording';
 import { valueAt, span, fade, type Track } from '../../lib/animation/timeline';
 import { onFrame, whenVisible, prefersReducedMotion, isCompact, lerp, progress, ease } from '../../lib/animation/motion';
 import { initPointerParallax, initMagnetic } from '../../lib/animation/parallax';
+import { introPlaying, INTRO_DONE } from '../../lib/animation/intro';
 
 /**
  * Film time H (seconds). Every visual is a pure function of H, so the film
@@ -130,6 +131,11 @@ export function initHero(root: HTMLElement) {
   const steps = [...root.querySelectorAll<HTMLElement>('[data-step]')];
   const replay = q<HTMLButtonElement>('[data-hero-replay]');
   const bg = q('.hero-bg');
+  const meta = q('.hero-meta');
+  const tc = q('[data-hero-tc]');
+  const cue = q('[data-hero-cue]');
+  const title = q('#hero-title');
+  const rot = [...root.querySelectorAll<HTMLElement>('[data-rot] b')];
   const blocks = [...panel.querySelectorAll<HTMLElement>('.pblock')];
 
   const view = new RecordingView(q('[data-viewport]'));
@@ -165,6 +171,17 @@ export function initHero(root: HTMLElement) {
   function render(H: number) {
     const v = (k: string) => valueAt(tracks[k], H);
     bg.style.setProperty('--glow', v('glow').toFixed(3));
+    meta.style.setProperty('--glow', v('glow').toFixed(3));
+    const secs = Math.max(0, H);
+    tc.textContent = `00:${String(Math.floor(secs)).padStart(2, '0')}:${String(Math.floor((secs % 1) * 60)).padStart(2, '0')}`;
+    // WHEN [Click] cycles through the triggers a Program can listen for.
+    const ri = Math.floor(H / 1.6) % rot.length;
+    rot.forEach((b, i) => {
+      b.classList.toggle('is-on', i === ri);
+      b.classList.toggle('is-off', i === (ri - 1 + rot.length) % rot.length);
+    });
+    title.classList.toggle('is-in', compact || H >= 12.15);
+    cue.classList.toggle('is-shown', H >= T.end - 0.4);
 
     // 1–2. A cursor in the dark, then the window materialises where it clicks.
     if (!compact) {
@@ -308,7 +325,10 @@ export function initHero(root: HTMLElement) {
   };
   render(H);
   if (import.meta.env.DEV) (window as any).__hero = { seek: (h: number) => ((H = h), render(H)), pause };
-  whenVisible(root, start, pause, '0px');
+  // Wait for the intro curtain, so the film starts as it lifts.
+  const begin = () => whenVisible(root, start, pause, '0px');
+  if (introPlaying()) window.addEventListener(INTRO_DONE, begin, { once: true });
+  else begin();
   document.addEventListener('visibilitychange', () => (document.hidden ? pause() : start()));
   replay.addEventListener('click', () => {
     H = compact ? 1.6 : 0;

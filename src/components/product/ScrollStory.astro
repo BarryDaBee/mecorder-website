@@ -42,6 +42,7 @@ const chapters = [
   <div class="story-sticky">
     <div class="story-grid container-wide">
       <div class="story-copy">
+        <div class="story-progress" aria-hidden="true"><i></i><span class="mono-label" data-story-count>01 / 05</span></div>
         <ol class="story-rail" aria-hidden="true">
           {chapters.map((c, i) => <li data-rail={i}><span>{String(i + 1).padStart(2, '0')}</span>{c.k}</li>)}
         </ol>
@@ -100,6 +101,28 @@ const chapters = [
     position: relative;
     z-index: 2;
     opacity: var(--copy-o, 1);
+  }
+  .story-progress {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 18px;
+  }
+  .story-progress i {
+    position: relative;
+    flex: 1;
+    max-width: 220px;
+    height: 1px;
+    background: var(--border);
+    overflow: hidden;
+  }
+  .story-progress i::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--accent);
+    transform-origin: left;
+    transform: scaleX(var(--p, 0));
   }
   .story-rail {
     list-style: none;
