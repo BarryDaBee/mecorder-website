@@ -1,4 +1,5 @@
 ---
+import { u } from '../lib/url';
 import Base from '../layouts/Base.astro';
 import { SITE } from '../lib/site';
 
@@ -45,7 +46,7 @@ const faqs = [
         <ul>
           {included.map((x) => <li>{x}</li>)}
         </ul>
-        <a href="/download" class="btn btn-primary btn-lg pr-dl" data-track="download_click" data-track-from="pricing">Download for macOS</a>
+        <a href={u('/download')} class="btn btn-primary btn-lg pr-dl" data-track="download_click" data-track-from="pricing">Download for macOS</a>
         <p class="pr-req">{SITE.requirements}</p>
       </section>
 
@@ -304,6 +305,7 @@ const faqs = [
 
 <script>
   import { track } from '../lib/analytics';
+  import { u } from '../lib/url';
   const root = document.querySelector<HTMLElement>('[data-contrib]');
   if (root) {
     const total = root.querySelector<HTMLElement>('[data-total]')!;
@@ -339,7 +341,7 @@ const faqs = [
     go.addEventListener('click', () => {
       track('pricing_interaction', { action: 'contribute', amount: value() });
       if (value() === 0) {
-        location.href = '/download';
+        location.href = u('/download');
         return;
       }
       note.classList.add('is-highlight');

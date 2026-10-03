@@ -1,4 +1,5 @@
 ---
+import { u } from '../lib/url';
 import Page from '../layouts/Page.astro';
 ---
 
@@ -14,5 +15,5 @@ import Page from '../layouts/Page.astro';
     <li><strong>A native Mac app.</strong> Built with Apple’s frameworks, designed to feel at home next to the apps you already use.</li>
   </ul>
   <h2 id="status">Where things are</h2>
-  <p>MeCorder is in active development and hasn’t had a public release yet. The <a href="/changelog">changelog</a> follows the work as it lands, and the <a href="/docs">documentation</a> describes what’s built today.</p>
+  <p>MeCorder is in active development and hasn’t had a public release yet. The <a href={u('/changelog')}>changelog</a> follows the work as it lands, and the <a href={u('/docs')}>documentation</a> describes what’s built today.</p>
 </Page>

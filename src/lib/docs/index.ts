@@ -1,3 +1,4 @@
+import { u } from '../url';
 /** The documentation, loaded from src/content/docs/*.md at build time. */
 import type { MarkdownHeading } from 'astro';
 
@@ -22,7 +23,7 @@ export const DOCS: DocPage[] = Object.entries(modules)
     const fm = mod.frontmatter ?? {};
     return {
       slug,
-      url: slug ? `/docs/${slug}` : '/docs',
+      url: u(slug ? `/docs/${slug}` : '/docs'),
       title: fm.title ?? file,
       description: fm.description ?? '',
       order: fm.order ?? 99,

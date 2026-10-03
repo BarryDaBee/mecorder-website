@@ -1,4 +1,5 @@
 ---
+import { u } from '../lib/url';
 import '../styles/global.css';
 import Nav from '../components/navigation/Nav.astro';
 import Footer from '../components/footer/Footer.astro';
@@ -30,7 +31,7 @@ const {
 
 const fullTitle = title ? `${title} — ${SITE.name}` : `${SITE.name} — ${SITE.tagline.replace(/\.$/, '')}`;
 const canonical = new URL(Astro.url.pathname.replace(/\/$/, '') || '/', Astro.site).href;
-const imageUrl = new URL(image, Astro.site).href;
+const imageUrl = new URL(u(image), Astro.site).href;
 
 const baseLd = {
   '@context': 'https://schema.org',
@@ -50,9 +51,9 @@ const baseLd = {
     <link rel="canonical" href={canonical} />
     <meta name="theme-color" content="#0b0b0c" />
     <meta name="color-scheme" content="dark" />
-    <link rel="icon" type="image/png" href="/favicon.png" />
-    <link rel="apple-touch-icon" href="/icon-256.png" />
-    <link rel="sitemap" href="/sitemap.xml" />
+    <link rel="icon" type="image/png" href={u('/favicon.png')} />
+    <link rel="apple-touch-icon" href={u('/icon-256.png')} />
+    <link rel="sitemap" href={u('/sitemap.xml')} />
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={SITE.name} />

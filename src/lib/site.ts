@@ -1,4 +1,5 @@
 import { SITE_URL } from './site-url.mjs';
+import { u } from './url';
 
 export const SITE = {
   name: 'MeCorder',
@@ -21,20 +22,20 @@ export const DOWNLOAD = {
 };
 
 export const NAV = [
-  { label: 'Product', href: '/#product' },
-  { label: 'Program', href: '/#program' },
-  { label: 'Docs', href: '/docs' },
-  { label: 'Pricing', href: '/pricing' },
-  { label: 'Changelog', href: '/changelog' },
+  { label: 'Product', href: u('/#product') },
+  { label: 'Program', href: u('/#program') },
+  { label: 'Docs', href: u('/docs') },
+  { label: 'Pricing', href: u('/pricing') },
+  { label: 'Changelog', href: u('/changelog') },
 ];
 
 export const FOOTER = [
-  { label: 'Product', href: '/' },
-  { label: 'Download', href: '/download' },
-  { label: 'Pricing', href: '/pricing' },
-  { label: 'Docs', href: '/docs' },
-  { label: 'Changelog', href: '/changelog' },
-  { label: 'About', href: '/about' },
-  { label: 'Privacy', href: '/privacy' },
-  { label: 'Terms', href: '/terms' },
+  { label: 'Product', href: u('/') },
+  { label: 'Download', href: u('/download') },
+  { label: 'Pricing', href: u('/pricing') },
+  { label: 'Docs', href: u('/docs') },
+  { label: 'Changelog', href: u('/changelog') },
+  { label: 'About', href: u('/about') },
+  { label: 'Privacy', href: u('/privacy') },
+  { label: 'Terms', href: u('/terms') },
 ];

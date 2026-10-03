@@ -162,6 +162,7 @@
 
 <script>
   import { track } from '../../lib/analytics';
+  import { u } from '../../lib/url';
 
   type Entry = { t: string; p: string; u: string; x: string };
   const dialog = document.querySelector<HTMLDialogElement>('[data-search]');
@@ -243,7 +244,7 @@
       if (!index) {
         list.innerHTML = '<li class="sr-empty">Loading…</li>';
         try {
-          index = await (await fetch('/search-index.json')).json();
+          index = await (await fetch(u('/search-index.json'))).json();
         } catch {
           list.innerHTML = '<li class="sr-empty">Search is unavailable offline.</li>';
           return;

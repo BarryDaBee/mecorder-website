@@ -1,4 +1,5 @@
 ---
+import { u } from '../../lib/url';
 /** FINAL CTA: the finished video plays behind the last words. */
 import MockApp from '../demos/MockApp.astro';
 ---
@@ -13,8 +14,8 @@ import MockApp from '../demos/MockApp.astro';
     <h2 id="cta-title" data-reveal>Make your next screen recording behave.</h2>
     <p class="lead" data-reveal data-reveal-delay="80">Record once. Program the behaviour. Export a video that feels designed.</p>
     <div class="cta-actions" data-reveal data-reveal-delay="160">
-      <a href="/download" class="btn btn-primary btn-lg" data-track="download_click" data-track-from="final-cta" data-magnetic>Download for macOS</a>
-      <a href="/docs" class="btn btn-ghost btn-lg">Explore the documentation</a>
+      <a href={u('/download')} class="btn btn-primary btn-lg" data-track="download_click" data-track-from="final-cta" data-magnetic>Download for macOS</a>
+      <a href={u('/docs')} class="btn btn-ghost btn-lg">Explore the documentation</a>
     </div>
   </div>
 </section>

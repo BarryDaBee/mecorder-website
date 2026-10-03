@@ -1,4 +1,5 @@
 ---
+import { u } from '../lib/url';
 import Base from './Base.astro';
 import MockApp from '../components/demos/MockApp.astro';
 import { GUIDE, type DocPage } from '../lib/docs';
@@ -9,10 +10,10 @@ interface Props {
 }
 const { page } = Astro.props;
 const i = GUIDE.findIndex((d) => d.slug === page.slug);
-const prev = i > 0 ? GUIDE[i - 1] : i === -1 ? null : { url: '/docs', title: 'Documentation' };
+const prev = i > 0 ? GUIDE[i - 1] : i === -1 ? null : { url: u('/docs'), title: 'Documentation' };
 const next = i === -1 ? GUIDE[0] : GUIDE[i + 1];
 const toc = page.headings.filter((h) => h.depth === 2 || h.depth === 3);
-const crumbs = [{ url: '/docs', title: 'Docs' }, ...(page.slug ? [{ url: page.url, title: page.title }] : [])];
+const crumbs = [{ url: u('/docs'), title: 'Docs' }, ...(page.slug ? [{ url: page.url, title: page.title }] : [])];
 
 const ld = {
   '@context': 'https://schema.org',
@@ -32,7 +33,7 @@ const ld = {
       <details class="docs-nav-wrap" open data-docs-nav>
         <summary class="docs-nav-toggle">{page.slug ? page.title : 'Documentation'}<span aria-hidden="true">▾</span></summary>
         <nav class="docs-nav">
-          <a href="/docs" class:list={['dn-home', { active: !page.slug }]} aria-current={!page.slug ? 'page' : undefined}>Overview</a>
+          <a href={u('/docs')} class:list={['dn-home', { active: !page.slug }]} aria-current={!page.slug ? 'page' : undefined}>Overview</a>
           {
             GUIDE.map((d) => {
               const current = d.slug === page.slug;

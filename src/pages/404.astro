@@ -1,4 +1,5 @@
 ---
+import { u } from '../lib/url';
 import Base from '../layouts/Base.astro';
 ---
 
@@ -8,7 +9,7 @@ import Base from '../layouts/Base.astro';
     <h1>Nothing here.</h1>
     <p class="lead">The page you’re after has moved or never existed.</p>
     <div class="nf-actions">
-      <a class="btn btn-primary" href="/">Go home</a>
+      <a class="btn btn-primary" href={u('/')}>Go home</a>
       <button class="btn btn-ghost" type="button" data-open-search>Search the docs</button>
     </div>
   </section>

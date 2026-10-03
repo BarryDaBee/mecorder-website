@@ -1,10 +1,11 @@
 ---
+import { u } from '../../lib/url';
 /** DOCUMENTATION teaser: the docs as part of the product, not an afterthought. */
 const cards = [
-  { href: '/docs/getting-started', t: 'Getting Started', d: 'Install, allow permissions, make your first recording.' },
-  { href: '/docs/program', t: 'Program', d: 'Triggers, actions, targets, conditions and Behaviours.' },
-  { href: '/docs/timeline', t: 'Timeline', d: 'Scenes, camera, cursor, text, effects and audio.' },
-  { href: '/docs/export', t: 'Export', d: 'Destinations, formats, quality and GIFs.' },
+  { href: u('/docs/getting-started'), t: 'Getting Started', d: 'Install, allow permissions, make your first recording.' },
+  { href: u('/docs/program'), t: 'Program', d: 'Triggers, actions, targets, conditions and Behaviours.' },
+  { href: u('/docs/timeline'), t: 'Timeline', d: 'Scenes, camera, cursor, text, effects and audio.' },
+  { href: u('/docs/export'), t: 'Export', d: 'Destinations, formats, quality and GIFs.' },
 ];
 ---
 
@@ -14,7 +15,7 @@ const cards = [
       <p class="eyebrow" data-reveal><span class="dot"></span>Documentation</p>
       <h2 id="dt-title" data-reveal data-reveal-delay="60">Written like the app: clear, exact, short.</h2>
       <p class="lead" data-reveal data-reveal-delay="120">Every setting, shortcut and block, with animated examples. Press <kbd>⌘K</kbd> anywhere to search.</p>
-      <a class="link-arrow dt-link" href="/docs" data-reveal data-reveal-delay="160">Open the documentation</a>
+      <a class="link-arrow dt-link" href={u('/docs')} data-reveal data-reveal-delay="160">Open the documentation</a>
     </div>
     <ul class="dt-cards">
       {
