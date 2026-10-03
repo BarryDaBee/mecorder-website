@@ -1,6 +1,6 @@
 # MeCorder website
 
-Marketing site and documentation for MeCorder. Static Astro site, no runtime
+Marketing site and documentation for MeCorder, live at https://barrydabee.github.io/mecorder-website/. Static Astro site, no runtime
 dependencies beyond Astro itself; every animation is plain TypeScript + CSS.
 
 ```sh
@@ -8,6 +8,7 @@ npm install
 npm run dev       # http://localhost:4321
 npm run build     # static output in dist/
 npm run preview   # serve dist/
+npm run deploy    # build and publish to GitHub Pages (gh-pages branch)
 ```
 
 ## Where things live
@@ -40,7 +41,7 @@ steps in time → compile to camera keyframes and effects. The playground edits 
 
 ## Placeholders to fill before launch
 
-- `src/lib/site-url.mjs`: the production domain (canonical URLs, Open Graph, sitemap).
+- `src/lib/site-url.mjs`: the site URL and base path (GitHub Pages today; for a custom domain set the domain and `BASE_PATH = '/'`).
 - `src/lib/site.ts` → `DOWNLOAD.url` / `version`: the signed, notarised build.
   While it's `null`, download buttons say the build isn't out yet.
 - `/terms` and the formal privacy policy.
