@@ -13,33 +13,13 @@ html.lenis body {
   overflow: hidden;
 }
 
-/* Cursor */
+/* Cursor: the system pointer stays; this layer only adds cues. */
 .cursor {
   position: fixed;
   inset: 0;
   z-index: 300;
   pointer-events: none;
-  opacity: 0;
-  transition: opacity 200ms ease;
 }
-.cursor.is-on {
-  opacity: 1;
-}
-.has-cursor,
-.has-cursor a,
-.has-cursor button,
-.has-cursor summary,
-.has-cursor label,
-.has-cursor select,
-.has-cursor [role='tab'] {
-  cursor: none;
-}
-.has-cursor input[type='range'],
-.has-cursor .ba,
-.has-cursor .ba-range {
-  cursor: none;
-}
-.cur-dot,
 .cur-ring,
 .cur-label {
   position: absolute;
@@ -47,44 +27,21 @@ html.lenis body {
   top: 0;
   will-change: transform;
 }
-.cur-dot {
-  width: 8px;
-  height: 8px;
-  margin: -4px 0 0 -4px;
-  border-radius: 50%;
-  background: #fff;
-  mix-blend-mode: difference;
-  transition: scale 160ms var(--ease-out), opacity 160ms ease;
-}
 .cur-ring {
-  width: 34px;
-  height: 34px;
-  border: 1.5px solid rgba(255, 255, 255, 0.45);
-  transition: border-color 200ms ease, border-style 0s, background-color 200ms ease, scale 160ms var(--ease-out);
+  border: 1.5px dashed var(--accent);
+  background: rgba(139, 124, 255, 0.06);
+  opacity: 0;
+  transition: opacity 160ms ease;
 }
 .cursor.is-target .cur-ring {
-  border-color: var(--accent);
-  border-style: dashed;
-  background: rgba(139, 124, 255, 0.06);
-}
-.cursor.is-target .cur-dot {
-  scale: 0.6;
-}
-.cursor.is-down .cur-dot {
-  scale: 0.5;
-}
-.cursor.is-down .cur-ring {
-  scale: 0.94;
-}
-.cursor.is-text .cur-dot,
-.cursor.is-text .cur-ring {
-  opacity: 0;
+  opacity: 1;
 }
 .cur-label {
   padding: 3px 8px;
   border-radius: 6px;
   background: #17171a;
   color: #fff;
+  box-shadow: 0 0 0 1px var(--border);
   font: 600 11px/1.3 var(--font-mono);
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -97,17 +54,17 @@ html.lenis body {
 }
 .cur-ripple {
   position: absolute;
-  width: 64px;
-  height: 64px;
-  margin: -32px 0 0 -32px;
+  width: 56px;
+  height: 56px;
+  margin: -28px 0 0 -28px;
   border-radius: 50%;
   border: 2px solid var(--accent);
-  animation: cur-ripple 620ms var(--ease-out) forwards;
+  animation: cur-ripple 560ms var(--ease-out) forwards;
 }
 @keyframes cur-ripple {
   from {
     transform: scale(0.15);
-    opacity: 1;
+    opacity: 0.9;
   }
   to {
     transform: scale(1);
