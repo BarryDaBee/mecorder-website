@@ -44,19 +44,20 @@ const isActive = (href: string) =>
     </div>
   </div>
 
-  <div class="nav-sheet" id="nav-sheet" data-nav-sheet hidden>
-    <nav aria-label="Mobile">
-      {
-        NAV.map((item, i) => (
-          <a href={item.href} style={`--i:${i}`} aria-current={isActive(item.href) ? 'page' : undefined}>
-            {item.label}
-          </a>
-        ))
-      }
-      <a href={u('/download')} style={`--i:${NAV.length}`} class="sheet-download">Download for macOS</a>
-    </nav>
-  </div>
 </header>
+
+<div class="nav-sheet" id="nav-sheet" data-nav-sheet hidden>
+  <nav aria-label="Mobile">
+    {
+      NAV.map((item, i) => (
+        <a href={item.href} style={`--i:${i}`} aria-current={isActive(item.href) ? 'page' : undefined}>
+          {item.label}
+        </a>
+      ))
+    }
+    <a href={u('/download')} style={`--i:${NAV.length}`} class="sheet-download">Download for macOS</a>
+  </nav>
+</div>
 
 <style>
   .nav {
@@ -188,9 +189,14 @@ const isActive = (href: string) =>
   .nav.menu-open .bars i:last-child {
     transform: translateY(-3.75px) rotate(-45deg);
   }
+  /* The sheet lives outside the header: the compact header's backdrop-filter
+     would otherwise become its containing block and squash it to 48px. */
   .nav-sheet {
     position: fixed;
     inset: var(--nav-h) 0 0 0;
+    z-index: 99;
+    overflow-y: auto;
+    overscroll-behavior: contain;
     background: rgba(11, 11, 12, 0.96);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
@@ -235,7 +241,9 @@ const isActive = (href: string) =>
       height: var(--nav-h);
     }
     .nav.menu-open {
-      background: rgba(11, 11, 12, 0.96);
+      background: rgb(11, 11, 12);
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
     }
   }
   @media (max-width: 420px) {
@@ -246,6 +254,8 @@ const isActive = (href: string) =>
 </style>
 
 <script>
+  import { smoothScroll } from '../../lib/animation/smooth-scroll';
+
   const nav = document.querySelector<HTMLElement>('[data-nav]');
   if (nav) {
     // Large transparent bar at the top, compact blurred bar once the page moves.
@@ -284,14 +294,19 @@ const isActive = (href: string) =>
 
     // Mobile sheet.
     const toggle = nav.querySelector<HTMLButtonElement>('[data-nav-toggle]');
-    const sheet = nav.querySelector<HTMLElement>('[data-nav-sheet]');
+    const sheet = document.querySelector<HTMLElement>('[data-nav-sheet]');
     const setOpen = (open: boolean) => {
       if (!toggle || !sheet) return;
       toggle.setAttribute('aria-expanded', String(open));
       sheet.hidden = !open;
       nav.classList.toggle('menu-open', open);
       document.documentElement.style.overflow = open ? 'hidden' : '';
+      // Smooth scroll drives the page itself, so it has to pause too.
+      const lenis = smoothScroll();
+      if (open) lenis?.stop();
+      else lenis?.start();
     };
+    window.matchMedia('(min-width: 861px)').addEventListener('change', (e) => e.matches && setOpen(false));
     toggle?.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
     sheet?.addEventListener('click', (e) => {
       if ((e.target as Element).closest('a')) setOpen(false);
