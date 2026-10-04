@@ -1,0 +1,515 @@
+<!DOCTYPE html><html lang="en" class="no-js"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Timeline · Docs — MeCorder</title><meta name="description" content="Edit what happened in your recording, track by track - scenes, cuts, camera, cursor, text, effects and audio."><link rel="canonical" href="https://barrydabee.github.io/mecorder-website/docs/timeline"><meta name="theme-color" content="#0b0b0c"><meta name="color-scheme" content="dark"><link rel="icon" type="image/png" href="/mecorder-website/favicon.png"><link rel="apple-touch-icon" href="/mecorder-website/icon-256.png"><link rel="sitemap" href="/mecorder-website/sitemap.xml"><meta property="og:type" content="website"><meta property="og:site_name" content="MeCorder"><meta property="og:title" content="Timeline · Docs — MeCorder"><meta property="og:description" content="Edit what happened in your recording, track by track - scenes, cuts, camera, cursor, text, effects and audio."><meta property="og:url" content="https://barrydabee.github.io/mecorder-website/docs/timeline"><meta property="og:image" content="https://barrydabee.github.io/mecorder-website/og.png"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Timeline · Docs — MeCorder"><meta name="twitter:description" content="Edit what happened in your recording, track by track - scenes, cuts, camera, cursor, text, effects and audio."><meta name="twitter:image" content="https://barrydabee.github.io/mecorder-website/og.png"><script>
+      (function () {
+        var d = document.documentElement;
+        d.classList.remove('no-js');
+        d.classList.add('js');
+        // The record-in intro plays once per visit, never with Reduce Motion.
+        var seen = false;
+        try {
+          seen = sessionStorage.getItem('mc-intro') === '1';
+          sessionStorage.setItem('mc-intro', '1');
+        } catch (e) {}
+        if (seen || matchMedia('(prefers-reduced-motion: reduce)').matches) d.classList.add('no-intro');
+        else d.classList.add('intro-playing');
+      })();
+    </script><script type="application/ld+json">[{"@context":"https://schema.org","@type":"WebSite","name":"MeCorder","url":"https://barrydabee.github.io"},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Docs","item":"https://barrydabee.github.io/mecorder-website/docs"},{"@type":"ListItem","position":2,"name":"Timeline","item":"https://barrydabee.github.io/mecorder-website/docs/timeline"}]}]</script><link rel="stylesheet" href="/mecorder-website/_astro/_slug_.D4xUWNnE.css">
+<link rel="stylesheet" href="/mecorder-website/_astro/index.B2DOB-hl.css">
+<link rel="stylesheet" href="/mecorder-website/_astro/_slug_.LA4bv-Sj.css"></head> <body class="docs-body"> <div class="intro" aria-hidden="true" data-intro> <div class="intro-inner"><span class="intro-dot"></span>REC <span class="intro-time" data-intro-time>00:00:00</span></div> </div> <a class="skip-link" href="#main">Skip to content</a> <header class="nav" data-mode="solid" data-nav data-astro-cid-ehwxdqzu> <div class="nav-inner" data-astro-cid-ehwxdqzu> <a class="nav-brand" href="/mecorder-website/" aria-label="MeCorder home" data-astro-cid-ehwxdqzu> <img class="logo" src="/mecorder-website/favicon.png" width="26" height="26" alt="" aria-hidden="true" data-astro-cid-b5mbclxf>  <span data-astro-cid-ehwxdqzu>MeCorder</span> </a> <nav class="nav-links" aria-label="Main" data-astro-cid-ehwxdqzu> <span class="nav-indicator" aria-hidden="true" data-nav-indicator data-astro-cid-ehwxdqzu></span> <a href="/mecorder-website/#product" class="nav-link" data-astro-cid-ehwxdqzu> Product </a><a href="/mecorder-website/#program" class="nav-link" data-astro-cid-ehwxdqzu> Program </a><a href="/mecorder-website/docs" class="nav-link active" aria-current="page" data-astro-cid-ehwxdqzu> Docs </a><a href="/mecorder-website/pricing" class="nav-link" data-astro-cid-ehwxdqzu> Pricing </a><a href="/mecorder-website/changelog" class="nav-link" data-astro-cid-ehwxdqzu> Changelog </a> </nav> <div class="nav-actions" data-astro-cid-ehwxdqzu> <button class="nav-search" type="button" data-open-search aria-label="Search documentation" title="Search docs (⌘K)" data-astro-cid-ehwxdqzu> <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" data-astro-cid-ehwxdqzu><circle cx="9" cy="9" r="5.5" stroke="currentColor" stroke-width="1.6" data-astro-cid-ehwxdqzu></circle><path d="m13.2 13.2 3.3 3.3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" data-astro-cid-ehwxdqzu></path></svg> </button> <a class="btn btn-sm btn-primary nav-download" href="/mecorder-website/download" data-track="download_click" data-track-from="nav" data-astro-cid-ehwxdqzu>
+Download
+</a> <button class="nav-menu-btn" type="button" aria-expanded="false" aria-controls="nav-sheet" data-nav-toggle data-astro-cid-ehwxdqzu> <span class="sr-only" data-astro-cid-ehwxdqzu>Menu</span> <span class="bars" aria-hidden="true" data-astro-cid-ehwxdqzu><i data-astro-cid-ehwxdqzu></i><i data-astro-cid-ehwxdqzu></i></span> </button> </div> </div> </header> <div class="nav-sheet" id="nav-sheet" data-nav-sheet hidden data-astro-cid-ehwxdqzu> <nav aria-label="Mobile" data-astro-cid-ehwxdqzu> <a href="/mecorder-website/#product" style="--i:0" data-astro-cid-ehwxdqzu> Product </a><a href="/mecorder-website/#program" style="--i:1" data-astro-cid-ehwxdqzu> Program </a><a href="/mecorder-website/docs" style="--i:2" aria-current="page" data-astro-cid-ehwxdqzu> Docs </a><a href="/mecorder-website/pricing" style="--i:3" data-astro-cid-ehwxdqzu> Pricing </a><a href="/mecorder-website/changelog" style="--i:4" data-astro-cid-ehwxdqzu> Changelog </a> <a href="/mecorder-website/download" style="--i:5" class="sheet-download" data-astro-cid-ehwxdqzu>Download for macOS</a> </nav> </div>  <script type="module" src="/mecorder-website/_astro/Nav.astro_astro_type_script_index_0_lang.xO3TwfP7.js"></script> <main id="main">  <div class="docs container-wide"> <aside class="docs-side" aria-label="Documentation" data-lenis-prevent> <button class="docs-search-btn" type="button" data-open-search> <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="9" cy="9" r="5.5" stroke="currentColor" stroke-width="1.6"></circle><path d="m13.2 13.2 3.3 3.3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg> <span>Search</span> <kbd>⌘K</kbd> </button> <details class="docs-nav-wrap" open data-docs-nav> <summary class="docs-nav-toggle">Timeline<span aria-hidden="true">▾</span></summary> <nav class="docs-nav"> <a href="/mecorder-website/docs" class="dn-home">Overview</a> <div class="dn-group"> <a href="/mecorder-website/docs/getting-started" class="dn-title"> Getting Started </a> <ul> <li> <a href="/mecorder-website/docs/getting-started#installation"> Installation </a> </li><li> <a href="/mecorder-website/docs/getting-started#first-recording"> First Recording </a> </li><li> <a href="/mecorder-website/docs/getting-started#editing-your-recording"> Editing Your Recording </a> </li><li> <a href="/mecorder-website/docs/getting-started#exporting"> Exporting </a> </li> </ul> </div><div class="dn-group current"> <a href="/mecorder-website/docs/timeline" class="dn-title active" aria-current="page"> Timeline </a> <ul> <li> <a href="/mecorder-website/docs/timeline#timeline-overview" data-sub="timeline-overview"> Timeline Overview </a> </li><li> <a href="/mecorder-website/docs/timeline#scenes" data-sub="scenes"> Scenes </a> </li><li> <a href="/mecorder-website/docs/timeline#camera" data-sub="camera"> Camera </a> </li><li> <a href="/mecorder-website/docs/timeline#cursor" data-sub="cursor"> Cursor </a> </li><li> <a href="/mecorder-website/docs/timeline#text" data-sub="text"> Text </a> </li><li> <a href="/mecorder-website/docs/timeline#effects" data-sub="effects"> Effects </a> </li><li> <a href="/mecorder-website/docs/timeline#audio" data-sub="audio"> Audio </a> </li> </ul> </div><div class="dn-group"> <a href="/mecorder-website/docs/program" class="dn-title"> Program </a> <ul> <li> <a href="/mecorder-website/docs/program#introduction"> Introduction </a> </li><li> <a href="/mecorder-website/docs/program#triggers"> Triggers </a> </li><li> <a href="/mecorder-website/docs/program#actions"> Actions </a> </li><li> <a href="/mecorder-website/docs/program#targets"> Targets </a> </li><li> <a href="/mecorder-website/docs/program#program-blocks"> Program Blocks </a> </li><li> <a href="/mecorder-website/docs/program#conditions"> Conditions </a> </li><li> <a href="/mecorder-website/docs/program#reusable-behaviours"> Reusable Behaviours </a> </li><li> <a href="/mecorder-website/docs/program#scenes-and-shots"> Scenes and Shots </a> </li><li> <a href="/mecorder-website/docs/program#ask"> Ask </a> </li> </ul> </div><div class="dn-group"> <a href="/mecorder-website/docs/recording" class="dn-title"> Recording </a> <ul> <li> <a href="/mecorder-website/docs/recording#screen-recording"> Screen Recording </a> </li><li> <a href="/mecorder-website/docs/recording#multiple-displays"> Multiple Displays </a> </li><li> <a href="/mecorder-website/docs/recording#resolution"> Resolution </a> </li><li> <a href="/mecorder-website/docs/recording#audio"> Audio </a> </li> </ul> </div><div class="dn-group"> <a href="/mecorder-website/docs/export" class="dn-title"> Export </a> <ul> <li> <a href="/mecorder-website/docs/export#export-settings"> Export Settings </a> </li><li> <a href="/mecorder-website/docs/export#video"> Video </a> </li><li> <a href="/mecorder-website/docs/export#gif"> GIF </a> </li><li> <a href="/mecorder-website/docs/export#quality"> Quality </a> </li> </ul> </div><div class="dn-group"> <a href="/mecorder-website/docs/advanced" class="dn-title"> Advanced </a> <ul> <li> <a href="/mecorder-website/docs/advanced#keyboard-shortcuts"> Keyboard Shortcuts </a> </li><li> <a href="/mecorder-website/docs/advanced#project-files"> Project Files </a> </li><li> <a href="/mecorder-website/docs/advanced#troubleshooting"> Troubleshooting </a> </li> </ul> </div> </nav> </details> </aside> <article class="docs-main" data-docs-main> <nav class="crumbs" aria-label="Breadcrumb"> <ol> <li><a href="/mecorder-website/docs">Docs</a></li><li><span aria-current="page">Timeline</span></li> </ol> </nav> <header class="docs-head"> <h1>Timeline</h1> <p class="lead">Edit what happened in your recording, track by track - scenes, cuts, camera, cursor, text, effects and audio.</p> </header> <div class="prose" data-prose>  <h2 id="timeline-overview">Timeline Overview</h2>
+<p>The Timeline (<kbd>⌥⌘1</kbd>) is the precise view of your edit. It shows one row, or track, per kind of content, with the playhead running across all of them.</p>
+<figure class="doc-demo" data-demo="timeline-tracks"><figcaption>Each kind of content has its own track; the playhead runs across all of them.</figcaption></figure>
+<div class="table-wrap">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Track</th><th>Shows</th><th>Header button</th></tr></thead><tbody><tr><td>Scenes</td><td>Your scenes, by name</td><td>⊕ New scene at the playhead</td></tr><tr><td>Screen</td><td>Your clips, with filmstrip thumbnails</td><td>✂ Split</td></tr><tr><td>Camera</td><td>Camera moves as named blocks (<em>Focus Search</em>), the zoom level over time, and keyframes (◆)</td><td>⊕ Focus, zoom in here, show webcam only here, keyframe</td></tr><tr><td>Clicks</td><td>Blue dots for left clicks, red for right clicks</td><td></td></tr><tr><td>Keys</td><td>Captured keyboard shortcuts</td><td></td></tr><tr><td>Text</td><td>Text and callouts</td><td>⊕ Add text or a callout</td></tr><tr><td>Effects</td><td>Effects</td><td>⊕ Open the effect library</td></tr><tr><td>Webcam</td><td>Only if you recorded one</td><td>👁 Show or hide the webcam</td></tr><tr><td>Mic, System</td><td>Audio waveforms, only if recorded</td><td>🔊 Mute or unmute</td></tr></tbody></table></div>
+<p>Click a track’s name to open its settings in the inspector. The track holding the current selection is marked, and a selected scene is tinted across every track. Click empty space to clear the selection.</p>
+<p><strong>Right-click anywhere on the timeline</strong> for actions at that moment: Undo, Redo, Split Here, Focus on Cursor Here, Zoom In Here, New Scene Here, Show Webcam Only Here, Add Confetti Here, Add Text Here and, when something has been cut, Restore Nearest Cut Part.</p>
+<p><strong>Timeline zoom:</strong> use the slider in the footer, <strong>Fit</strong> to fit the whole edit in view, or <kbd>⌘=</kbd> and <kbd>⌘-</kbd>.</p>
+<h3 id="playing-and-moving-around">Playing and moving around</h3>
+<div class="table-wrap">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Action</th><th>How</th></tr></thead><tbody><tr><td>Play / pause</td><td><kbd>Space</kbd>, or <kbd>⌘Return</kbd></td></tr><tr><td>Step one frame</td><td><kbd>←</kbd> / <kbd>→</kbd></td></tr><tr><td>Step one second</td><td><kbd>⇧←</kbd> / <kbd>⇧→</kbd></td></tr><tr><td>Go to start / end</td><td><kbd>Home</kbd> / <kbd>End</kbd></td></tr><tr><td>Rewind / fast forward</td><td>Hold the previous or next frame button. Fast forward starts at 2× and speeds up to 4× and 8× the longer you hold.</td></tr><tr><td>Move the playhead</td><td>Click or drag in the ruler at the top of the timeline</td></tr></tbody></table></div>
+<h3 id="cutting-and-trimming">Cutting and trimming</h3>
+<p>Cuts never change your original recording. Anything you cut can be brought back.</p>
+<ul>
+<li><strong>Split where you click:</strong> press the ✂ <strong>Split</strong> button to arm the scissors, then click the timeline wherever you want to cut. Each click splits there, until you press <kbd>Esc</kbd> or the button again.</li>
+<li><strong>Split at the playhead:</strong> press <kbd>S</kbd> or <kbd>⌘B</kbd>, or right-click → <strong>Split Here</strong>.</li>
+<li><strong>Delete a clip:</strong> click it on the Screen track, then press <kbd>⌫</kbd>.</li>
+<li><strong>Trim with the edges:</strong> select a clip and drag its highlighted edges.</li>
+<li><strong>Trim Start to Playhead</strong> (<kbd>⌥⌘[</kbd>) and <strong>Trim End to Playhead</strong> (<kbd>⌥⌘]</kbd>), also in the Trim settings as <strong>Start here</strong> and <strong>End here</strong>.</li>
+</ul>
+<h3 id="restoring-cuts">Restoring cuts</h3>
+<ul>
+<li>Turn on <strong>Show cut parts</strong> (timeline footer or Trim settings) to keep cut footage on the timeline as grey gaps at their original length. Double-click a gap, or right-click → <strong>Restore Cut Part</strong>, to bring it all back, or drag a clip’s edge into a gap to bring back part of it.</li>
+<li>The Trim settings’ <strong>Cut parts</strong> list has a <strong>Restore</strong> button for every cut.</li>
+<li>Right-click the timeline → <strong>Restore Nearest Cut Part</strong>.</li>
+</ul>
+<h3 id="removing-idle-moments">Removing idle moments</h3>
+<p>In the Trim settings, <strong>Find idle moments</strong> looks for stretches where nothing moves, clicks or types and nobody is talking; it never suggests cutting into your narration. If you recorded a microphone, <strong>Find pauses</strong> also finds silences while the cursor drifts, which tightens a talk-through without cutting any clicks or typing.</p>
+<p>Each suggestion shows on the timeline as an <em>Idle</em> marker and in a list, where you choose <strong>Keep</strong> or <strong>Remove</strong>. <strong>Remove all</strong> removes every suggestion at once. Removed idle time is an ordinary cut, so you can restore it.</p>
+<h2 id="scenes">Scenes</h2>
+<p>Scenes divide your video into named sections, like chapters. When a recording is first opened, MeCorder suggests scenes: it starts a new one at long pauses and at big jumps of attention across the screen, and names them after what happens (<em>Typing</em>, <em>Clicks in one area</em>, <em>Intro</em>, <em>Outro</em>).</p>
+<p>Scenes live on the <strong>Scenes</strong> track, and the <a href="/mecorder-website/docs/program#scenes-and-shots">Program view</a> lists them too, as numbered chapters with their shots.</p>
+<ul>
+<li><strong>Select</strong> a scene by clicking it. The inspector shows its name, times, transition, camera moves and events.</li>
+<li><strong>Rename</strong> it by double-clicking it, or in the inspector’s <strong>Name</strong> field.</li>
+<li><strong>Resize</strong> scenes by dragging the edge between two of them. Edges snap to events, camera moves and the playhead.</li>
+<li><strong>Add</strong> one with ⊕ on the Scenes track, <strong>Timeline → New Scene at Playhead</strong>, or right-click → <strong>New Scene Here</strong>. The scene at the playhead is split in two.</li>
+<li><strong>Reorder</strong> with <strong>Move Scene Earlier</strong> / <strong>Move Scene Later</strong> (<kbd>⌥⌘↑</kbd> / <kbd>⌥⌘↓</kbd>). The scene’s footage moves, and its zooms, effects and text go with it. Each move is one undo step. After you reorder scenes, only edges between scenes that still follow each other in the recording can be dragged.</li>
+<li><strong>Transition:</strong> each scene’s inspector sets how it hands over to the next one, <strong>Cut</strong> or <strong>Fade</strong> with a length.</li>
+</ul>
+<p>The contextual bar under the preview offers <em>Rename, Split, Merge, Feature Reveal</em> for a selected scene. Clicking the Scenes track’s name opens the Program view, where scenes, shots and transitions are laid out together.</p>
+<p>After export, a project with more than one scene can copy a chapter list for YouTube. See <a href="/mecorder-website/docs/export#video">Video</a>.</p>
+<h2 id="camera">Camera</h2>
+<p>The camera decides which part of the screen fills the frame at each moment. It can zoom in, pan, follow the cursor, and switch to the webcam. Project-wide camera settings are under <strong>Camera</strong> in the inspector’s title menu.</p>
+<figure class="doc-demo" data-demo="camera-follow"><figcaption>The automatic camera zooms to each click and eases back out between places.</figcaption></figure>
+<h3 id="automatic-camera">Automatic camera</h3>
+<p>When you stop recording, MeCorder generates zooms from what you did.</p>
+<ul>
+<li><strong>Zoom in this project:</strong> turn it off to show the whole screen throughout. Every zoom is kept and comes back when you turn it on again (also <strong>Timeline → Turn Zooms Off</strong>).</li>
+<li><strong>Automatic:</strong> choose a style.</li>
+</ul>
+<div class="table-wrap">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Style</th><th>What it does</th></tr></thead><tbody><tr><td><strong>Off</strong></td><td>No automatic zooms. Your own camera moves, the AI Director’s and Programs’ still play.</td></tr><tr><td><strong>Calm</strong></td><td>Few, steady shots that hold on the area you work in.</td></tr><tr><td><strong>Balanced</strong></td><td>Zooms on what you click and type, ignoring noise.</td></tr><tr><td><strong>Lively</strong></td><td>Closer, quicker shots, including where the cursor rests.</td></tr></tbody></table></div>
+<p><strong>Fine-tune automatic zooms</strong> has the details: <strong>Zoom level</strong> (1.2× to 4×), <strong>Zoom on clicks</strong>, <strong>Zoom while typing</strong>, <strong>Zoom when the cursor rests</strong>, <strong>Ignore noise</strong> (double-clicks count once, clicks in a large editor become one shot of it, typing frames its field), <strong>Merge clicks within</strong>, <strong>Shortest shot</strong>, <strong>Transition</strong>, <strong>Anticipation</strong> (how early the camera starts moving), <strong>Hold after action</strong> and <strong>Motion</strong> (the <a href="#easing">easing</a> curve).</p>
+<p>Changing the style or a fine-tune setting remakes the automatic zooms straight away, as one undo step. Zooms you edited or added yourself are kept. <strong>Regenerate</strong> (also <strong>Timeline → Regenerate Automatic Camera</strong>) remakes them on demand, and <strong>Clear</strong> removes either the automatic keyframes or all keyframes.</p>
+<p>Between two actions, the camera glides straight across only when the next one is close by and comes soon after. Otherwise it eases back out to the full view before zooming in on the next place, so each focus reads as its own shot.</p>
+<p>Automatic zooms fill the time that your own camera moves, the AI Director’s and Programs’ leave free.</p>
+<h3 id="follow-and-framing">Follow and framing</h3>
+<ul>
+<li><strong>Follow the cursor when zoomed</strong> keeps the cursor in view while zoomed in, with a <strong>Free movement area</strong> (how far the cursor can roam before the camera moves) and <strong>Follow speed</strong>.</li>
+<li><strong>Smart reframing for vertical &#x26; square</strong> crops around the action on portrait and square canvases, instead of shrinking the whole screen.</li>
+</ul>
+<h3 id="adding-camera-moves-yourself">Adding camera moves yourself</h3>
+<div class="table-wrap">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>How</th><th>What it adds</th></tr></thead><tbody><tr><td><kbd>F</kbd>, then click something in the preview (or <strong>Focus</strong> in the contextual bar)</td><td>Points the camera at it. Focus picks the zoom, arrives just before the moment, holds through anything nearby and eases back out before the next camera move. If a camera move already covers that moment, Focus re-aims it.</td></tr><tr><td><kbd>Z</kbd> (or <strong>Add Zoom</strong>)</td><td>A complete zoom in, hold and zoom out at the playhead, aimed at the cursor.</td></tr><tr><td><kbd>K</kbd> (or <strong>Keyframe</strong>)</td><td>A keyframe that holds the camera as it looks right now.</td></tr><tr><td>Double-click the Camera track</td><td>A keyframe at that point.</td></tr><tr><td>Drag or pinch the preview</td><td>Pans or zooms the keyframe at the playhead, creating one if needed.</td></tr></tbody></table></div>
+<h3 id="the-shot-editor">The shot editor</h3>
+<p>Selecting a camera move (a block on the Camera track) shows it in the inspector as a shot:</p>
+<ul>
+<li>its name (<em>Focus Search</em>, <em>Follow cursor</em>, <em>Webcam</em>) and where it came from: <strong>Automatic</strong>, <strong>Manual</strong>, <strong>AI Director</strong> or <strong>Program</strong></li>
+<li><strong>Target:</strong> what it points at. The ⌖ button lets you click a new target in the preview.</li>
+<li><strong>Zoom</strong> (1.05× to 5×), <strong>Duration</strong>, <strong>Easing</strong>, and <strong>Show webcam only</strong> if you recorded a webcam</li>
+<li><strong>Target</strong>, <strong>Closer</strong>, <strong>Wider</strong> and <strong>Longer</strong> as quick actions</li>
+<li><strong>Timing &#x26; position:</strong> the exact <strong>From / To</strong> times, the target’s <strong>X / Y</strong>, and <strong>Aim at Cursor</strong></li>
+<li><strong>Keyframes:</strong> the keyframes that make up the move; click one to edit it precisely</li>
+</ul>
+<p>A selected camera move also shows its frame in the preview. When the camera is wide, the frame is a dashed rectangle you can drag. When you’re inside the shot, drag the picture to reframe it and pinch to zoom.</p>
+<h3 id="keyframes">Keyframes</h3>
+<p>Selecting a single keyframe (a diamond on the Camera track) shows its <strong>Zoom</strong> (1× to 5×), <strong>Position</strong> (X / Y), <strong>Easing</strong> and <strong>Show webcam only</strong>, with <strong>Rotation</strong> (−15° to 15°), the exact <strong>Time</strong> and the easing curve under <strong>Motion</strong>. When the keyframe belongs to a camera move, <strong>Whole Shot</strong> takes you back to the move.</p>
+<p>Keyframes on the Camera track are coloured by where they came from. Drag a diamond to move it, or right-click it for <strong>Delete Keyframe</strong>.</p>
+<h3 id="easing">Easing</h3>
+<p>Easing controls how a camera move speeds up and slows down: <strong>Linear</strong>, <strong>Ease In</strong>, <strong>Ease Out</strong>, <strong>Ease In-Out</strong>, <strong>Spring</strong> (with a Bounciness slider), <strong>Cinematic</strong>, <strong>Custom Curve</strong> (four Bézier values) and <strong>Hold (Jump)</strong>, which cuts instantly. A small graph shows the curve.</p>
+<h3 id="webcam">Webcam</h3>
+<p>If you recorded your webcam, it appears as an overlay you can restyle under <strong>Webcam</strong> in the inspector’s title menu:</p>
+<ul>
+<li><strong>Show webcam</strong></li>
+<li><strong>Shape:</strong> Circle, Rounded Rectangle, Square or Full Width</li>
+<li><strong>Position:</strong> Bottom Right, Bottom Left, Top Right, Top Left, or Custom</li>
+<li><strong>Size</strong>, <strong>Corner radius</strong>, <strong>Border</strong> and border colour, <strong>Shadow</strong>, <strong>Opacity</strong>, <strong>Mirror</strong></li>
+</ul>
+<p>The eye button on the Webcam track shows or hides it quickly.</p>
+<p><strong>Webcam only:</strong> press <kbd>W</kbd> to cut to the webcam full-frame at the playhead. It eases in, holds for 3 seconds and eases back to the screen, which suits an intro, an aside or a sign-off. It’s also in <strong>Insert → Webcam Only</strong>, the Camera track’s ⊕ menu and right-click → <strong>Show Webcam Only Here</strong>. Webcam-only moments are camera moves, so they can be edited like any shot.</p>
+<h2 id="cursor">Cursor</h2>
+<p>The cursor is recorded separately from the video, so you can restyle it after recording. Open <strong>Cursor</strong> from the inspector’s title menu.</p>
+<figure class="doc-demo" data-demo="cursor-styles"><figcaption>An Adaptive cursor changes with what the mouse was doing: pointing, clicking, dragging.</figcaption></figure>
+<ul>
+<li>
+<p><strong>Show cursor:</strong> on or off.</p>
+</li>
+<li>
+<p><strong>Appearance:</strong> <strong>Adaptive</strong> (the default), <strong>Native</strong> (the real macOS cursor, including I-beams and hands), <strong>Arrow</strong>, <strong>Dot</strong> (with a colour) or <strong>Custom Image</strong>.</p>
+</li>
+<li>
+<p><strong>Adaptive</strong> picks a look for each moment:</p>
+<ul>
+<li><strong>Normally:</strong> <em>As recorded</em> by default.</li>
+<li><strong>On click:</strong> shown while a button is held, and for a moment after a quick click. Default: <em>Pointing hand</em>.</li>
+<li><strong>While dragging:</strong> shown once the pointer moves with the button held. Default: <em>Grabbing hand</em>.</li>
+</ul>
+<p>The looks are <em>As recorded</em>, <em>Arrow</em>, <em>Pointing hand</em>, <em>Open hand</em>, <em>Grabbing hand</em>, <em>Text cursor</em>, <em>Crosshair</em>, <em>Dot</em> and <em>Custom image</em>.</p>
+</li>
+<li>
+<p><strong>Size:</strong> 50% to 200%.</p>
+</li>
+<li>
+<p><strong>Glow</strong> and <strong>Highlight</strong> (each with a colour) and <strong>Shadow</strong>.</p>
+</li>
+<li>
+<p><strong>Motion:</strong> <strong>Movement smoothing</strong> turns shaky movement into smooth glides; <strong>Tidy movement</strong> holds the cursor still through hand tremor and straightens aimless wiggles between clicks; <strong>Hide when idle</strong> hides it after it stops moving for a set time.</p>
+</li>
+</ul>
+<h3 id="click-effects">Click effects</h3>
+<p><strong>Left click</strong> and <strong>Right click</strong> each have their own animation: <strong>None</strong>, <strong>Ripple</strong>, <strong>Ring</strong>, <strong>Pulse</strong> or <strong>Scale</strong>, with a colour, size and duration. <strong>Shrink cursor on click</strong> gives a small squeeze on each click.</p>
+<p>For more dramatic click effects, use Click Ripple, Click Burst and Cursor Glow from the <a href="#effects">effects</a>.</p>
+<h3 id="keyboard-shortcut-display">Keyboard shortcut display</h3>
+<p>If <strong>Capture keyboard shortcuts</strong> was on while you recorded, the shortcuts you pressed (like ⌘C or ⇧⌘P) appear on screen as key caps. Plain typing is never shown or stored. Shortcuts can’t be added to a recording afterwards.</p>
+<p>Under <strong>Keys</strong> in the inspector’s title menu:</p>
+<div class="table-wrap">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Setting</th><th>Options</th></tr></thead><tbody><tr><td>Show shortcuts</td><td>On or off</td></tr><tr><td>Position</td><td>Bottom Centre, Bottom Left, Bottom Right or Top Centre</td></tr><tr><td>Theme</td><td>Dark, Light or Glass</td></tr><tr><td>Size</td><td>How big the key caps are</td></tr><tr><td>Animation</td><td>Fade, Pop or Slide</td></tr><tr><td>Show for</td><td>How long each stays on screen</td></tr></tbody></table></div>
+<h2 id="text">Text</h2>
+<p>Press <kbd>T</kbd> to add text at the playhead. For other kinds, use the <strong>Insert</strong> menu under the video, the Text track’s ⊕ button, or right-click → <strong>Add Text Here</strong>.</p>
+<p>There are six kinds: <strong>Text</strong>, <strong>Label</strong>, <strong>Arrow</strong>, <strong>Circle</strong>, <strong>Rectangle</strong> and <strong>Highlight</strong>. Each lasts 3 seconds by default.</p>
+<ul>
+<li><strong>Place it</strong> by dragging it in the preview. Drag the corner to resize, or drag an arrow’s ends.</li>
+<li><strong>Change its timing</strong> by dragging it on the Text track, or dragging its right edge to change its length.</li>
+<li><strong>Edit it</strong> in the inspector:
+<ul>
+<li>Text and Label: the text, font, size, text colour and background.</li>
+<li>Shapes: stroke colour and width, and fill. Highlight has a single colour.</li>
+<li><strong>Animation:</strong> None, Fade, Scale, Slide or Pop, and <strong>From / To</strong> times.</li>
+<li><strong>Position:</strong> <strong>Screen (moves with zoom)</strong> keeps it on the thing it points at; <strong>Canvas (stays in place)</strong> keeps it fixed in the frame, like a title.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Fonts:</strong> the font menu offers the system font and every font imported into the project. <strong>Import Font…</strong> adds .ttf, .otf or .ttc files. They’re copied into the project, so text looks the same on any Mac and nothing is installed on your system.</p>
+<h3 id="captions">Captions</h3>
+<p>MeCorder turns your narration into captions. Speech recognition runs on your Mac; your audio isn’t uploaded. Open <strong>Captions</strong> from the inspector’s title menu (or <kbd>⌘K</kbd> → <em>Transcribe Narration</em>) and press <strong>Transcribe Narration</strong>. The first time, macOS asks to allow Speech Recognition.</p>
+<p>Once it’s done, captions appear in the video and you can set:</p>
+<ul>
+<li><strong>Show captions</strong>, <strong>Position</strong> (bottom or top), <strong>Look</strong> (Boxed, Outline or Light) and <strong>Size</strong></li>
+<li><strong>Highlight the spoken word</strong>, with a colour</li>
+<li><strong>Lines</strong> and <strong>Line length</strong></li>
+<li>each caption’s text: click its time to jump there, and click the text to fix a word</li>
+</ul>
+<p><strong>Export Subtitles…</strong> saves an SRT or WebVTT file. Times follow your edit: cut parts are left out and later captions move up. Captions sit above key caps when both are at the bottom.</p>
+<h2 id="effects">Effects</h2>
+<p>Add effects from the <strong>Add Effect</strong> library (Effects settings, the Effects track’s ⊕, or the <strong>Insert</strong> menu), arranged by what you want to do:</p>
+<ul>
+<li><strong>Quick effects:</strong> Focus, Highlight, Spotlight, Zoom, Callout, Click and Shake.</li>
+<li><strong>Presets:</strong> effects made of several others, such as Feature Reveal, New Feature, Achievement, Bug Found and Deploy Success.</li>
+<li><strong>My effects:</strong> effects you made in <a href="#effect-studio">Effect Studio</a>.</li>
+<li><strong>All effects:</strong> every effect by category.</li>
+</ul>
+<p><strong>Where an effect lands</strong> depends on what’s selected:</p>
+<ul>
+<li><strong>An event, a spot, a scene or a camera move:</strong> the effect is attached to it. A Click Ripple on a click ripples on that click; an effect on a camera move lands when the camera arrives.</li>
+<li><strong>Nothing, and the effect goes somewhere on screen</strong> (Spotlight, Callout, Highlight, a preset): the pointer becomes a targeting cursor. Click the preview where it should go.</li>
+<li><strong>Nothing, and the effect covers the frame</strong> (Confetti, CRT, Glitch, Flash, Like and Subscribe): it’s added at the playhead.</li>
+</ul>
+<p><kbd>⌘K</kbd> finds any effect by name, and <kbd>C</kbd> adds confetti at the playhead. A preset can be taken apart with <strong>Break Apart</strong>, which turns it into separate effects you can retime one by one.</p>
+<h3 id="working-with-an-effect">Working with an effect</h3>
+<ul>
+<li><strong>Move it</strong> by dragging it on the Effects track; drag its right edge to change its length.</li>
+<li><strong>Place it</strong> by dragging its marker in the preview.</li>
+<li><strong>Adjust it</strong> in the inspector, which is titled with the effect’s name. Its actions turn it off without deleting it, replay it, and <strong>Shuffle</strong> effects with an element of chance for a different random layout.</li>
+</ul>
+<h3 id="the-effects">The effects</h3>
+<p>MeCorder has 20 built-in effects in eight categories.</p>
+<div class="table-wrap">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Category</th><th>Effect</th><th>What it does</th></tr></thead><tbody><tr><td>Interaction</td><td><strong>Click Ripple</strong></td><td>A ripple spreads out from every click.</td></tr><tr><td></td><td><strong>Click Burst</strong></td><td>Sparks burst out of every click.</td></tr><tr><td></td><td><strong>Cursor Glow</strong></td><td>A soft glow follows the cursor.</td></tr><tr><td></td><td><strong>Cursor Spotlight</strong></td><td>Dims the screen except for a pool of light around the cursor or a fixed point.</td></tr><tr><td>Camera</td><td><strong>Punch Zoom</strong></td><td>A quick zoom in and back out on top of the camera.</td></tr><tr><td></td><td><strong>Screen Shake</strong></td><td>Shakes the whole frame, like an impact.</td></tr><tr><td>Developer</td><td><strong>Code Highlight</strong></td><td>Dims everything except a box, to draw attention to a few lines of code.</td></tr><tr><td></td><td><strong>Bug Found</strong></td><td>A glitchy jolt, a red flash, a ring and a label on the bug.</td></tr><tr><td></td><td><strong>Deploy Success</strong></td><td>A punch-in, a green burst, confetti and a banner.</td></tr><tr><td>Creator</td><td><strong>Feature Reveal</strong></td><td>Spotlights a spot, pushes in and tags it as new.</td></tr><tr><td></td><td><strong>New Feature</strong></td><td>Rings a spot, sparkles it and labels it as new.</td></tr><tr><td></td><td><strong>Like and Subscribe</strong></td><td>A call to action: a pointer clicks Like, then Subscribe, then rings the bell, with an optional channel name, logo and bell ding.</td></tr><tr><td>Game</td><td><strong>Achievement</strong></td><td>A punch zoom, a burst, a glow, confetti and a banner.</td></tr><tr><td>Annotation</td><td><strong>Focus Ring</strong></td><td>A glowing box that pulses around a spot.</td></tr><tr><td></td><td><strong>Callout</strong></td><td>A speech bubble pointing at a spot, or a banner across the top.</td></tr><tr><td>Visual</td><td><strong>Glitch</strong></td><td>Split colour channels and torn lines.</td></tr><tr><td></td><td><strong>Pixelate</strong></td><td>Turns the frame into big pixels, easing in and out.</td></tr><tr><td></td><td><strong>CRT</strong></td><td>Scanlines, glow, noise and dark corners, like an old tube monitor.</td></tr><tr><td></td><td><strong>Flash</strong></td><td>A bright flash that fades out.</td></tr><tr><td>Celebration</td><td><strong>Confetti</strong></td><td>A burst of confetti over the whole frame: Burst, Side Cannons or Shower.</td></tr></tbody></table></div>
+<p>Click Ripple, Click Burst, Cursor Glow and Focus Ring are <em>recipe</em> effects: their <strong>Plays</strong> setting chooses <strong>Each click</strong>, <strong>Follow cursor</strong> or <strong>Fixed point</strong>, and you can customise them in Effect Studio. Every effect is also available as a block in <a href="/mecorder-website/docs/program#actions">Programs</a>.</p>
+<h3 id="effect-studio">Effect Studio</h3>
+<p>Effect Studio lets you build your own effects without code, as a chain of simple steps, with a live preview. Open it with <strong>Insert → Effect Studio…</strong> (<kbd>⇧⌘E</kbd>). To start from a built-in, right-click a recipe effect’s tile and choose <strong>Edit in Effect Studio</strong>, or select a placed one and press <strong>Customise in Effect Studio</strong>; you get an editable copy.</p>
+<p>An effect is built from:</p>
+<ul>
+<li><strong>Trigger:</strong> <strong>Each click</strong>, <strong>Follow cursor</strong> or <strong>Fixed point</strong>, plus an <strong>Effect colour</strong> that can be changed each time you use the effect.</li>
+<li><strong>Layers</strong>, each a column of steps: <strong>Position</strong> (an offset from the trigger point), <strong>Shape</strong> (Circle, Ring, Square, Rounded Box, Star, Spark or Text, with <strong>Copies</strong> that spread in a circle like a burst), <strong>Motion</strong> (size, spread, spin, easing, delay, duration, repeat), <strong>Glow</strong> and <strong>Fade</strong>.</li>
+<li><strong>Output</strong>, which combines the layers.</li>
+</ul>
+<p><strong>Save</strong> (<kbd>⌘S</kbd>) stores the effect on your Mac, under <strong>My effects</strong> in every project. <strong>Add at Playhead</strong> saves it and adds it to the project. A project keeps its own copy of every studio effect it uses, so it renders the same on another Mac.</p>
+<h3 id="ai-director">AI Director</h3>
+<p>The AI Director edits your video from a plain-language instruction. Open it with the ✦ button in the inspector’s header, or <kbd>⇧⌘A</kbd>. Type an instruction and press <strong>Send</strong>, for example:</p>
+<ul>
+<li>“Make the zooms more subtle.”</li>
+<li>“Remove the boring parts but don’t change the intro.”</li>
+<li>“Make this 30 seconds.”</li>
+<li>“Don’t zoom above 1.5x.”</li>
+<li>“Create a vertical version for TikTok.”</li>
+</ul>
+<p>It replies with a <strong>Proposed:</strong> list of changes (zooms, pans, cuts, trims, camera style, aspect ratio), which plays in the preview straight away. <strong>Apply</strong> keeps it as one undo step, <strong>Discard</strong> puts things back, and another instruction refines it. Its keyframes are ordinary keyframes marked <em>AI Director</em>.</p>
+<p>Without an API key, a built-in offline interpreter handles common instructions. With your own Anthropic API key (stored in your Mac’s Keychain), free-form requests work too. Only your instruction and a compact text summary of the recording are sent: event timings and positions, the current keyframes and cuts. <strong>Your video and audio never leave your Mac.</strong></p>
+<h3 id="background-frame-and-looks">Background, frame and looks</h3>
+<p>Under <strong>Style</strong> in the inspector’s title menu:</p>
+<ul>
+<li><strong>Aspect ratio:</strong> Landscape 16:9, Vertical 9:16, Square 1:1, Social 4:5, Classic 4:3, Match Recording, or Custom (also in the <strong>Aspect ratio</strong> menu under the video).</li>
+<li><strong>Padding</strong>, <strong>Corner radius</strong>, <strong>Shadow</strong> and <strong>Border</strong>.</li>
+<li><strong>Background:</strong> None, Solid Colour, Gradient (eight presets or your own), Image (with optional blur) or Blurred Screen.</li>
+<li><strong>Screen frame:</strong> None, macOS Window, Browser (with the address bar text you choose) or Device Bezel.</li>
+<li><strong>Look:</strong> save everything about how a video is styled under a name, apply it to another project, and choose the look every new recording starts with.</li>
+</ul>
+<h2 id="audio">Audio</h2>
+<p>Under <strong>Audio</strong> in the inspector’s title menu (or click the Mic or System track’s name), the <strong>Microphone</strong> and <strong>System audio</strong> tracks each have <strong>Mute</strong> and <strong>Volume</strong> (0% to 200%). The speaker buttons on the Mic and System tracks mute them too.</p>
+<h3 id="clean-up-narration">Clean up narration</h3>
+<ul>
+<li><strong>Reduce background noise</strong> removes hum, fans, keyboard noise and room echo, using Apple’s voice isolation.</li>
+<li><strong>Level volume</strong> evens out loud and quiet passages and brings the narration to a standard loudness, without clipping.</li>
+</ul>
+<p>MeCorder makes a cleaned-up copy the first time you turn either on (a few seconds per minute of audio) and uses it for playback and export. Your original recording is kept, and turning the settings off goes back to it.</p>  </div> <nav class="pager" aria-label="Previous and next"> <a href="/mecorder-website/docs/getting-started" class="pager-prev"> <span>Previous</span> Getting Started </a> <a href="/mecorder-website/docs/program" class="pager-next"> <span>Next</span> Program </a> </nav> </article> <aside class="docs-toc" aria-label="On this page" data-lenis-prevent> <p>On this page</p> <ul> <li class="d2"> <a href="#timeline-overview" data-toc="timeline-overview"> Timeline Overview </a> </li><li class="d3"> <a href="#playing-and-moving-around" data-toc="playing-and-moving-around"> Playing and moving around </a> </li><li class="d3"> <a href="#cutting-and-trimming" data-toc="cutting-and-trimming"> Cutting and trimming </a> </li><li class="d3"> <a href="#restoring-cuts" data-toc="restoring-cuts"> Restoring cuts </a> </li><li class="d3"> <a href="#removing-idle-moments" data-toc="removing-idle-moments"> Removing idle moments </a> </li><li class="d2"> <a href="#scenes" data-toc="scenes"> Scenes </a> </li><li class="d2"> <a href="#camera" data-toc="camera"> Camera </a> </li><li class="d3"> <a href="#automatic-camera" data-toc="automatic-camera"> Automatic camera </a> </li><li class="d3"> <a href="#follow-and-framing" data-toc="follow-and-framing"> Follow and framing </a> </li><li class="d3"> <a href="#adding-camera-moves-yourself" data-toc="adding-camera-moves-yourself"> Adding camera moves yourself </a> </li><li class="d3"> <a href="#the-shot-editor" data-toc="the-shot-editor"> The shot editor </a> </li><li class="d3"> <a href="#keyframes" data-toc="keyframes"> Keyframes </a> </li><li class="d3"> <a href="#easing" data-toc="easing"> Easing </a> </li><li class="d3"> <a href="#webcam" data-toc="webcam"> Webcam </a> </li><li class="d2"> <a href="#cursor" data-toc="cursor"> Cursor </a> </li><li class="d3"> <a href="#click-effects" data-toc="click-effects"> Click effects </a> </li><li class="d3"> <a href="#keyboard-shortcut-display" data-toc="keyboard-shortcut-display"> Keyboard shortcut display </a> </li><li class="d2"> <a href="#text" data-toc="text"> Text </a> </li><li class="d3"> <a href="#captions" data-toc="captions"> Captions </a> </li><li class="d2"> <a href="#effects" data-toc="effects"> Effects </a> </li><li class="d3"> <a href="#working-with-an-effect" data-toc="working-with-an-effect"> Working with an effect </a> </li><li class="d3"> <a href="#the-effects" data-toc="the-effects"> The effects </a> </li><li class="d3"> <a href="#effect-studio" data-toc="effect-studio"> Effect Studio </a> </li><li class="d3"> <a href="#ai-director" data-toc="ai-director"> AI Director </a> </li><li class="d3"> <a href="#background-frame-and-looks" data-toc="background-frame-and-looks"> Background, frame and looks </a> </li><li class="d2"> <a href="#audio" data-toc="audio"> Audio </a> </li><li class="d3"> <a href="#clean-up-narration" data-toc="clean-up-narration"> Clean up narration </a> </li> </ul> </aside> </div> <template id="mock-app-template"><div class="viewport" data-viewport role="img" aria-label="Animated example" data-astro-cid-zpsx462q> <div class="screen-fit" data-fit data-astro-cid-zpsx462q> <div class="screen-cam" data-cam data-astro-cid-zpsx462q> <div class="app" aria-hidden="true" data-astro-cid-zpsx462q> <aside class="side" data-astro-cid-zpsx462q> <div class="app-name" data-astro-cid-zpsx462q><span class="app-dot" data-astro-cid-zpsx462q></span>Orbit</div> <div class="nav-region" style="left:12px;top:70px;width:176px;height:160px" data-astro-cid-zpsx462q></div> <div class="nav-item" data-nav-item="home" style="top:80px" data-astro-cid-zpsx462q> <span class="ni-icon" data-astro-cid-zpsx462q></span> Home </div><div class="nav-item" data-nav-item="projects" style="top:116px" data-astro-cid-zpsx462q> <span class="ni-icon" data-astro-cid-zpsx462q></span> Projects </div><div class="nav-item" data-nav-item="team" style="top:152px" data-astro-cid-zpsx462q> <span class="ni-icon" data-astro-cid-zpsx462q></span> Team </div><div class="nav-item" data-nav-item="reports" style="top:188px" data-astro-cid-zpsx462q> <span class="ni-icon" data-astro-cid-zpsx462q></span> Reports </div> <div class="side-sep" style="top:250px" data-astro-cid-zpsx462q></div> <div class="side-label" style="top:266px" data-astro-cid-zpsx462q>Favourites</div> <div class="nav-item faint" style="top:290px" data-astro-cid-zpsx462q><span class="ni-icon dot" style="background:#7c6cf0" data-astro-cid-zpsx462q></span>Q3 Launch</div> <div class="nav-item faint" style="top:326px" data-astro-cid-zpsx462q><span class="ni-icon dot" style="background:#2f9cba" data-astro-cid-zpsx462q></span>Website refresh</div> <div class="settings-btn" data-el="settings" style="left:20px;top:544px;width:36px;height:36px" data-astro-cid-zpsx462q> <svg viewBox="0 0 20 20" fill="none" data-astro-cid-zpsx462q><circle cx="10" cy="10" r="2.6" stroke="currentColor" stroke-width="1.6" data-astro-cid-zpsx462q></circle><path d="M10 2.5v2M10 15.5v2M2.5 10h2M15.5 10h2M4.7 4.7l1.4 1.4M13.9 13.9l1.4 1.4M4.7 15.3l1.4-1.4M13.9 6.1l1.4-1.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" data-astro-cid-zpsx462q></path></svg> </div> </aside> <div class="search" data-el="search" style="left:232px;top:22px;width:360px;height:40px" data-astro-cid-zpsx462q> <svg viewBox="0 0 20 20" fill="none" data-astro-cid-zpsx462q><circle cx="9" cy="9" r="5.5" stroke="currentColor" stroke-width="1.7" data-astro-cid-zpsx462q></circle><path d="m13.2 13.2 3.3 3.3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" data-astro-cid-zpsx462q></path></svg> <span class="search-text" data-search-text data-astro-cid-zpsx462q></span><span class="caret" data-astro-cid-zpsx462q></span><span class="search-ph" data-search-ph data-astro-cid-zpsx462q>Search projects</span> </div> <div class="avatar" style="left:736px;top:26px" data-astro-cid-zpsx462q></div> <div class="create-btn" data-el="create-project" style="left:786px;top:22px;width:154px;height:40px" data-astro-cid-zpsx462q> <span class="plus" data-astro-cid-zpsx462q>+</span> Create Project
+</div> <div class="page-title" data-astro-cid-zpsx462q>Projects</div> <div class="page-sub" data-astro-cid-zpsx462q>5 active · sorted by due date</div> <div class="card" data-el="card-q3" style="left:232px;top:150px" data-astro-cid-zpsx462q> <div class="card-top" data-astro-cid-zpsx462q> <span class="card-swatch" style="background:#7c6cf0" data-astro-cid-zpsx462q></span> <span class="card-more" data-astro-cid-zpsx462q>···</span> </div> <div class="card-name" data-astro-cid-zpsx462q>Q3 Launch</div> <div class="card-meta" data-astro-cid-zpsx462q>12 tasks · Due Oct 28</div> <div class="card-bar" data-astro-cid-zpsx462q> <i style="width:62%;background:#7c6cf0" data-astro-cid-zpsx462q></i> </div> </div><div class="card" style="left:472px;top:150px" data-astro-cid-zpsx462q> <div class="card-top" data-astro-cid-zpsx462q> <span class="card-swatch" style="background:#2f9cba" data-astro-cid-zpsx462q></span> <span class="card-more" data-astro-cid-zpsx462q>···</span> </div> <div class="card-name" data-astro-cid-zpsx462q>Website refresh</div> <div class="card-meta" data-astro-cid-zpsx462q>8 tasks · Due Nov 4</div> <div class="card-bar" data-astro-cid-zpsx462q> <i style="width:35%;background:#2f9cba" data-astro-cid-zpsx462q></i> </div> </div><div class="card" style="left:712px;top:150px" data-astro-cid-zpsx462q> <div class="card-top" data-astro-cid-zpsx462q> <span class="card-swatch" style="background:#d8842f" data-astro-cid-zpsx462q></span> <span class="card-more" data-astro-cid-zpsx462q>···</span> </div> <div class="card-name" data-astro-cid-zpsx462q>Onboarding</div> <div class="card-meta" data-astro-cid-zpsx462q>5 tasks · Due Oct 19</div> <div class="card-bar" data-astro-cid-zpsx462q> <i style="width:80%;background:#d8842f" data-astro-cid-zpsx462q></i> </div> </div><div class="card" style="left:232px;top:320px" data-astro-cid-zpsx462q> <div class="card-top" data-astro-cid-zpsx462q> <span class="card-swatch" style="background:#21874a" data-astro-cid-zpsx462q></span> <span class="card-more" data-astro-cid-zpsx462q>···</span> </div> <div class="card-name" data-astro-cid-zpsx462q>Mobile app</div> <div class="card-meta" data-astro-cid-zpsx462q>21 tasks · Due Dec 2</div> <div class="card-bar" data-astro-cid-zpsx462q> <i style="width:20%;background:#21874a" data-astro-cid-zpsx462q></i> </div> </div><div class="card" style="left:472px;top:320px" data-astro-cid-zpsx462q> <div class="card-top" data-astro-cid-zpsx462q> <span class="card-swatch" style="background:#c93a80" data-astro-cid-zpsx462q></span> <span class="card-more" data-astro-cid-zpsx462q>···</span> </div> <div class="card-name" data-astro-cid-zpsx462q>Pricing page</div> <div class="card-meta" data-astro-cid-zpsx462q>3 tasks · Due Oct 12</div> <div class="card-bar" data-astro-cid-zpsx462q> <i style="width:90%;background:#c93a80" data-astro-cid-zpsx462q></i> </div> </div> <div class="card card-new" data-new-card style="left:712px;top:320px" data-astro-cid-zpsx462q> <div class="card-top" data-astro-cid-zpsx462q><span class="card-swatch" style="background:#8b7cff" data-astro-cid-zpsx462q></span></div> <div class="card-name" data-astro-cid-zpsx462q>Untitled project</div> <div class="card-meta" data-astro-cid-zpsx462q>Just now</div> <div class="card-bar" data-astro-cid-zpsx462q><i style="width:4%;background:#8b7cff" data-astro-cid-zpsx462q></i></div> </div> </div> <div class="fx" aria-hidden="true" data-astro-cid-zpsx462q> <div class="hl" data-highlight data-astro-cid-zpsx462q></div> <div class="ripple" data-ripple data-astro-cid-zpsx462q></div> <div class="ripple" data-ripple data-astro-cid-zpsx462q></div> <div class="ripple" data-ripple data-astro-cid-zpsx462q></div> <div class="click-dot" data-click-dot data-astro-cid-zpsx462q></div> </div>  <div class="cursor" data-cursor aria-hidden="true" data-astro-cid-zpsx462q> <svg viewBox="0 0 28 28" width="28" height="28" data-astro-cid-zpsx462q><path d="M6 3.5v18.2l4.6-4.4 2.9 6.6 3.1-1.4-2.9-6.5h6.3z" fill="#111" stroke="#fff" stroke-width="1.6" stroke-linejoin="round" data-astro-cid-zpsx462q></path></svg> </div> </div> </div>  </div> </template>  </main> <footer class="footer" data-astro-cid-dwl4onjj> <div class="container-wide footer-inner" data-astro-cid-dwl4onjj> <div class="footer-brand" data-astro-cid-dwl4onjj> <a href="/mecorder-website/" class="brand" aria-label="MeCorder home" data-astro-cid-dwl4onjj><img class="logo" src="/mecorder-website/favicon.png" width="22" height="22" alt="" aria-hidden="true" data-astro-cid-b5mbclxf>  MeCorder</a> <p class="muted" data-astro-cid-dwl4onjj>Program your screen videos. Made for Mac.</p> </div> <nav aria-label="Footer" data-astro-cid-dwl4onjj> <ul data-astro-cid-dwl4onjj> <li data-astro-cid-dwl4onjj><a href="/mecorder-website/" data-astro-cid-dwl4onjj>Product</a></li><li data-astro-cid-dwl4onjj><a href="/mecorder-website/download" data-astro-cid-dwl4onjj>Download</a></li><li data-astro-cid-dwl4onjj><a href="/mecorder-website/pricing" data-astro-cid-dwl4onjj>Pricing</a></li><li data-astro-cid-dwl4onjj><a href="/mecorder-website/docs" data-astro-cid-dwl4onjj>Docs</a></li><li data-astro-cid-dwl4onjj><a href="/mecorder-website/changelog" data-astro-cid-dwl4onjj>Changelog</a></li><li data-astro-cid-dwl4onjj><a href="/mecorder-website/about" data-astro-cid-dwl4onjj>About</a></li><li data-astro-cid-dwl4onjj><a href="/mecorder-website/privacy" data-astro-cid-dwl4onjj>Privacy</a></li><li data-astro-cid-dwl4onjj><a href="/mecorder-website/terms" data-astro-cid-dwl4onjj>Terms</a></li> </ul> </nav> </div> <div class="container-wide footer-base" data-astro-cid-dwl4onjj> <span data-astro-cid-dwl4onjj>© 2026 MeCorder</span> <span data-astro-cid-dwl4onjj>macOS 14 or later · Apple Silicon</span> </div> </footer>  <dialog class="search" data-lenis-prevent data-search aria-label="Search documentation" data-astro-cid-vcv3rgnv> <div class="search-panel" data-astro-cid-vcv3rgnv> <div class="search-field" data-astro-cid-vcv3rgnv> <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" data-astro-cid-vcv3rgnv><circle cx="9" cy="9" r="5.5" stroke="currentColor" stroke-width="1.6" data-astro-cid-vcv3rgnv></circle><path d="m13.2 13.2 3.3 3.3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" data-astro-cid-vcv3rgnv></path></svg> <input type="search" placeholder="Search the documentation" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="true" aria-controls="search-results" aria-autocomplete="list" data-search-input data-astro-cid-vcv3rgnv> <kbd data-astro-cid-vcv3rgnv>esc</kbd> </div> <ul class="search-results" id="search-results" role="listbox" data-search-results data-astro-cid-vcv3rgnv></ul> <div class="search-foot" data-astro-cid-vcv3rgnv> <span data-astro-cid-vcv3rgnv><kbd data-astro-cid-vcv3rgnv>↑</kbd><kbd data-astro-cid-vcv3rgnv>↓</kbd> to move</span> <span data-astro-cid-vcv3rgnv><kbd data-astro-cid-vcv3rgnv>↵</kbd> to open</span> <span data-astro-cid-vcv3rgnv><kbd data-astro-cid-vcv3rgnv>⌘K</kbd> or <kbd data-astro-cid-vcv3rgnv>/</kbd> to search</span> </div> </div> </dialog>  <script type="module" src="/mecorder-website/_astro/Search.astro_astro_type_script_index_0_lang.DI78YyDp.js"></script> <div class="cursor" data-cursor-root aria-hidden="true"><span class="cur-ring"></span><span class="cur-label"></span></div> <div class="grain" aria-hidden="true"></div> <script type="module" src="/mecorder-website/_astro/Base.astro_astro_type_script_index_0_lang.a6Ij1tfX.js"></script> </body> </html> <script type="module" src="/mecorder-website/_astro/DocsLayout.astro_astro_type_script_index_0_lang.B9vagAst.js"></script>
