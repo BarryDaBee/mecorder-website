@@ -16,7 +16,7 @@ export const LADDER = Array.from(
 );
 
 export interface Plan {
-  id: 'monthly' | 'yearly' | 'lifetime';
+  id: 'monthly' | 'lifetime';
   name: string;
   blurb: string;
   price: number;
@@ -36,16 +36,15 @@ export const PLANS: Plan[] = [
     note: '$1 less every month, down to $3. Cancelling starts it again at $9.',
   },
   {
-    id: 'yearly',
-    name: 'Yearly',
-    blurb: 'For regular recording.',
-    price: 79,
-    period: 'per year',
-    note: 'About $6.58 a month, saving 27%.',
+    id: 'lifetime',
+    name: 'Lifetime',
+    blurb: 'Pay once, keep it.',
+    price: 149,
+    period: 'one-off',
+    note: 'A licence that never expires.',
     featured: true,
-    badge: 'Best value',
+    badge: 'Pay once',
   },
-  { id: 'lifetime', name: 'Lifetime', blurb: 'Pay once, keep it.', price: 149, period: 'one-off', note: 'A licence that never expires.' },
 ];
 
 export const INCLUDED = [
