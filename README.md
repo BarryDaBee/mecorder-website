@@ -45,7 +45,7 @@ steps in time → compile to camera keyframes and effects. The playground edits 
 - `src/lib/site.ts` → `DOWNLOAD.url` / `version`: the signed, notarised build.
   While it's `null`, download buttons say the build isn't out yet.
 - `/terms` and the formal privacy policy.
-- Contributions on `/pricing` don't charge anything yet.
+- Plans and prices live in `src/lib/pricing.ts`; plan buttons start the trial (no checkout yet).
 
 Regenerate the Open Graph image after editing `tools/og/og.html`:
 

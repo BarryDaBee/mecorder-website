@@ -2,84 +2,76 @@
 import { u } from '../lib/url';
 import Base from '../layouts/Base.astro';
 import { SITE } from '../lib/site';
+import { PLANS, TRIAL_DAYS, INCLUDED } from '../lib/pricing';
 
-const levels = [0, 3, 5, 10, 20, 50];
-const included = [
-  'Recording, editing and export, with nothing locked',
-  'Programs, Behaviours, scenes and the Ask box',
-  'Every effect, Effect Studio and looks',
-  'Captions and narration clean-up, on your Mac',
-  'No watermark, no account, no upload',
-];
 const faqs = [
   {
-    q: 'Is it really free?',
-    a: 'Yes. Every feature works without paying. If MeCorder saves you time, you can contribute whatever you think it’s worth, including nothing.',
+    q: 'Is there a free trial?',
+    a: `Yes. MeCorder works fully for ${TRIAL_DAYS} days, with no account and no card. After that it keeps working, but exports carry a small “Made with MeCorder” mark until you choose a plan.`,
   },
   {
-    q: 'Why pay at all?',
-    a: 'Contributions fund the work: new blocks, better targets, more effects and the time it takes to keep a Mac app excellent.',
+    q: 'What’s the difference between the plans?',
+    a: 'Nothing in the app. Every plan unlocks everything. Monthly and Yearly renew until you cancel; Lifetime is paid once and is yours to keep.',
+  },
+  {
+    q: 'Can I switch plans?',
+    a: 'Yes. Start monthly and move to yearly or lifetime whenever you like.',
   },
   {
     q: 'Do I need an account?',
-    a: 'No. MeCorder runs on your Mac and your recordings stay there.',
+    a: 'No. A plan comes with a licence key you paste into Settings. MeCorder runs on your Mac and your recordings stay there.',
   },
   {
     q: 'What about the AI features?',
-    a: 'The built-in offline interpreter is free and needs no network. Free-form requests can use your own Anthropic API key, which you pay Anthropic for directly.',
+    a: 'The built-in offline interpreter is included and needs no network. Free-form requests can use your own Anthropic API key, which you pay Anthropic for directly.',
   },
 ];
 ---
 
-<Base title="Pricing" description="MeCorder is free forever. Pay what you think it's worth.">
+<Base title="Pricing" description={`MeCorder pricing: monthly, yearly or a one-off lifetime licence. Try everything free for ${TRIAL_DAYS} days.`}>
   <div class="pr container">
     <header class="pr-head">
       <p class="eyebrow" data-reveal><span class="dot"></span>Pricing</p>
-      <h1 data-reveal data-reveal-delay="60">Free forever.<br /><span class="muted-h">Pay what you think it’s worth.</span></h1>
-      <p class="lead" data-reveal data-reveal-delay="120">Use all of MeCorder first. If it earns a place in your workflow, chip in. If it doesn’t, that’s fine too.</p>
+      <h1 data-reveal data-reveal-delay="60">One app. Pay the way that suits you.</h1>
+      <p class="lead" data-reveal data-reveal-delay="120">Every plan unlocks all of MeCorder. Try it free for {TRIAL_DAYS} days first, no account and no card.</p>
     </header>
 
-    <div class="pr-grid">
-      <section class="pr-card free" data-reveal aria-labelledby="free-h">
-        <h2 id="free-h">MeCorder</h2>
-        <p class="pr-price"><b>$0</b> <span>forever</span></p>
-        <ul>
-          {included.map((x) => <li>{x}</li>)}
-        </ul>
-        <a href={u('/download')} class="btn btn-primary btn-lg pr-dl" data-track="download_click" data-track-from="pricing">Download for macOS</a>
-        <p class="pr-req">{SITE.requirements}</p>
-      </section>
-
-      <section class="pr-card contrib" data-reveal data-reveal-delay="100" aria-labelledby="contrib-h" data-contrib>
-        <h2 id="contrib-h">Contribute</h2>
-        <p class="muted">A one-off amount, whenever you like.</p>
-        <fieldset class="pr-levels">
-          <legend class="sr-only">Contribution amount</legend>
-          {
-            levels.map((l) => (
-              <label class="pr-level">
-                <input type="radio" name="amount" value={l} checked={l === 10} />
-                <span>${l}</span>
-              </label>
-            ))
-          }
-          <label class="pr-level pr-custom">
-            <input type="radio" name="amount" value="custom" />
-            <span>Custom</span>
-          </label>
-        </fieldset>
-        <div class="pr-custom-field" data-custom hidden>
-          <label for="custom-amount">Amount (USD)</label>
-          <div class="pr-input"><span>$</span><input id="custom-amount" type="number" min="1" step="1" inputmode="numeric" placeholder="15" /></div>
-        </div>
-        <div class="pr-total" aria-live="polite"><span data-total-label>You’ll contribute</span> <b data-total>$10</b></div>
-        <button type="button" class="btn btn-accent btn-lg pr-go" data-contribute>Contribute</button>
-        <p class="pr-note" data-note>Contributions open with the first public release. Nothing is charged from this page.</p>
-      </section>
+    <div class="pr-grid" data-plans>
+      {
+        PLANS.map((p, i) => (
+          <section class:list={['pr-card', { featured: p.featured }]} data-reveal data-reveal-delay={String(i * 80)} aria-labelledby={`plan-${p.id}`} data-tilt>
+            {p.featured && <span class="pr-badge">{p.badge}</span>}
+            <h2 id={`plan-${p.id}`}>{p.name}</h2>
+            <p class="pr-sub">{p.blurb}</p>
+            <p class="pr-price">
+              <b>${p.price}</b>
+              <span>{p.period}</span>
+            </p>
+            <p class="pr-note-line">{p.note}</p>
+            <a
+              href={u('/download')}
+              class:list={['btn', 'btn-lg', 'pr-cta', p.featured ? 'btn-primary' : 'btn-ghost-outline']}
+              data-plan={p.id}
+              data-track="download_click"
+              data-track-from={`pricing-${p.id}`}
+            >
+              Start free trial
+            </a>
+          </section>
+        ))
+      }
     </div>
 
+    <section class="pr-included" data-reveal aria-labelledby="inc-h">
+      <h2 id="inc-h" class="mono-label">Every plan includes</h2>
+      <ul>
+        {INCLUDED.map((x) => <li>{x}</li>)}
+      </ul>
+      <p class="pr-req">{SITE.requirements} · Prices in US dollars. Buying opens with the first public release; nothing is charged from this page yet.</p>
+    </section>
+
     <section class="pr-faq" aria-labelledby="faq-h">
-      <h2 id="faq-h" data-reveal>Questions</h2>
+      <h2 id="faq-h" data-split>Questions</h2>
       <div class="faq-list">
         {
           faqs.map((f) => (
@@ -98,7 +90,7 @@ const faqs = [
   .pr {
     padding-top: calc(var(--nav-h) + clamp(48px, 9vw, 120px));
     padding-bottom: 120px;
-    max-width: 1040px;
+    max-width: 1120px;
   }
   .pr-head {
     text-align: center;
@@ -110,30 +102,61 @@ const faqs = [
     letter-spacing: -0.03em;
     margin: 16px 0 20px;
   }
-  .muted-h {
-    color: var(--text-3);
-  }
   .pr-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(3, 1fr);
     gap: 16px;
+    align-items: stretch;
+    perspective: 1200px;
   }
   .pr-card {
-    padding: 32px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 32px 28px 28px;
     border-radius: 20px;
     background: var(--bg-raised);
     box-shadow: 0 0 0 1px var(--border-subtle) inset;
+    transform: rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+    transition:
+      transform 300ms var(--ease-out),
+      opacity var(--t-reveal) var(--ease-out),
+      box-shadow var(--t-select) ease;
+  }
+  .pr-card:hover {
+    box-shadow: 0 0 0 1px var(--border-strong) inset;
+  }
+  .pr-card.featured {
+    background:
+      radial-gradient(90% 60% at 50% 0%, rgba(139, 124, 255, 0.18), transparent 70%),
+      var(--bg-raised);
+    box-shadow: 0 0 0 1.5px rgba(139, 124, 255, 0.55) inset, 0 30px 60px -30px var(--accent-glow);
+  }
+  .pr-badge {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    padding: 3px 9px;
+    border-radius: 999px;
+    background: var(--accent);
+    color: #fff;
+    font: 600 11px/1.4 var(--font-mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
   }
   .pr-card h2 {
     font-size: 1.2rem;
   }
-  .pr-card.free {
-    background:
-      radial-gradient(80% 60% at 0% 0%, rgba(139, 124, 255, 0.14), transparent 70%),
-      var(--bg-raised);
+  .pr-sub {
+    margin-top: 6px;
+    color: var(--text-3);
+    font-size: var(--fs-small);
   }
   .pr-price {
-    margin: 14px 0 22px;
+    margin: 26px 0 6px;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
     color: var(--text-3);
   }
   .pr-price b {
@@ -141,122 +164,55 @@ const faqs = [
     color: var(--text);
     letter-spacing: -0.03em;
     font-weight: 650;
+    font-variant-numeric: tabular-nums;
   }
-  .pr-card ul {
+  .pr-note-line {
+    min-height: 1.6em;
+    font-size: 13px;
+    color: var(--text-3);
+    margin-bottom: 28px;
+  }
+  .pr-cta {
+    margin-top: auto;
+    width: 100%;
+  }
+  .btn-ghost-outline {
+    --btn-bg: transparent;
+    box-shadow: 0 0 0 1px var(--border-strong) inset;
+  }
+  .btn-ghost-outline:hover {
+    --btn-bg: rgba(255, 255, 255, 0.06);
+  }
+  .pr-included {
+    margin-top: 40px;
+    padding: 28px;
+    border-radius: 20px;
+    box-shadow: 0 0 0 1px var(--border-subtle) inset;
+  }
+  .pr-included h2 {
+    margin-bottom: 18px;
+  }
+  .pr-included ul {
     list-style: none;
-    margin: 0 0 28px;
+    margin: 0;
     padding: 0;
     display: grid;
-    gap: 10px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px 28px;
     color: var(--text-2);
   }
-  .pr-card li {
+  .pr-included li {
     display: flex;
     gap: 10px;
   }
-  .pr-card li::before {
+  .pr-included li::before {
     content: '✓';
     color: var(--success);
   }
-  .pr-dl,
-  .pr-go {
-    width: 100%;
-  }
-  .pr-req,
-  .pr-note {
-    margin-top: 12px;
+  .pr-req {
+    margin-top: 22px;
     font-size: 12px;
     color: var(--text-4);
-    text-align: center;
-  }
-  .pr-levels {
-    border: 0;
-    margin: 22px 0 0;
-    padding: 0;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 8px;
-  }
-  .pr-level {
-    position: relative;
-  }
-  .pr-level input {
-    position: absolute;
-    opacity: 0;
-    inset: 0;
-    cursor: pointer;
-  }
-  .pr-level span {
-    display: grid;
-    place-items: center;
-    height: 48px;
-    border-radius: 12px;
-    background: var(--surface);
-    box-shadow: 0 0 0 1px var(--border-subtle) inset;
-    font-weight: 600;
-    transition:
-      box-shadow var(--t-select) ease,
-      background-color var(--t-select) ease,
-      transform var(--t-select) var(--ease-spring);
-  }
-  .pr-level:hover span {
-    background: var(--surface-2);
-  }
-  .pr-level input:checked + span {
-    background: var(--accent-soft);
-    box-shadow: 0 0 0 2px var(--accent) inset;
-    transform: scale(1.03);
-  }
-  .pr-level input:focus-visible + span {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-  }
-  .pr-custom {
-    grid-column: span 2;
-  }
-  .pr-custom-field {
-    margin-top: 14px;
-    font-size: 13px;
-    color: var(--text-3);
-  }
-  .pr-input {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    margin-top: 6px;
-    height: 44px;
-    padding: 0 14px;
-    border-radius: 12px;
-    background: var(--surface);
-    box-shadow: 0 0 0 1px var(--border) inset;
-  }
-  .pr-input input {
-    flex: 1;
-    border: 0;
-    outline: 0;
-    background: transparent;
-    color: var(--text);
-    font: inherit;
-    font-size: 1rem;
-  }
-  .pr-total {
-    margin: 22px 0 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    color: var(--text-3);
-  }
-  .pr-total b {
-    font-size: 1.6rem;
-    color: var(--text);
-    font-variant-numeric: tabular-nums;
-    transition: transform 300ms var(--ease-spring);
-  }
-  .pr-total b.bump {
-    transform: scale(1.12);
-  }
-  .pr-note.is-highlight {
-    color: var(--text-2);
   }
   .pr-faq {
     margin-top: clamp(80px, 10vw, 128px);
@@ -293,60 +249,26 @@ const faqs = [
     padding-bottom: 18px;
     color: var(--text-2);
   }
-  @media (max-width: 760px) {
+  @media (max-width: 900px) {
     .pr-grid {
       grid-template-columns: 1fr;
+      max-width: 480px;
+      margin: 0 auto;
     }
-    .pr-card {
-      padding: 24px;
+    .pr-card.featured {
+      order: -1;
+    }
+    .pr-included ul {
+      grid-template-columns: 1fr;
     }
   }
 </style>
 
 <script>
   import { track } from '../lib/analytics';
-  import { u } from '../lib/url';
-  const root = document.querySelector<HTMLElement>('[data-contrib]');
-  if (root) {
-    const total = root.querySelector<HTMLElement>('[data-total]')!;
-    const label = root.querySelector<HTMLElement>('[data-total-label]')!;
-    const custom = root.querySelector<HTMLElement>('[data-custom]')!;
-    const customInput = custom.querySelector<HTMLInputElement>('input')!;
-    const note = root.querySelector<HTMLElement>('[data-note]')!;
-    const go = root.querySelector<HTMLButtonElement>('[data-contribute]')!;
-    const value = () => {
-      const v = (root.querySelector<HTMLInputElement>('input[name=amount]:checked')?.value) ?? '0';
-      return v === 'custom' ? Math.max(0, Math.round(Number(customInput.value) || 0)) : Number(v);
-    };
-    const update = () => {
-      const isCustom = root.querySelector<HTMLInputElement>('input[name=amount]:checked')?.value === 'custom';
-      custom.hidden = !isCustom;
-      const v = value();
-      total.textContent = `$${v}`;
-      label.textContent = v === 0 ? 'Free is fine' : 'You’ll contribute';
-      go.textContent = v === 0 ? 'Download instead' : 'Contribute';
-      total.classList.remove('bump');
-      void total.offsetWidth;
-      total.classList.add('bump');
-    };
-    root.addEventListener('change', (e) => {
-      update();
-      const t = e.target as HTMLInputElement;
-      if (t.name === 'amount') {
-        track('contribution_selected', { amount: t.value });
-        if (t.value === 'custom') customInput.focus();
-      }
-    });
-    customInput.addEventListener('input', update);
-    go.addEventListener('click', () => {
-      track('pricing_interaction', { action: 'contribute', amount: value() });
-      if (value() === 0) {
-        location.href = u('/download');
-        return;
-      }
-      note.classList.add('is-highlight');
-      note.textContent = 'Thank you. Contributions open with the first public release; nothing was charged.';
-    });
-    update();
-  }
+  import { initTilt } from '../lib/animation/parallax';
+  document.querySelectorAll<HTMLElement>('[data-plans] [data-tilt]').forEach((el) => initTilt(el, 3));
+  document.querySelectorAll<HTMLElement>('[data-plan]').forEach((a) =>
+    a.addEventListener('click', () => track('plan_selected', { plan: a.dataset.plan! })),
+  );
 </script>

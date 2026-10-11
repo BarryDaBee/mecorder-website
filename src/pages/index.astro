@@ -12,6 +12,7 @@ import Features from '../components/product/Features.astro';
 import DocsTeaser from '../components/documentation/DocsTeaser.astro';
 import FinalCTA from '../components/product/FinalCTA.astro';
 import { SITE } from '../lib/site';
+import { PLANS } from '../lib/pricing';
 
 const app = {
   '@context': 'https://schema.org',
@@ -20,7 +21,7 @@ const app = {
   applicationCategory: 'MultimediaApplication',
   operatingSystem: 'macOS 14 or later',
   description: SITE.description,
-  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  offers: PLANS.map((p) => ({ '@type': 'Offer', name: p.name, price: String(p.price), priceCurrency: 'USD' })),
 };
 ---
 

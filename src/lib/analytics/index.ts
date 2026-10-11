@@ -13,7 +13,7 @@ export type AnalyticsEvent =
   | 'program_block_modified'
   | 'program_target_picked'
   | 'pricing_interaction'
-  | 'contribution_selected'
+  | 'plan_selected'
   | 'comparison_dragged';
 
 export interface AnalyticsProvider {
