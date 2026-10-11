@@ -2,7 +2,7 @@
 import { u } from '../lib/url';
 import Base from '../layouts/Base.astro';
 import { SITE } from '../lib/site';
-import { PLANS, TRIAL_DAYS, INCLUDED } from '../lib/pricing';
+import { PLANS, TRIAL_DAYS, INCLUDED, LADDER, MONTHLY_LADDER } from '../lib/pricing';
 
 const faqs = [
   {
@@ -12,6 +12,10 @@ const faqs = [
   {
     q: 'What’s the difference between the plans?',
     a: 'Nothing in the app. Every plan unlocks everything. Monthly and Yearly renew until you cancel; Lifetime is paid once and is yours to keep.',
+  },
+  {
+    q: 'How does the monthly price go down?',
+    a: `Your first month is $${MONTHLY_LADDER.start}. Each month you stay subscribed costs $${MONTHLY_LADDER.step} less, until it reaches $${MONTHLY_LADDER.floor} a month, and it stays there. If you cancel, a new subscription starts again at $${MONTHLY_LADDER.start}.`,
   },
   {
     q: 'Can I switch plans?',
@@ -47,6 +51,17 @@ const faqs = [
               <b>${p.price}</b>
               <span>{p.period}</span>
             </p>
+            {p.id === 'monthly' && (
+              <div class="ladder" aria-label={`Monthly price by month: ${LADDER.map((v, n) => `month ${n + 1} $${v}`).join(', ')}, then $${MONTHLY_LADDER.floor} after.`} role="img">
+                {LADDER.map((v, n) => (
+                  <span class="ladder-bar" style={`--h:${v / MONTHLY_LADDER.start};--n:${n}`}>
+                    <b>${v}</b>
+                    <i />
+                    <em>{n === LADDER.length - 1 ? `${n + 1}+` : n + 1}</em>
+                  </span>
+                ))}
+              </div>
+            )}
             <p class="pr-note-line">{p.note}</p>
             <a
               href={u('/download')}
@@ -171,6 +186,48 @@ const faqs = [
     font-size: 13px;
     color: var(--text-3);
     margin-bottom: 28px;
+  }
+  .ladder {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    align-items: end;
+    gap: 5px;
+    height: 92px;
+    margin: 14px 0 14px;
+  }
+  .ladder-bar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+    gap: 4px;
+    font-size: 10px;
+    color: var(--text-3);
+  }
+  .ladder-bar b {
+    font-weight: 600;
+    color: var(--text-2);
+    font-variant-numeric: tabular-nums;
+  }
+  .ladder-bar i {
+    width: 100%;
+    height: calc(var(--h) * 52px);
+    border-radius: 4px 4px 2px 2px;
+    background: linear-gradient(180deg, var(--accent), color-mix(in srgb, var(--accent) 45%, transparent));
+    transform-origin: bottom;
+    transform: scaleY(0);
+    transition: transform 700ms var(--ease-out);
+    transition-delay: calc(var(--n) * 70ms + 200ms);
+  }
+  .is-revealed .ladder-bar i,
+  .no-js .ladder-bar i {
+    transform: none;
+  }
+  .ladder-bar em {
+    font-style: normal;
+    font-family: var(--font-mono);
+    color: var(--text-4);
   }
   .pr-cta {
     margin-top: auto;
