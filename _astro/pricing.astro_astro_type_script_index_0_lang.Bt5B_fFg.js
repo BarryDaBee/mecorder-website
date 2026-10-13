@@ -1,0 +1,1 @@
+import{a}from"./index.BgsBYvIf.js";import{b as e}from"./parallax.Cz9jMEC1.js";import"./motion.BgvDdd4B.js";document.querySelectorAll("[data-plans] [data-tilt]").forEach(t=>e(t,3));document.querySelectorAll("[data-plan]").forEach(t=>t.addEventListener("click",()=>a("plan_selected",{plan:t.dataset.plan})));

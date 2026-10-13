@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://barrydabee.github.io/mecorder-website/sitemap.xml
