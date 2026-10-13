@@ -39,7 +39,7 @@ export const PLANS: Plan[] = [
     id: 'lifetime',
     name: 'Lifetime',
     blurb: 'Pay once, keep it.',
-    price: 149,
+    price: 100,
     period: 'one-off',
     note: 'A licence that never expires.',
     featured: true,
